@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHouse.Model", "GreenHo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHouse.DataAccess", "GreenHouse.DataAccess\GreenHouse.DataAccess.csproj", "{0E8248B5-5D60-44C5-835D-D0662C12A702}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHouse.Web", "GreenHouse.Web\GreenHouse.Web.csproj", "{C1FADCD4-F200-4041-8B7B-A0D564AF6F0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{0E8248B5-5D60-44C5-835D-D0662C12A702}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E8248B5-5D60-44C5-835D-D0662C12A702}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E8248B5-5D60-44C5-835D-D0662C12A702}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1FADCD4-F200-4041-8B7B-A0D564AF6F0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1FADCD4-F200-4041-8B7B-A0D564AF6F0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1FADCD4-F200-4041-8B7B-A0D564AF6F0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1FADCD4-F200-4041-8B7B-A0D564AF6F0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
