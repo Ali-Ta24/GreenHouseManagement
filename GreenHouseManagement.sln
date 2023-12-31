@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHouse.DomainEntitty", "GreenHouseManagement.DomainEntitty\GreenHouse.DomainEntitty.csproj", "{8D3CDE07-E122-4691-9767-5F606D1A09BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHouse.Services", "GreenHouse.Services\GreenHouse.Services.csproj", "{A06D0C8F-5883-4A69-B667-4EF5C5FF122C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{8D3CDE07-E122-4691-9767-5F606D1A09BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D3CDE07-E122-4691-9767-5F606D1A09BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D3CDE07-E122-4691-9767-5F606D1A09BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A06D0C8F-5883-4A69-B667-4EF5C5FF122C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A06D0C8F-5883-4A69-B667-4EF5C5FF122C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A06D0C8F-5883-4A69-B667-4EF5C5FF122C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A06D0C8F-5883-4A69-B667-4EF5C5FF122C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
