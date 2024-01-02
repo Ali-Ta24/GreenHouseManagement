@@ -1,15 +1,13 @@
+using GreenHouse.Web.Library;
+using IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.OpenApi.Models;
-using System.Reflection;
-using System.Security.Authentication;
-using IdentityModel.Client;
-using Microsoft.Extensions.Options;
-using System.Globalization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Builder;
-using GreenHouse.Web.Library;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using System.Globalization;
+using System.Security.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 var mvcBuilder = builder.Services.AddRazorPages();
@@ -116,7 +114,7 @@ builder.Services
       options.ClaimActions.MapJsonKey("FarzinUserName", "FarzinUserName", "FarzinUserName");
       options.ClaimActions.MapJsonKey("FarzinCreatorID", "FarzinCreatorID", "FarzinCreatorID");
       options.ClaimActions.MapJsonKey("FarzinCreatorRoleID", "FarzinCreatorRoleID", "FarzinCreatorRoleID");
-      options.TokenValidationParameters.NameClaimType = "name"; 
+      options.TokenValidationParameters.NameClaimType = "name";
       options.TokenValidationParameters.RoleClaimType = "role";
       options.Scope.Add("facilityman");
       options.Scope.Add("IdentityServerApi");
@@ -260,7 +258,11 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 builder.Services.Configure<SecurityStampValidatorOptions>(options => options.ValidationInterval = TimeSpan.FromSeconds(180));
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<ServiceExceptionHandlerFilter>();
+}
+).AddNewtonsoftJson();
 
 try
 {
