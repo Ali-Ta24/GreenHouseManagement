@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHouse.DomainEntitty", "GreenHouseManagement.DomainEntitty\GreenHouse.DomainEntitty.csproj", "{8D3CDE07-E122-4691-9767-5F606D1A09BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenHouse.DomainEntitty", "GreenHouse.DomainEntitty\GreenHouse.DomainEntitty.csproj", "{8D3CDE07-E122-4691-9767-5F606D1A09BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHouse.Services", "GreenHouse.Services\GreenHouse.Services.csproj", "{A06D0C8F-5883-4A69-B667-4EF5C5FF122C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenHouse.Services", "GreenHouse.Services\GreenHouse.Services.csproj", "{A06D0C8F-5883-4A69-B667-4EF5C5FF122C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHouse.Model", "GreenHouse.Model\GreenHouse.Model.csproj", "{E87F285A-E07D-4D5C-878E-E469767EF217}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenHouse.Model", "GreenHouse.Model\GreenHouse.Model.csproj", "{E87F285A-E07D-4D5C-878E-E469767EF217}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHouse.DataAccess", "GreenHouse.DataAccess\GreenHouse.DataAccess.csproj", "{0E8248B5-5D60-44C5-835D-D0662C12A702}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenHouse.DataAccess", "GreenHouse.DataAccess\GreenHouse.DataAccess.csproj", "{0E8248B5-5D60-44C5-835D-D0662C12A702}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHouse.Web", "GreenHouse.Web\GreenHouse.Web.csproj", "{C1FADCD4-F200-4041-8B7B-A0D564AF6F0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenHouse.Web", "GreenHouse.Web\GreenHouse.Web.csproj", "{C1FADCD4-F200-4041-8B7B-A0D564AF6F0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
