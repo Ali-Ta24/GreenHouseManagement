@@ -1,3 +1,5 @@
+using GreenHouse.DomainEntitty.Identity;
+using GreenHouse.Web.DbContext;
 using GreenHouse.Web.Library;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
@@ -258,12 +260,27 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 builder.Services.Configure<SecurityStampValidatorOptions>(options => options.ValidationInterval = TimeSpan.FromSeconds(180));
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+        //policy.WithOrigins("*");
+        policy.AllowCredentials();
+    });
+});
+
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add<ServiceExceptionHandlerFilter>();
 }
 ).AddNewtonsoftJson();
-
+builder.Services.AddDbContext<ApplicationDbContext>();
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+    //.AddErrorDescriber<PersianIdentityErrorDescriber>();
 try
 {
     var app = builder.Build();
