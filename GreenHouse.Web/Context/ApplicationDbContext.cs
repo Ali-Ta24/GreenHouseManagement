@@ -1,7 +1,7 @@
 ﻿using GreenHouse.DomainEntitty.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-namespace GreenHouse.Web.DbContext
+namespace GreenHouse.Web.Context
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
@@ -30,7 +30,7 @@ namespace GreenHouse.Web.DbContext
                   "ASPNETCORE_ENVIRONMENT");
 
             //Console.WriteLine("2");
-            var config = new ConfigurationBuilder().AddJsonFile("appsettings" + (String.IsNullOrWhiteSpace(environmentName) ? "" : "." + environmentName) + ".json", false).Build();
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings" + (string.IsNullOrWhiteSpace(environmentName) ? "" : "." + environmentName) + ".json", false).Build();
 
             return config.GetConnectionString("DefaultConnection");
         }
