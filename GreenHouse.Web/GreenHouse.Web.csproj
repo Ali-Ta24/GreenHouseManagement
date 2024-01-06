@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Context\**" />
+    <Compile Remove="Migrations\**" />
+    <Content Remove="Context\**" />
+    <Content Remove="Migrations\**" />
+    <EmbeddedResource Remove="Context\**" />
+    <EmbeddedResource Remove="Migrations\**" />
+    <None Remove="Context\**" />
+    <None Remove="Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DNTCaptcha.Core" Version="4.9.2" />
     <PackageReference Include="IdentityModel" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.14" />
@@ -32,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GreenHouse.DataAccess\GreenHouse.DataAccess.csproj" />
     <ProjectReference Include="..\GreenHouse.DomainEntitty\GreenHouse.DomainEntitty.csproj" />
   </ItemGroup>
 
