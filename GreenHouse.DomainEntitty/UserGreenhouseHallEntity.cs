@@ -1,6 +1,5 @@
 ﻿using GreenHouse.DomainEntitty.Identity;
 using GreenHouse.Model;
-using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GreenHouse.DomainEntitty
@@ -25,6 +24,6 @@ namespace GreenHouse.DomainEntitty
             LastModificationTime = item.LastModificationTime;
         }
         [ForeignKey("UserID")]
-        public virtual ICollection<ApplicationUser> ApplicationUser { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

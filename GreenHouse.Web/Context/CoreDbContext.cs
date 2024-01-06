@@ -1,5 +1,4 @@
 ﻿using GreenHouse.DomainEntitty;
-using GreenHouse.DomainEntitty.Identity;
 using Microsoft.EntityFrameworkCore;
 namespace GreenHouse.Web.Context
 {
@@ -17,11 +16,6 @@ namespace GreenHouse.Web.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            //modelBuilder.Entity<UserGreenhouseHallEntity>().HasOne(table => new ApplicationUser()
-            //{
-
-            //});
         }
 
         public DbSet<UserGreenhouseHallEntity> UserGreenhouseHall { get; set; }
