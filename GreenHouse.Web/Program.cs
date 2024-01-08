@@ -2,6 +2,7 @@ using GreenHouse.DataAccess;
 using GreenHouse.DataAccess.Context;
 using GreenHouse.DataAccess.UnitOfWork;
 using GreenHouse.DomainEntitty.Identity;
+using GreenHouse.Services;
 using GreenHouse.Web.Library;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
@@ -30,7 +31,37 @@ builder.Services.AddSwaggerGen(
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "FacilityMan.API.Web", Version = "v1" });
     }
     );
+//var b = builder.Services.Configure<IdentityOptions>(options =>
+//{
+//    options.Password.RequireDigit = true;
+//    options.Password.RequireUppercase = true;
+//    options.Password.RequireLowercase = true; ;
+//    options.Password.RequireNonAlphanumeric = true;
+//    options.Password.RequiredUniqueChars = 1;
+//    options.Password.RequiredLength = 8;
 
+//    options.SignIn.RequireConfirmedPhoneNumber = false;
+//    options.SignIn.RequireConfirmedEmail = false;
+
+
+
+//    options.User.RequireUniqueEmail = true;
+
+//})
+//    .AddIdentityServer(options =>
+//    {
+//        options.Events.RaiseErrorEvents = true;
+//        options.Events.RaiseInformationEvents = true;
+//        options.Events.RaiseFailureEvents = true;
+//        options.Events.RaiseSuccessEvents = true;
+//        options.EmitStaticAudienceClaim = true;
+
+
+//    });
+//.AddInMemoryIdentityResources(SD.IdentityResources)
+//.AddInMemoryApiScopes(SD.ApiScopes)
+//.AddInMemoryClients(SDToBeChangeble)
+//.AddAspNetIdentity<ApplicationUser>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddHttpClient();
@@ -280,15 +311,16 @@ builder.Services.AddControllersWithViews(options =>
 }
 ).AddNewtonsoftJson();
 
-//builder.Services.AddScoped<IDateTimeProviderService, DateTimeProviderService>();
+builder.Services.AddScoped<IDateTimeProviderService, DateTimeProviderService>();
 builder.Services.AddScoped<ICoreUnitOfWork, CoreUnitOfWork>();
-
+builder.Services.AddScoped<UserGreenhouseHallService, UserGreenhouseHallService>();
 builder.Services.AddDbContext<CoreDbContext>();
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
-    //.AddErrorDescriber<PersianIdentityErrorDescriber>();
+//.AddErrorDescriber<PersianIdentityErrorDescriber>();
+//b.AddDeveloperSigningCredential();
 try
 {
     var app = builder.Build();
@@ -305,7 +337,7 @@ try
     {
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
-        //app.UseSwaggerUI();
+        app.UseSwaggerUI();
     }
     else
     {
@@ -323,6 +355,7 @@ try
     //            endpoints.MapFallbackToPage("/_Host");
     //            endpoints.MapRazorPages();
     //        });
+    //app.UseIdentityServer();
     app.UseAuthentication();
 
     app.Use(async (httpContext, next) =>

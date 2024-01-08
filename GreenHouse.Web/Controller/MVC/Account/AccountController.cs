@@ -1,12 +1,8 @@
-﻿using DNTCaptcha.Core;
-using Duende.IdentityServer.Events;
-using Duende.IdentityServer.Models;
-using Duende.IdentityServer.Services;
-using Duende.IdentityServer.Stores;
-using GreenHouse.DataAccess.Context;
+﻿using GreenHouse.DataAccess.Context;
 using GreenHouse.DomainEntitty.Identity;
+using GreenHouse.Services;
 using GreenHouse.Web.Controller.Model;
-using GreenHouse.Web.Library;
+using GreenHouse.Web.IdentityServerHost;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,47 +12,48 @@ using System.Text.RegularExpressions;
 
 namespace GreenHouse.Web.Controller.MVC.Account
 {
-    //[SecurityHeaders]
+    [SecurityHeaders]
     [AllowAnonymous]
     public class AccountController : Microsoft.AspNetCore.Mvc.Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        private readonly IIdentityServerInteractionService _interaction;
+        //private readonly IIdentityServerInteractionService _interaction;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
-        private readonly IIdentityProviderStore _identityProviderStore;
-        private readonly IClientStore _clientStore;
-        private readonly IEventService _events;
+        //private readonly IIdentityProviderStore _identityProviderStore;
+        //private readonly IClientStore _clientStore;
+        //private readonly IEventService _events;
         private readonly IConfiguration _configuration;
-
+        private readonly UserGreenhouseHallService _service;
         private readonly ApplicationDbContext _dbContext;
-
-        //public AccountController(IIdentityServerInteractionService interaction,
-        //    IClientStore clientStore,
-        //    IAuthenticationSchemeProvider schemeProvider,
-        //    IIdentityProviderStore identityProviderStore,
-        //    IEventService events,
-        //    UserManager<ApplicationUser> userManager,
-        //    SignInManager<ApplicationUser> signInManager,
-        //    RoleManager<ApplicationRole> roleManager,
-        //    IDNTCaptchaValidatorService validatorService,
-        //    ApplicationDbContext dbContext,
-        //    IHttpContextAccessor httpContextAccessor,
-        //    IConfiguration configuration)
-        //{
-        //    ////_userManager = userManager;
-        //    ////_roleManager = roleManager;
-        //    //_signInManager = signInManager;
-        //    //_interaction = interaction;
-        //    //_clientStore = clientStore;
-        //    //_schemeProvider = schemeProvider;
-        //    //_identityProviderStore = identityProviderStore;
-        //    //_events = events;
-        //    ////_validatorService = validatorService;
-        //    //_dbContext = dbContext;
-        //    ////_httpContextAccessor = httpContextAccessor;
-        //    //_configuration = configuration;
-        //}
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public AccountController(/*IIdentityServerInteractionService interaction,*/
+            //IClientStore clientStore,
+            IAuthenticationSchemeProvider schemeProvider,
+            //IIdentityProviderStore identityProviderStore,
+            //IEventService events,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            RoleManager<ApplicationRole> roleManager,
+            ApplicationDbContext dbContext,
+            IHttpContextAccessor httpContextAccessor,
+            IConfiguration configuration)
+        {
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _signInManager = signInManager;
+            //_interaction = interaction;
+                //_clientStore = clientStore;
+            _schemeProvider = schemeProvider;
+            //    _identityProviderStore = identityProviderStore;
+            //_events = events;
+            //    //_validatorService = validatorService;
+            _dbContext = dbContext;
+            _httpContextAccessor = httpContextAccessor;
+            _configuration = configuration;
+        }
 
         [Route("")]
         [Route("Login")]
@@ -76,7 +73,7 @@ namespace GreenHouse.Web.Controller.MVC.Account
                 // we only have one option for logging in and it's an external provider
                 return RedirectToAction("Challenge", "External", new { scheme = vm.ExternalLoginScheme, returnUrl });
             }
-
+            //return View(new LoginViewModel());
             return View(vm);
         }
         [HttpPost]
@@ -94,33 +91,33 @@ namespace GreenHouse.Web.Controller.MVC.Account
             }
 
             // check if we are in the context of an authorization request
-            var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
+            //var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
 
             // the user clicked the "cancel" button
             if (button != "login")
             {
-                if (context != null)
-                {
-                    // if the user cancels, send a result back into IdentityServer as if they 
-                    // denied the consent (even if this client does not require consent).
-                    // this will send back an access denied OIDC error response to the client.
-                    await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
+                //if (context != null)
+                //{
+                //    // if the user cancels, send a result back into IdentityServer as if they 
+                //    // denied the consent (even if this client does not require consent).
+                //    // this will send back an access denied OIDC error response to the client.
+                //    //await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
 
-                    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                    //if (context.IsNativeClient())
-                    //{
-                    //    // The client is native, so this change in how to
-                    //    // return the response is for better UX for the end user.
-                    //    return this.LoadingPage("Redirect", model.ReturnUrl);
-                    //}
+                //    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+                //    //if (context.IsNativeClient())
+                //    //{
+                //    //    // The client is native, so this change in how to
+                //    //    // return the response is for better UX for the end user.
+                //    //    return this.LoadingPage("Redirect", model.ReturnUrl);
+                //    //}
 
-                    return Redirect(model.ReturnUrl);
-                }
-                else
-                {
-                    // since we don't have a valid context, then we just go back to the home page
+                //    return Redirect(model.ReturnUrl);
+                //}
+                //else
+                //{
+                //    // since we don't have a valid context, then we just go back to the home page
                     return Redirect("~/");
-                }
+                //}
             }
 
             string NotActive = "";
@@ -135,7 +132,7 @@ namespace GreenHouse.Web.Controller.MVC.Account
                     //LogContext.PushProperty("UserName", user.UserName);
                     //LogContext.PushProperty("EventId", "UserNotFound");
 
-                    await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "user not found", clientId: context?.Client.ClientId));
+                    //await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "user not found", clientId: context?.Client.ClientId));
 
                     var vm1 = await BuildLoginViewModelAsync(model);
                     return View(vm1);
@@ -148,7 +145,7 @@ namespace GreenHouse.Web.Controller.MVC.Account
                     //LogContext.PushProperty("UserName", user.UserName);
                     //LogContext.PushProperty("EventId", "UserNotActive");
 
-                    await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "user not active", clientId: context?.Client.ClientId));
+                    //await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "user not active", clientId: context?.Client.ClientId));
 
                     var vm1 = await BuildLoginViewModelAsync(model);
                     return View(vm1);
@@ -164,7 +161,7 @@ namespace GreenHouse.Web.Controller.MVC.Account
                 //LogContext.PushProperty("UserName", model.NationalCodeId);
                 //LogContext.PushProperty("EventId", "UserNotFoundInLogin");
 
-                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "User not found", clientId: context?.Client.ClientId));
+                //await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "User not found", clientId: context?.Client.ClientId));
 
                 var vm2 = await BuildLoginViewModelAsync(model);
                 return View(vm2);
@@ -180,13 +177,13 @@ namespace GreenHouse.Web.Controller.MVC.Account
                         //LogContext.PushProperty("UserName", user.UserName);
                         //LogContext.PushProperty("EventId", "UserLoginSuccess");
                         //var user = await _userManager.FindByNameAsync(model.Username);
-                        await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
+                        //await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
                         //Log.Logger.Information("Successful login UserName{@UserName} ,EventId")
 
-                        if (context != null)
-                        {
-                            return Redirect(model.ReturnUrl);
-                        }
+                        //if (context != null)
+                        //{
+                        //    return Redirect(model.ReturnUrl);
+                        //}
                         if (Url.IsLocalUrl(model.ReturnUrl))
                         {
                             return Redirect(model.ReturnUrl);
@@ -204,7 +201,7 @@ namespace GreenHouse.Web.Controller.MVC.Account
 
                     //LogContext.PushProperty("UserName", user.UserName);
                     //LogContext.PushProperty("EventId", "UserLoginFail");
-                    await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.Client.ClientId));
+                    //await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.Client.ClientId));
 
 
                     ModelState.AddModelError("Password", "نام کاربری یا رمز عبور نامعتبر است" /*AccountOptions.InvalidCredentialsErrorMessage*/);
@@ -231,26 +228,26 @@ namespace GreenHouse.Web.Controller.MVC.Account
         }
         private async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl)
         {
-            var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
-            if (context?.IdP != null && await _schemeProvider.GetSchemeAsync(context.IdP) != null)
-            {
-                var local = context.IdP == Duende.IdentityServer.IdentityServerConstants.LocalIdentityProvider;
+            //var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+            //if (context?.IdP != null && await _schemeProvider.GetSchemeAsync(context.IdP) != null)
+            //{
+            //    var local = context.IdP == Duende.IdentityServer.IdentityServerConstants.LocalIdentityProvider;
 
-                // this is meant to short circuit the UI and only trigger the one external IdP
-                var vm = new LoginViewModel
-                {
-                    EnableLocalLogin = local,
-                    ReturnUrl = returnUrl,
-                    Username = context?.LoginHint,
-                };
+            //    // this is meant to short circuit the UI and only trigger the one external IdP
+            //    var vm = new LoginViewModel
+            //    {
+            //        EnableLocalLogin = local,
+            //        ReturnUrl = returnUrl,
+            //        Username = context?.LoginHint,
+            //    };
 
-                if (!local)
-                {
-                    vm.ExternalProviders = new[] { new ExternalProvider { AuthenticationScheme = context.IdP } };
-                }
+            //    if (!local)
+            //    {
+            //        vm.ExternalProviders = new[] { new ExternalProvider { AuthenticationScheme = context.IdP } };
+            //    }
 
-                return vm;
-            }
+            //    return vm;
+            //}
 
             var schemes = await _schemeProvider.GetAllSchemesAsync();
 
@@ -262,36 +259,36 @@ namespace GreenHouse.Web.Controller.MVC.Account
                     AuthenticationScheme = x.Name
                 }).ToList();
 
-            var dyanmicSchemes = (await _identityProviderStore.GetAllSchemeNamesAsync())
-                .Where(x => x.Enabled)
-                .Select(x => new ExternalProvider
-                {
-                    AuthenticationScheme = x.Scheme,
-                    DisplayName = x.DisplayName
-                });
-            providers.AddRange(dyanmicSchemes);
+            //var dyanmicSchemes = (await _identityProviderStore.GetAllSchemeNamesAsync())
+            //    .Where(x => x.Enabled)
+            //    .Select(x => new ExternalProvider
+            //    {
+            //        AuthenticationScheme = x.Scheme,
+            //        DisplayName = x.DisplayName
+            //    });
+            //providers.AddRange(dyanmicSchemes);
 
             var allowLocal = true;
-            if (context?.Client.ClientId != null)
-            {
-                var client = await _clientStore.FindEnabledClientByIdAsync(context.Client.ClientId);
-                if (client != null)
-                {
-                    allowLocal = client.EnableLocalLogin;
+            //if (context?.Client.ClientId != null)
+            //{
+            //    var client = await _clientStore.FindEnabledClientByIdAsync(context.Client.ClientId);
+            //    if (client != null)
+            //    {
+            //        allowLocal = client.EnableLocalLogin;
 
-                    if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Any())
-                    {
-                        providers = providers.Where(provider => client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
-                    }
-                }
-            }
+            //        if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Any())
+            //        {
+            //            providers = providers.Where(provider => client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
+            //        }
+            //    }
+            //}
 
             return new LoginViewModel
             {
                 //AllowRememberLogin = AccountOptions.AllowRememberLogin,
                 //EnableLocalLogin = allowLocal && AccountOptions.AllowLocalLogin,
                 ReturnUrl = returnUrl,
-                Username = context?.LoginHint,
+                //Username = context?.LoginHint,
                 ExternalProviders = providers.ToArray()
             };
         }

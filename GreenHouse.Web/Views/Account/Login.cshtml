@@ -1,8 +1,6 @@
-﻿@using DNTCaptcha.Core
-@using GreenHouse.Web.Controller.Model
+﻿@using GreenHouse.Web.Controller.Model
 
 @model LoginViewModel
-@addTagHelper *, DNTCaptcha.Core
 
 @{
     ViewData["Title"] = "ورود ";
@@ -16,21 +14,21 @@
                     <h3 class="">ورود</h3>
                     <img class="logo_banader" src="~/panel/imgs/logo/newLogoBanaderWithBottomTitle.png" alt="logo_banader" />
                     <br />
-                    <p>سازمان بنادر و دریانوردی</p>
+                    <p>سامانه مدیریت و رصد گلخانه</p>
 
                 </div>
                 <br />
-                <!--<partial name="_ValidationSummary" />-->
+                <partial name="_ValidationSummary" />
 
-               @*     @if (ViewBag.ResetSuccessFull != null)
-                   {
-                       <div style="background-color:white" class="text-center">
-                           <h3 style="color:white; background-color:forestgreen">@ViewBag.ResetSuccessFull</h3>
-                       </div>
-                   } *@
+                @if (ViewBag.ResetSuccessFull != null)
+                {
+                    <div style="background-color:white" class="text-center">
+                        <h3 style="color:white; background-color:forestgreen">@ViewBag.ResetSuccessFull</h3>
+                    </div>
+                }
 
                 <div class="form-body">
-                  @*   @if (Model.EnableLocalLogin)
+                    @if (Model.EnableLocalLogin)
                     {
                         <form class="row g-3 needs-validation" asp-route="Login">
                             <input type="hidden" asp-for="ReturnUrl" />
@@ -38,14 +36,14 @@
                             <div class="col-12">
                                 <label asp-for="NationalCodeId" class="form-label">کد ملی شما</label>
                                 <input data-val="true"
-                                   required
-                                   pattern="^\d{10}$"
-                                   maxlength="10"
-                                   minlength="10"
-                                   data-msg-minlength="کد ملی حداقل 10 رقم است"
-                                   data-msg-maxlength=" ملی حداکثر 10 رقم استد"
-                                   data-val-required="لطفا کد ملی را وارد کنید"
-                                   data-msg-pattern="کد ملی وارد شده معتبر نیست" class="form-control" placeholder="کد ملی" asp-for="NationalCodeId" id="NationalCodeId" autofocus>
+                                       required
+                                       pattern="^\d{10}$"
+                                       maxlength="10"
+                                       minlength="10"
+                                       data-msg-minlength="نام کاربری رمزعبور حداقل ۴ کاراکتر استاست"
+                                       data-msg-maxlength=" ملی حداکثر 10 رقم استد"
+                                       data-val-required="لطفا کد ملی را وارد کنید"
+                                       data-msg-pattern="کد ملی وارد شده معتبر نیست" class="form-control" placeholder="کد ملی" asp-for="NationalCodeId" id="NationalCodeId" autofocus>
                                 <div class="invalid-feedback" data-valmsg-for="NationalCodeId" data-valmsg-replace="true" for="NationalCodeId"></div>
                             </div>
 
@@ -58,25 +56,6 @@
 
                                 </div>
                             </div>
-                            <div class="col-12" style="color:aqua">
-
-                                <dnt-captcha asp-captcha-generator-max="999999"
-                                         asp-captcha-generator-min="111111"
-                                         asp-captcha-generator-language="English"
-                                         asp-captcha-generator-display-mode="ShowDigits"
-                                         asp-use-relative-urls="true"
-                                         asp-placeholder="عبارت امنیتی بالا را وارد کنید"
-                                         asp-font-name="Tahoma"
-                                         asp-font-size="20"
-                                         asp-fore-color="#333333"
-                                         asp-back-color="#FCF6F5FF"
-                                         asp-text-box-class="form-control"
-                                         asp-text-box-template="<div class='input-group'>{0}</div>"
-                                         asp-validation-message-class="text-danger"
-                                         asp-refresh-button-class="bi-arrow-counterclockwise btn-lg"
-                                         asp-show-refresh-button="true"
-                                         asp-dir="rtl" />
-                            </div>
                             <div class="col-md-6">
                                 <div class="">
                                     @if (Model.AllowRememberLogin)
@@ -84,53 +63,25 @@
                                         <div class="form-group">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" asp-for="RememberLogin"
-                                               id="flexSwitchCheckChecked">
-                                                <label class="form-check-label" for="flexSwitchCheckChecked" asp-for="RememberLogin">
-                                                    مرا به
-                                                    خاطر بسپار
-                                                </label>
+                                                       id="flexSwitchCheckChecked">
+                                                @*   <label class="form-check-label" for="flexSwitchCheckChecked" asp-for="RememberLogin">
+                                        مرا به
+                                        خاطر بسپار
+                                        </label> *@
                                             </div>
                                         </div>
                                     }
                                 </div>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <a href="/Account/Forgotpassword">فراموشی رمز عبور؟</a>
                             </div>
                             <div class="col-12">
                                 <div class="d-grid">
                                     <button class="btn btn-primary" name="button" value="login">
                                         <i class="bx bxs-lock-open"></i>ورود
                                     </button>
-
-
                                 </div>
-                            </div>
-                            <div class="col-12 justify-content-center d-flex text-center">
-                                <a href="#" onclick="showPdf('login-14010920.pdf')">راهنمای متنی ورود به سامانه</a> <span style="margin:0 5px">|</span><a target="_blank" href="/Account/loginVideo">راهنمای ویدیویی ورود به سامانه</a>
                             </div>
                         </form>
-
-                        <hr />
-                        <div class="col-12  text-center">
-                            <span>شماره پشتیبانی: 91079127 - داخلی 180</span>
-                        </div>
-                        <hr />
-
-                    } *@
-                    <div class="quizRegister">
-                        ثبت نام نکرده‌اید؟ <a href="/Account/register">ثبت نام</a><div>
-                           @*  @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
-                            {
-                                <div class="alert alert-warning">
-                                    <strong>Invalid login request</strong>
-                                    There are no login schemes configured for this request.
-                                </div>
-                            } *@
-
-
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
