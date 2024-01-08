@@ -1,6 +1,7 @@
+using GreenHouse.DataAccess;
 using GreenHouse.DataAccess.Context;
+using GreenHouse.DataAccess.UnitOfWork;
 using GreenHouse.DomainEntitty.Identity;
-//using GreenHouse.Web.Context;
 using GreenHouse.Web.Library;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using MZBase.Infrastructure;
 using System.Globalization;
 using System.Security.Authentication;
 
@@ -277,6 +279,10 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add<ServiceExceptionHandlerFilter>();
 }
 ).AddNewtonsoftJson();
+
+builder.Services.AddScoped<IDateTimeProviderService, DateTimeProviderService>();
+builder.Services.AddScoped<ICoreUnitOfWork, CoreUnitOfWork>();
+
 builder.Services.AddDbContext<CoreDbContext>();
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
@@ -299,7 +305,7 @@ try
     {
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
-        //app.UseSwaggerUI();
+        app.UseSwaggerUI();
     }
     else
     {
@@ -314,7 +320,7 @@ try
     app.UseCors();
     //app.UseEndpoints(endpoints =>
     //        {
-    //            //endpoints.MapFallbackToPage("/_Host");
+    //            endpoints.MapFallbackToPage("/_Host");
     //            endpoints.MapRazorPages();
     //        });
     app.UseAuthentication();
@@ -366,9 +372,9 @@ try
            );
     app.UseAuthorization();
 
-    app.MapControllerRoute(name: "workflow",
-                pattern: "workflow/{*workflow-definitions}",
-                defaults: new { controller = "workflow", action = "index" });
+    //app.MapControllerRoute(name: "workflow",
+    //            pattern: "workflow/{*workflow-definitions}",
+    //            defaults: new { controller = "workflow", action = "index" });
     app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
