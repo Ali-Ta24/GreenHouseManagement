@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace GreenHouse.Web.Migrations
+namespace GreenHouse.DataAccess.Migrations.ApplicationDb
 {
     /// <inheritdoc />
-    public partial class intial : Migration
+    public partial class CreateIdentityTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GreenHouse.DataAccess\GreenHouse.DataAccess.csproj" />
-    <ProjectReference Include="..\GreenHouse.Model\GreenHouse.Model.csproj" />
   </ItemGroup>
 
 </Project>

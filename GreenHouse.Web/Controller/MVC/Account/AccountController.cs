@@ -20,9 +20,6 @@ namespace GreenHouse.Web.Controller.MVC.Account
     [AllowAnonymous]
     public class AccountController : Microsoft.AspNetCore.Mvc.Controller
     {
-        [Route("")]
-        [Route("Login")]
-        [Route("Account/Login/{returnUrl?}")]
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         private readonly IIdentityServerInteractionService _interaction;
@@ -34,33 +31,36 @@ namespace GreenHouse.Web.Controller.MVC.Account
 
         private readonly ApplicationDbContext _dbContext;
 
-        public AccountController(IIdentityServerInteractionService interaction,
-            IClientStore clientStore,
-            IAuthenticationSchemeProvider schemeProvider,
-            IIdentityProviderStore identityProviderStore,
-            IEventService events,
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            RoleManager<ApplicationRole> roleManager,
-            IDNTCaptchaValidatorService validatorService,
-            ApplicationDbContext dbContext,
-            IHttpContextAccessor httpContextAccessor,
-            IConfiguration configuration)
-        {
-            //_userManager = userManager;
-            //_roleManager = roleManager;
-            _signInManager = signInManager;
-            _interaction = interaction;
-            _clientStore = clientStore;
-            _schemeProvider = schemeProvider;
-            _identityProviderStore = identityProviderStore;
-            _events = events;
-            //_validatorService = validatorService;
-            _dbContext = dbContext;
-            //_httpContextAccessor = httpContextAccessor;
-            _configuration = configuration;
-        }
+        //public AccountController(IIdentityServerInteractionService interaction,
+        //    IClientStore clientStore,
+        //    IAuthenticationSchemeProvider schemeProvider,
+        //    IIdentityProviderStore identityProviderStore,
+        //    IEventService events,
+        //    UserManager<ApplicationUser> userManager,
+        //    SignInManager<ApplicationUser> signInManager,
+        //    RoleManager<ApplicationRole> roleManager,
+        //    IDNTCaptchaValidatorService validatorService,
+        //    ApplicationDbContext dbContext,
+        //    IHttpContextAccessor httpContextAccessor,
+        //    IConfiguration configuration)
+        //{
+        //    ////_userManager = userManager;
+        //    ////_roleManager = roleManager;
+        //    //_signInManager = signInManager;
+        //    //_interaction = interaction;
+        //    //_clientStore = clientStore;
+        //    //_schemeProvider = schemeProvider;
+        //    //_identityProviderStore = identityProviderStore;
+        //    //_events = events;
+        //    ////_validatorService = validatorService;
+        //    //_dbContext = dbContext;
+        //    ////_httpContextAccessor = httpContextAccessor;
+        //    //_configuration = configuration;
+        //}
 
+        [Route("")]
+        [Route("Login")]
+        [Route("Account/Login/{returnUrl?}")]
         [HttpGet]
         public async Task<IActionResult> Login(string? returnUrl)
         {
@@ -288,8 +288,8 @@ namespace GreenHouse.Web.Controller.MVC.Account
 
             return new LoginViewModel
             {
-                AllowRememberLogin = AccountOptions.AllowRememberLogin,
-                EnableLocalLogin = allowLocal && AccountOptions.AllowLocalLogin,
+                //AllowRememberLogin = AccountOptions.AllowRememberLogin,
+                //EnableLocalLogin = allowLocal && AccountOptions.AllowLocalLogin,
                 ReturnUrl = returnUrl,
                 Username = context?.LoginHint,
                 ExternalProviders = providers.ToArray()

@@ -280,7 +280,7 @@ builder.Services.AddControllersWithViews(options =>
 }
 ).AddNewtonsoftJson();
 
-builder.Services.AddScoped<IDateTimeProviderService, DateTimeProviderService>();
+//builder.Services.AddScoped<IDateTimeProviderService, DateTimeProviderService>();
 builder.Services.AddScoped<ICoreUnitOfWork, CoreUnitOfWork>();
 
 builder.Services.AddDbContext<CoreDbContext>();
@@ -305,7 +305,7 @@ try
     {
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
-        app.UseSwaggerUI();
+        //app.UseSwaggerUI();
     }
     else
     {
