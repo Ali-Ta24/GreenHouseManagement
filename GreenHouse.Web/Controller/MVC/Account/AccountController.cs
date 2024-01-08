@@ -1,13 +1,17 @@
-﻿using GreenHouse.DataAccess.Context;
+﻿using Duende.IdentityServer.Events;
+using GreenHouse.DataAccess.Context;
 using GreenHouse.DomainEntitty.Identity;
 using GreenHouse.Services;
 using GreenHouse.Web.Controller.Model;
 using GreenHouse.Web.IdentityServerHost;
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 namespace GreenHouse.Web.Controller.MVC.Account
@@ -45,7 +49,7 @@ namespace GreenHouse.Web.Controller.MVC.Account
             _roleManager = roleManager;
             _signInManager = signInManager;
             //_interaction = interaction;
-                //_clientStore = clientStore;
+            //_clientStore = clientStore;
             _schemeProvider = schemeProvider;
             //    _identityProviderStore = identityProviderStore;
             //_events = events;
@@ -116,7 +120,7 @@ namespace GreenHouse.Web.Controller.MVC.Account
                 //else
                 //{
                 //    // since we don't have a valid context, then we just go back to the home page
-                    return Redirect("~/");
+                return Redirect("~/");
                 //}
             }
 
@@ -218,6 +222,289 @@ namespace GreenHouse.Web.Controller.MVC.Account
 
             var vm = await BuildLoginViewModelAsync(model);
             return View(vm);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model, string? returnUrl = null)
+        {
+            model.RoleName = "Customer";
+            List<string> errors = new List<string>();
+            if (model.CompanyuniqueId != null)
+            {
+                Regex c = new Regex("^[0-9]+$");
+                if (!c.IsMatch(model.CompanyuniqueId))
+                {
+                    ModelState.AddModelError("CompanyuniqueId", "فقط استفاده از ارقام 0 - 9 برای شماره ثبتی شرکت مجاز است");
+                    errors.Add("فقط استفاده از ارقام 0 - 9 برای شماره ثبتی شرکت مجاز است");
+                }
+            }
+
+            if (model.NationalCodeId != null)
+            {
+                Regex n = new Regex("^[0-9]+$");
+                if (!n.IsMatch(model.NationalCodeId))
+                {
+                    ModelState.AddModelError("NationalcodeId", "فقط استفاده از ارقام 0 - 9 برای کد ملی مجاز است");
+                    errors.Add("فقط استفاده از ارقام 0 - 9 برای کد ملی مجاز است");
+                }
+            }
+
+            if (model.Email != null)
+            {
+                var checkEmail = await _userManager.FindByEmailAsync(model.Email);
+
+                if (checkEmail != null)
+                {
+                    ModelState.AddModelError("Email", "ایمیل وارد شده قبلا در سیستم ثبت نام کرده است");
+                    errors.Add("ایمیل وارد شده قبلا در سیستم ثبت نام کرده است");
+                    //return View(nameof(Register), new RegisterViewModel());
+                }
+            }
+
+            if (model.PhoneNumber != null)
+            {
+                var checkPhone = await _dbContext.Users.Where(s => s.PhoneNumber == model.PhoneNumber).FirstOrDefaultAsync();
+
+                if (checkPhone != null)
+                {
+                    ModelState.AddModelError("PhoneNumber", "شماره موبایل وارد شده قبلا در سیستم ثبت نام کرده است");
+                    errors.Add("شماره موبایل وارد شده قبلا در سیستم ثبت نام کرده است");
+                    //return View(nameof(Register), new RegisterViewModel());
+                }
+            }
+
+            if (model.NationalCodeId != null)
+            {
+                var checkNationalCodeId = await _dbContext.Users.Where(s => s.NationalCodeId == model.NationalCodeId).FirstOrDefaultAsync();
+
+                if (checkNationalCodeId != null)
+                {
+                    ModelState.AddModelError("NationalCodeId", "کد ملی وارد شده قبلا در سیستم ثبت نام کرده است ");
+                    errors.Add("کد ملی وارد شده قبلا در سیستم ثبت نام کرده است ");
+                    //return View(nameof(Register), new RegisterViewModel());
+                }
+            }
+
+
+            if (errors.Any())
+            {
+                return View(nameof(Register), new RegisterViewModel());
+            }
+
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+
+                var user = new ApplicationUser
+                {
+                    UserName = model.NationalCodeId,
+                    Email = model.Email,
+                    EmailConfirmed = true,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    PhoneNumber = model.PhoneNumber,
+                    PhoneNumberConfirmed = false,
+                    NationalCodeId = model.NationalCodeId,
+                    IsActive = true,
+                    IsDeleted = false
+                };
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    if (!_roleManager.RoleExistsAsync(model.RoleName).GetAwaiter().GetResult())
+                    {
+                        var userRole = new ApplicationRole
+                        {
+                            Name = model.RoleName,
+                            NormalizedName = model.RoleName,
+
+                        };
+                        await _roleManager.CreateAsync(userRole);
+                    }
+
+                    await _userManager.AddToRoleAsync(user, model.RoleName);
+
+                    await _userManager.AddClaimsAsync(user, new Claim[]
+                    {
+                            new Claim(JwtClaimTypes.Name, model.FirstName+" "+model.LastName),
+                            new Claim(JwtClaimTypes.Email, model.Email),
+                            new Claim(JwtClaimTypes.FamilyName, model.LastName),
+                            new Claim(JwtClaimTypes.GivenName, model.FirstName),
+                            new Claim(JwtClaimTypes.WebSite, "http://"+user.UserName+".com"),
+                            new Claim(JwtClaimTypes.Role,"Customer"),
+                            new Claim("CompanyNationalID", model.CompanyuniqueId),
+                            new Claim("DepartmentID", ""),
+                            new Claim("FarzinUserName", ""),
+                            new Claim("FarzinCreatorID", ""),
+                            new Claim("FarzinCreatorRoleID", "")
+                    });
+
+
+                    string randomNumber = "";
+                    var addedUser = _userManager.Users.FirstOrDefault(ss => ss.Email == model.Email);
+                    var idOfAddedUser = addedUser.Id;
+                    if (idOfAddedUser != null)
+                    {
+                        await _dbContext.Database.CreateExecutionStrategy().Execute(async () =>
+                        {
+                            using (var transaction = this._dbContext.Database.BeginTransaction())
+                            {
+                                try
+                                {
+                                    //randomNumber = RandomFunc();
+
+                                    //_dbContext.Add(new OneTimePassword
+                                    //{
+                                    //    UserId = idOfAddedUser,
+                                    //    Password = randomNumber,
+                                    //    Action = nameof(Register),
+                                    //    ExpireDate = DateTime.Now.AddMinutes(2).AddSeconds(10)
+                                    //});
+                                    await this._dbContext.SaveChangesAsync();
+
+                                    //await SendEmail(new TUser { Email = model.Email }, randomNumber);
+
+                                    if (randomNumber != null)
+                                    {
+                                        transaction.Commit();
+
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    transaction.Rollback();
+                                }
+                            }
+                        });
+                    }
+
+                    //var resultsentSms = await _smtpService.SendSmsAsync($"رمز یک بار مصرف شما برای ثبت نام در سیستم {randomNumber} میباشد", model.PhoneNumber);
+
+                    //if (!resultsentSms)
+                    //{
+                    //    _dbContext.Users.Remove(addedUser);
+                    //    await _dbContext.SaveChangesAsync();
+                    //    ModelState.AddModelError("", "ارسال رمز یک بار مصرف به موبایل شما با موفقیت انجام نشد , لطفا لحظاتی دیگر مجددا تلاش کنید");
+                    //    return View(nameof(Register), new RegisterViewModel());
+                    //}
+
+                    var x = new RegisterOtpViewModel()
+                    {
+                        //OneTimePassword = randomNumber,
+                        UserId = idOfAddedUser,
+                        //Password = model.Password,
+                        ReturnUrl = returnUrl
+                    };
+
+                    return RedirectToAction("ConfirmRegister", x);
+                }
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError("Password", item.Description);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmRegister(RegisterOtpViewModel model)
+        {
+
+            if (TempData.ContainsKey("ConfirmYourPhoneNumber"))
+            {
+                string? x = TempData["ConfirmYourPhoneNumber"].ToString();
+                ViewBag.ConfirmYourPhoneNumber = x;
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmRegister(RegisterOtpViewModel model, string? returnUrl = null)
+        {
+
+            var addedUser = _dbContext.Users.Where(ss => ss.Id == model.UserId).FirstOrDefault();
+            //var addedClaimUser = _dbContext.UserClaims.Where(ss => ss.UserId == model.UserId).FirstOrDefault();
+            try
+            {
+                ViewData["ReturnUrl"] = returnUrl;
+
+                //var password = new OneTimePassword();
+
+                //Check onetime password for {ConfirmPhonenUmber and Register}
+                //password = await _dbContext.oneTimePasswords.AsNoTracking()
+                //                   .Where(w => w.Password == model.OneTimePassword
+                //                   && w.ExpireDate > DateTime.Now && w.UserId == model.UserId && w.Action == "Register")
+                //                   .FirstOrDefaultAsync();
+
+                //if (password != null)
+                //{
+                    //وقتی که رمز درست بود ان را از جدول حذف میکنیم
+                    //_dbContext.Remove(password);
+                    await _dbContext.SaveChangesAsync();
+
+
+                    //سپس ادامه فرایند لاگین
+                    //var context = await _interaction.GetAuthorizationContextAsync(model?.ReturnUrl);
+                    var user = new ApplicationUser { UserName = addedUser.Email, Email = addedUser.Email };
+                    await _signInManager.SignInAsync(addedUser, false);
+
+
+                    var checkuser = await _userManager.FindByEmailAsync(addedUser.Email);
+                    //await _events.RaiseAsync(new UserLoginSuccessEvent(checkuser.UserName, checkuser.Id, checkuser.FirstName, clientId: context?.Client.ClientId));
+
+                    //تایید شماره همراه کاربر برای ورود به سیستم
+                    addedUser.PhoneNumberConfirmed = true;
+                    await _dbContext.SaveChangesAsync();
+
+                    //if (context != null)
+                    //{
+                    //    if (context.IsNativeClient())
+                    //    {
+                    //        // The client is native, so this change in how to
+                    //        // return the response is for better UX for the end user.
+                    //        return this.LoadingPage("Redirect", model.ReturnUrl);
+                    //    }
+
+                    //    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+                    //    return Redirect(model.ReturnUrl);
+                    //}
+
+                    // request for a local page
+                    if (Url.IsLocalUrl(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
+                    else if (string.IsNullOrEmpty(model.ReturnUrl))
+                    {
+                        var redirectUrl = _configuration.GetSection("UrlOtherApplication").GetSection("FacilityManWeb").Value;
+                        return Redirect(redirectUrl);
+                    }
+                    else
+                    {
+                        // user might have clicked on a malicious link - should be logged
+                        throw new Exception("invalid return URL");
+                    }
+                    //}
+                    ModelState.AddModelError("", "خطایی در درخواست شما رخ داده است");
+                    return View(model);
+                //}
+
+                ModelState.AddModelError("", "رمز عبور وارد شده یا اشتباه است یا زمان آن منقضی شده است");
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("OnetimePassword", "خطایی در درخواست شما رخ داده است");
+                return View(model);
+
+            }
+
         }
         private async Task<LoginViewModel> BuildLoginViewModelAsync(LoginInputModel model)
         {
