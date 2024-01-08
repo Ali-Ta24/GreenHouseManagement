@@ -1,0 +1,397 @@
+﻿
+@using GreenHouse.Web.Controller.Model
+@using Microsoft.Extensions.Options
+
+
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "ثبت نام";
+}
+<div class="col mx-auto context-Register" style="z-index:1; ">
+    <div class="card">
+        <div class="card-body">
+            <div class="p-4 rounded">
+                <div class="text-center">
+                    <h3 class="">ثبت نام</h3>
+                    <img class="logo_banader" src="~/panel/imgs/logo/newLogoBanaderWithBottomTitle.png" alt="logo_banader" />
+                    <br />
+                    <p>سامانه مدیریت و رصد گلخانه</p>
+                </div>
+                <br />
+                <partial name="_ValidationSummary" />
+                <div class="form-body">
+
+                    <form class="row g-3 needs-validation" asp-route="register">
+                        @*      <div id="FirstRegister">*@
+
+                        <div class="col-md-6 col-sm-12">
+                            <label class="form-label">نام کاربری</label>
+                            <div class="input-group">
+                                <i class='bi bi-building input-group-text bg-transparent'></i>
+                                <input data-val-required="لطفا نام کاربری را وارد کنید" asp-for="CompanyName" class="form-control" id="CompanyName" placeholder="نام کاربری" autofocus required autocomplete="on">
+                                <div class="invalid-feedback" data-valmsg-for="CompanyName" data-valmsg-replace="true" for="CompanyName"></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 col-sm-12">
+                            <label class="form-label">شماره موبایل</label>
+                            <div class="input-group">
+                                <i class='bi bi-phone input-group-text bg-transparent'></i>
+                                <input pattern="^\d{11}$"
+                                       data-val-required="لطفا شماره تماس شرکت را وارد کنید"
+                                       maxlength="11"
+                                       minlength="11"
+                                       data-msg-minlength="شماره تماس حداقل 11 رقم است"
+                                       data-msg-maxlength=" شماره تماس حداکثر 11 رقم است"
+                                       data-msg-pattern="شماره تماس وارد شده معتبر نیست" asp-for="PhoneNumber" id="PhoneNumber" class="form-control" placeholder="مثال 09123456789" autofocus required autocomplete="on">
+                                <div class="invalid-feedback" data-valmsg-for="PhoneNumber" data-valmsg-replace="true" for="PhoneNumber"></div>
+
+                            </div>
+
+                        </div>
+
+
+                       
+                        <div class="col-md-6 col-sm-12">
+                            <label for="Password" class="form-label">رمز عبور</label>
+                            <div class="input-group">
+                                <i class='bi-lock input-group-text bg-transparent'></i>
+                                <input data-val="true"
+                                       data-val-required="لطفا رمز عبور را وارد کنید"
+                                       minlength="8"
+                                       data-msg-minlength="رمز عبور میبایست حداقل 8 رقمی باشد"
+                                       asp-for="Password" id="Password" type="password" data-val="true" class="form-control " placeholder="رمز عبور" required>
+                                <div class="invalid-feedback" data-valmsg-for="Password" data-valmsg-replace="true" for="Password"></div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12">
+                            <label for="ConfirmPassword" class="form-label">تکرار رمز عبور</label>
+                            <div class="input-group">
+                                <i class='bi-lock input-group-text bg-transparent'></i>
+                                <input data-val-required="لطفا تکرار رمز عبور را وارد کنید"
+                                       asp-for="ConfirmPassword" type="password"
+                                       class="form-control" placeholder="تکرار رمز عبور"
+                                       id="ConfirmPassword" required>
+                                <div class="invalid-feedback" data-valmsg-for="ConfirmPassword" data-valmsg-replace="true" for="ConfirmPassword"></div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12">
+                            <label class="form-label">نام گلخانه دار</label>
+                            <div class="input-group">
+                                <i class='bi bi-person input-group-text bg-transparent input-group-text bg-transparent'></i>
+                                <input data-val-required=" لطفا نام گلخانه دار را وارد کنید" asp-for="FirstName" id="FirstName" class="form-control" placeholder="نام گلخانه دار" autofocus required autocomplete="on">
+                                <div class="invalid-feedback" data-valmsg-for="FirstName" data-valmsg-replace="true" for="FirstName"></div>
+
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label class="form-label">نام خانوادگی گلخانه دار</label>
+                            <div class="input-group">
+                                <i class='bi bi-person input-group-text bg-transparent input-group-text bg-transparent'></i>
+                                <input data-val-required=" لطفا نام خانوادگی گلخانه دار را وارد کنید" asp-for="LastName" id="lastName" class="form-control" placeholder="نام خانوادگی گلخانه دار" autofocus required autocomplete="on">
+                                <div class="invalid-feedback" data-valmsg-for="LastName" data-valmsg-replace="true" for="LastName"></div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-12">
+                            <div class="d-grid">
+                                <button id="SendCode" type="submit" class="btn btn-primary" name="button" value="login">
+                                    <i class="bi bi-cloud-plus"></i>ثبت نام
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </form>
+
+                    <div class="quizRegister">
+                        ثبت نام کرده‌اید؟ <a href="/Account/login"> ورود</a><div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+    <script src="~/js/otp.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <style>
+        tr th, tr td {
+            text-align: center !important
+        }
+
+    </style>
+    <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="rolesModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary">شرایط و ضوابط استفاده از تسهیلات وجوه اداره شده</h5>
+                </div>
+                <div class="modal-body" style="text-align:justify">
+
+                    <ul class="nav nav-tabs nav-primary" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#role1" role="tab"
+                               aria-selected="true">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-title">شرایط و ضوابط استفاده از تسهیلات </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" data-bs-toggle="tab" href="#role2" role="tab"
+                               aria-selected="false">
+                                <div class="d-flex align-items-center">
+
+                                    <div class="tab-title">فرایند استفاده از تسهیلات</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" data-bs-toggle="tab" href="#role3" role="tab"
+                               aria-selected="false">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-title">سیاست ها و اولويت های اعطای تسهيلات </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" data-bs-toggle="tab" href="#role4" role="tab"
+                               aria-selected="false">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-title">پرسش های متداول </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content py-3">
+                        <div class="tab-pane fade show active" id="role1" role="tabpanel">
+                            <p>
+                                سامانه مدیریت و رصد گلخانه بمنظور تقویت زيرساخت ها، روساخت ها، تجهيزات  آموزشي بندري و دریایی، بهره برداری از موقعیت های مناسب آب های سرزمیني کشور، افزایش ایمنی حمل و نقل دریایی بار و مسافر و توسعه گردشگري دريايي و در راستای تحقق اهداف اسناد بالا دستي و برنامه های توسعه اقتصادی و اجتماعی کشور، از سال ۱۳۸۲ تاکنون از محل منابع داخلی خود در قالب وجوه اداره شده، با همکاری سیستم بانکی کشور گامهای موثری در ایجاد اشتغال مولد در فعالیت های حمل و نقل دریایی و بندری برداشته است.
+                                در این راستا سامانه مدیریت و رصد گلخانه با توجه به محدودیت منابع مالی با همکاری و توافق با سیستم بانکی کشور مقرر نمود منابع مالی داخلی خود تحت عنوان وجوه اداره شده را نزد بانکها تودیع و سپرده گذاری نماید و بانکهای عامل در قبال سپرده گذاری سازمان ، تسهیلات بانکی به متقاضیان صاحب صلاحیت و مورد تایید سازمان پرداخت نمایند.
+                                سامانه مدیریت و رصد گلخانه نیز بمنظور تشویق و ترغیب بخش خصوصی به سرمایه گذاری در حوزه اقتصاد حمل و نقل دریایی و همچنین افزایش توجیه اقتصادی طرحهای مذکور متعهد گردید که از محل منابع تودیعی، بخشی یا همه سود بانکی تسهیلات اعطایی بانک ها را براساس اولویت و سیاستهای مصوب بعنوان یارانه سود بانکی از محل اصل و فرع منابع تودیعی پرداخت نماید.
+                            </p>
+                            <h4>
+                                شرایط عمومی دریافت تسهیلات
+                            </h4>
+                            <p>متقاضی می بایست دارای شخصیت حقوقی باشد و از تجربه و سابقه کافی در زمینه طرح مورد تقاضا برخوردار باشد.</p>
+                            <h4>شرایط اختصاصی دریافت تسهیلات </h4>
+                            <p>متقاضی می بایست گزارش کامل مطالعات توجیه اقتصادی طرح مورد تقاضا را به همراه گزارش کامل مشحصات فنی، فاکتور قیمت و قراردادهای ذیربط طرح ارائه نماید.لازم به توضیح است که صلاحیت صلاحیت فنی، اجرایی و مالی  متقاضی باید به وسیله واحدهای مرتبط در سازمان و بانک عامل بررسی و تایید شود.</p>
+
+                        </div>
+                        <div class="tab-pane fade" id="role2" role="tabpanel">
+                            <div>
+                                <p>متقاضی می بایست نسبت به ثیت تقاضا در سامانه وجوه اداره شده سازمان اقدام نماید.</p>
+                                <p>
+                                    در صورت انطباق درخواست متقاضی با سیاست های جاری وجوه اداره شده سازمان،از طریق سامانه وجوه اداره شده  امکان  ارسال مدارک هویتی شرکت و مستندات فنی و طرح توجیهی اقتصادی فراهم  می گردد.
+                                </p>
+                                <p>
+                                    مدارک و مستندات فنی و طرح توجیهی اقتصادی ارسال شده توسط متقاضی ، از طرف دبیرخانه وجوه اداره شده و از طریق سامانه  مذکور به واحدهای ذیربط سازمانی جهت بررسی ارسال می گردد.
+                                </p>
+                                <p>
+                                    در صورت تایید طرح در کمیته فرعی وجوه اداره شده، موضوع در دستور کار کمیته اصلی وجوه اداره شده قرار می گیرد.
+                                </p>
+                                <p>
+                                    در صورت تصویب طرح متقاضی در کمیته وجوه اداره شده، طرح مصوب به انضمام مدارک و مستندات فنی و طرح توجیهی اقتصادی تایید شده به بانک عامل معرفی می گردد.
+                                </p>
+
+                                <p>
+                                    در صورت تشکیل پرونده توسط متقاضی در بانک عامل و حصول اطمینان بانک عامل از امکان تامین وثایق و سهم آورده توسط متقاضی، موضوع جهت تصویب در دستور کار ارکان اعتباری بانک قرار می گیرد. طرح هایی که به بانک عامل معرفی می گردند، از تاریخ معرفی تا تصویب در بانک عامل، حداکثر 75 روز کاری دارای اعتبار می باشند. متقاضی از تاریخ معرفی، 30 روز کاری زمان دارد تا مدارک مورد نظر بانک عامل را تهیه و تحویل نماید و بانک عامل از زمان تکمیل مدارک توسط متقاضی حداکثر طی 45 روزکاری نسبت به اخذ مصوبه اعتباري اقدام  نماید.
+                                </p>
+                                <p>
+                                    در صورت تصویب طرح در ارکان اعتباری بانک عامل، قرارداد مشارکت فی مابین بانک عامل و متقاضی و سازند (فروشنده) منعقد می گردد.
+                                </p>
+                                <p>
+                                    پس از عقد قرارداد مشارکت، فرآیند اجرایی طرح آغاز می گردد و به تناسب پیشرفت طرح، تسهیلات بانکی در قالب اقساط متوالی پرداخت می گردد.
+                                </p>
+
+                                <p>
+                                    پس از خاتمه طرح، بخشی یا تمام سود بانکی تسهیلات بعنوان یارانه دوره مشارکت و فروش اقساطی، محاسبه و به بانک عامل جهت برداشت از حساب وجوه اداره شده سازمان اعلام می گردد.
+                                </p>
+                                <p>
+                                    دبيرخانه کمیته وجوه اداره شده از زمان معرفی طرح ها به بانک عامل ،پيگيري لازم را جهت حصول اطمينان از اقدام بموقع متقاضی، بانک و سازنده مطابق شرایط و ضوابط دستورالعمل وجوه اداره شده و قرارداد های عاملیت بانکی به عمل می آورد ونتایج را به صورت مستمر گزارش می نمايد. هرگونه تغییری از طرف متقاضی در موضوعات فنی و قراردادی طرح در طول دوره ساخت ، فقط با نظر موافق کمیته وجوه اداره شده امکان پذیر می گردد.
+                                </p>
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="role3" role="tabpanel">
+                            <p>
+                                <table class="table table-striped table-bordered">
+                                    <tr>
+                                        <th>زمينه فعاليت</th>
+                                        <th>اولويت ها</th>
+                                        <th>حداقل سهم آورده متقاضي (درصد)</th>
+                                        <th>حداكثر تسهيلات نسبت به ارزش تاييد شده طرح (درصد)</th>
+                                        <th>حداكثر يارانه سود تسهيلات (درصد)</th>
+                                    </tr>
+                                    <tr>
+                                        <td>طرح های تامین تجهیزات  بندری</td>
+                                        <td>تامين تجهیزات  بندری </td>
+                                        <td>20</td>
+                                        <td>80</td>
+                                        <td>60</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3">طرح های دريايی،مسافری ‌و گردشگری</td>
+
+                                        <td>تامین شناورهای رو–رو برای بهره برداری در دریای خزر و شناور های رو–رو پسنجر برای بهره برداری در خلیج فارس </td>
+                                        <td>20</td>
+                                        <td>80</td>
+                                        <td>80</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ساخت شناورهای مسافري و گردشگری </td>
+                                        <td>20</td>
+                                        <td>80</td>
+                                        <td>100</td>
+                                    </tr>
+                                    <tr>
+                                        <td>جایگزینی شناورهای سنتی وفق آئین نامه  های مرتبط  </td>
+                                        <td>20</td>
+                                        <td>80</td>
+                                        <td>100</td>
+                                    </tr>
+                                </table>
+                            </p>
+                        </div>
+                        <div class="tab-pane fade" id="role4" role="tabpanel">
+                            <h4 style="text-align:center">سوالات پرتکرار در مورد خدمت " ارائه تسهیلات  حمایتی از محل وجوه اداره شده "</h4>
+                            <br />
+                            <div>
+                                <h5>
+                                    پرسش 1: حداکثر سقف تسهیلات اعطایی از محل وجوه اداره شده سازمان چقدر می باشد؟
+                                </h5>
+                                <p>
+                                    پاسخ پرسش 1: حداکثر سقف تسهیلات اعطایی ، 80 درصد قیمت تمام شده طرح که توسط مراجع ذیربط سازمان مورد تایید قرار گرفته شده ، می باشد.
+                                </p>
+                                <br />
+                                <h5>
+                                    پرسش 2: سود تسهیلات دریافتی چقدر می باشد؟
+                                </h5>
+                                <p>
+                                    پاسخ پرسش 2 : سود تسهیلات بانکی بر اساس ضوابط و شرایط بانک مرکزی جمهوری اسلامی ایران می باشد.
+                                </p>
+                                <br />
+                                <h5>
+                                    پرسش 3 : وثایق مورد نیاز برای دریافت تسهیلات چقدر می باشد؟
+                                </h5>
+                                <p>
+                                    پاسخ پرسش 3: وثایق مورد نیاز براساس ضوابط و شرایط بانک مرکزی جمهوری اسلامی ایران می باشد. لازم به توضیح است خود طرح بعنوان بخشی از وثایق مورد نظر بانک عامل پذیرفته می گردد.
+                                </p>
+                                <br />
+                                <h5>
+                                    پرسش 4: مدت زمان باز پرداخت تسهیلات بانکی چند سال می باشد؟
+                                </h5>
+                                <p>
+                                    پاسخ پرسش 4 : مدت زمان بازپرداخت تسهیلات پنج سال می باشد که بلافاصله پس از اتمام طرح مورد محاسبه قرار می گیرد و در فواصل زمانی مشخص بصورت اقساط مساوی دریافت می گردد.
+                                </p>
+                                <br />
+                                <h5>
+                                    پرسش 5: یارانه دریافتی از سازمان چه میزانی است؟
+                                </h5>
+                                <p>
+                                    پاسخ پرسش 5: میزان یارانه تخصیصی طرحها در حال حاضر بین صفر تا  100 درصد می باشد.لازم به توضیح است میزان یارانه طرحها ، در قالب سیاست های سالیانه  مورد بررسی و تصویب کمیته وجوه اداره شده قرار می گیرد.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success"
+                    @*data-bs-dismiss="modal"*@ onclick="AcceptRoles()">
+                        قوانین را قبول دارم
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script>
+        $('.single-select').select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
+        });
+        $('.multiple-select').select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
+        });
+
+        $('.datepicker2').persianDatepicker({
+            'format': 'YYYY/MM/DD',
+            'autoclose': true,
+            showOtherMonths: true,
+            selectOtherMonths: true
+        });
+
+        function AcceptRoles() {
+            setCookie('AcceptRoles', 'use Accept Roles', 2);
+            $('#rolesModal').modal('toggle');
+        }
+
+        checkAcceptRoleWithUser();
+        function checkAcceptRoleWithUser() {
+
+            let getMyCookie = getCookie("AcceptRoles");
+            if (getMyCookie == "") {
+                $("#rolesModalBtn").click();
+            }
+            else {
+
+            }
+        }
+
+
+    </script>
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+
+}
+
+
+
