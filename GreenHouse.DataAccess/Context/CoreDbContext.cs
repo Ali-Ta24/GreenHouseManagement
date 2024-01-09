@@ -25,6 +25,7 @@ namespace GreenHouse.DataAccess.Context
         public DbSet<HumiditySensorEntity> HumiditySensor { get; set; }
         public DbSet<HumiditySensorDetailEntity> HumiditySensorDetail { get; set; }
         public DbSet<LightIntensitySensorEntity> LightIntensitySensor { get; set; }
+        public DbSet<LightIntensitySensorDetailEntity> LightIntensitySensorDetail { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
