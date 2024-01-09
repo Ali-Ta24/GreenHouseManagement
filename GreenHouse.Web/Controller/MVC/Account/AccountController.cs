@@ -57,9 +57,9 @@ namespace GreenHouse.Web.Controller.MVC.Account
             _configuration = configuration;
         }
 
-        [Route("")]
+        //[Route("")]
         [Route("Login")]
-        [Route("Account/Login/{returnUrl?}")]
+        //[Route("Account/Login/{returnUrl?}")]
         [HttpGet]
         public async Task<IActionResult> Login(string? returnUrl)
         {
@@ -230,6 +230,7 @@ namespace GreenHouse.Web.Controller.MVC.Account
 
             return View(vm);
         }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -250,6 +251,18 @@ namespace GreenHouse.Web.Controller.MVC.Account
                 }
             }
 
+            if (model.UserName != null)
+            {
+                var checkPhone = await _dbContext.Users.Where(s => s.UserName == model.UserName).FirstOrDefaultAsync();
+
+                if (checkPhone != null)
+                {
+                    ModelState.AddModelError("UserName", "این نام کاربری در سیستم موجود است");
+                    errors.Add("نام کاربری تکراری میباشد");
+                    //return View(nameof(Register), new RegisterViewModel());
+                }
+            }
+
             if (errors.Any())
             {
                 return View(nameof(Register), new RegisterViewModel());
@@ -258,15 +271,14 @@ namespace GreenHouse.Web.Controller.MVC.Account
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-
                 var user = new ApplicationUser
                 {
-                    UserName = model.Username,
+                    UserName = model.UserName,
                     EmailConfirmed = true,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
-                    PhoneNumberConfirmed = false,
+                    PhoneNumberConfirmed = true,
                     IsActive = true,
                     IsDeleted = false
                 };
@@ -299,51 +311,10 @@ namespace GreenHouse.Web.Controller.MVC.Account
 
                     string randomNumber = "";
 
-                    await _dbContext.Database.CreateExecutionStrategy().Execute(async () =>
-                    {
-                        using (var transaction = this._dbContext.Database.BeginTransaction())
-                        {
-                            try
-                            {
-                                //randomNumber = RandomFunc();
-
-                                //_dbContext.Add(new OneTimePassword
-                                //{
-                                //    UserId = idOfAddedUser,
-                                //    Password = randomNumber,
-                                //    Action = nameof(Register),
-                                //    ExpireDate = DateTime.Now.AddMinutes(2).AddSeconds(10)
-                                //});
-                                await this._dbContext.SaveChangesAsync();
-
-                                //await SendEmail(new TUser { Email = model.Email }, randomNumber);
-
-                                if (randomNumber != null)
-                                {
-                                    transaction.Commit();
-
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                transaction.Rollback();
-                            }
-                        }
-                    });
-                    //var resultsentSms = await _smtpService.SendSmsAsync($"رمز یک بار مصرف شما برای ثبت نام در سیستم {randomNumber} میباشد", model.PhoneNumber);
-
-                    //if (!resultsentSms)
-                    //{
-                    //    _dbContext.Users.Remove(addedUser);
-                    //    await _dbContext.SaveChangesAsync();
-                    //    ModelState.AddModelError("", "ارسال رمز یک بار مصرف به موبایل شما با موفقیت انجام نشد , لطفا لحظاتی دیگر مجددا تلاش کنید");
-                    //    return View(nameof(Register), new RegisterViewModel());
-                    //}
-
                     var x = new RegisterOtpViewModel()
                     {
                         //OneTimePassword = randomNumber,
-                        //UserId = idOfAddedUser,
+                        UserId = model.UserName,
                         //Password = model.Password,
                         ReturnUrl = returnUrl
                     };
@@ -364,6 +335,82 @@ namespace GreenHouse.Web.Controller.MVC.Account
         public async Task<IActionResult> ConfirmRegister(RegisterOtpViewModel model)
         {
 
+            var addedUser = _dbContext.Users.Where(ss => ss.UserName == model.UserId).FirstOrDefault();
+            //var addedClaimUser = _dbContext.UserClaims.Where(ss => ss.UserId == model.UserId).FirstOrDefault();
+            try
+            {
+                //ViewData["ReturnUrl"] = returnUrl;
+
+                //var password = new OneTimePassword();
+
+                //Check onetime password for {ConfirmPhonenUmber and Register}
+                //password = await _dbContext.oneTimePasswords.AsNoTracking()
+                //                   .Where(w => w.Password == model.OneTimePassword
+                //                   && w.ExpireDate > DateTime.Now && w.UserId == model.UserId && w.Action == "Register")
+                //                   .FirstOrDefaultAsync();
+
+                //if (password != null)
+                //{
+                //وقتی که رمز درست بود ان را از جدول حذف میکنیم
+                //_dbContext.Remove(password);
+                //await _dbContext.SaveChangesAsync();
+
+
+                //سپس ادامه فرایند لاگین
+                //var context = await _interaction.GetAuthorizationContextAsync(model?.ReturnUrl);
+                var user = new ApplicationUser { UserName = addedUser.Email, Email = addedUser.Email };
+                await _signInManager.SignInAsync(addedUser, false);
+
+
+                //var checkuser = await _userManager.FindByEmailAsync(addedUser.Email);
+                //await _events.RaiseAsync(new UserLoginSuccessEvent(checkuser.UserName, checkuser.Id, checkuser.FirstName, clientId: context?.Client.ClientId));
+
+                //تایید شماره همراه کاربر برای ورود به سیستم
+                addedUser.PhoneNumberConfirmed = true;
+                await _dbContext.SaveChangesAsync();
+
+                //if (context != null)
+                //{
+                //    if (context.IsNativeClient())
+                //    {
+                //        // The client is native, so this change in how to
+                //        // return the response is for better UX for the end user.
+                //        return this.LoadingPage("Redirect", model.ReturnUrl);
+                //    }
+
+                //    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+                //    return Redirect(model.ReturnUrl);
+                //}
+
+                // request for a local page
+                if (Url.IsLocalUrl(model.ReturnUrl))
+                {
+                    return Redirect(model.ReturnUrl);
+                }
+                else if (string.IsNullOrEmpty(model.ReturnUrl))
+                {
+                    var redirectUrl = _configuration.GetSection("UrlOtherApplication").GetSection("FacilityManWeb").Value;
+                    return Redirect(redirectUrl);
+                }
+                else
+                {
+                    // user might have clicked on a malicious link - should be logged
+                    throw new Exception("invalid return URL");
+                }
+                //}
+                ModelState.AddModelError("", "خطایی در درخواست شما رخ داده است");
+                return View(model);
+                //}
+
+                ModelState.AddModelError("", "رمز عبور وارد شده یا اشتباه است یا زمان آن منقضی شده است");
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("OnetimePassword", "خطایی در درخواست شما رخ داده است");
+                return View(model);
+
+            }
             if (TempData.ContainsKey("ConfirmYourPhoneNumber"))
             {
                 string? x = TempData["ConfirmYourPhoneNumber"].ToString();
@@ -516,7 +563,6 @@ namespace GreenHouse.Web.Controller.MVC.Account
                 //ExternalProviders = providers.ToArray()
             };
         }
-
         private async Task<LoginViewModel> BuildLoginViewModelAsync(LoginInputModel model)
         {
             var vm = await BuildLoginViewModelAsync(model.ReturnUrl);

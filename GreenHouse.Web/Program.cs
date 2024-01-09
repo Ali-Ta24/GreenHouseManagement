@@ -4,6 +4,7 @@ using GreenHouse.DataAccess.UnitOfWork;
 using GreenHouse.DomainEntitty.Identity;
 using GreenHouse.Services;
 using GreenHouse.Web.Library;
+using IdentityModel;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -72,6 +73,23 @@ builder.Services
     {
         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+
+    })
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.Authority = builder.Configuration["ServiceUrls:IdentityAPI"];
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateAudience = false,
+            RoleClaimType = JwtClaimTypes.Role,
+            NameClaimType = JwtClaimTypes.Name,
+        };
+        if (builder.Configuration.GetValue<bool>("ServerCertificateCustomValidationCallback"))
+        {
+            options.BackchannelHttpHandler =
+            new HttpClientHandler { ServerCertificateCustomValidationCallback = delegate { return true; } };
+        }
 
     })
   .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
@@ -145,11 +163,6 @@ builder.Services
       options.ClaimActions.MapUniqueJsonKey("name", "name");
       options.ClaimActions.MapUniqueJsonKey("given_name", "given_name");
       options.ClaimActions.MapUniqueJsonKey("family_name", "family_name");
-      options.ClaimActions.MapJsonKey("CompanyNationalID", "CompanyNationalID", "CompanyNationalID");
-      options.ClaimActions.MapJsonKey("DepartmentID", "DepartmentID", "DepartmentID");
-      options.ClaimActions.MapJsonKey("FarzinUserName", "FarzinUserName", "FarzinUserName");
-      options.ClaimActions.MapJsonKey("FarzinCreatorID", "FarzinCreatorID", "FarzinCreatorID");
-      options.ClaimActions.MapJsonKey("FarzinCreatorRoleID", "FarzinCreatorRoleID", "FarzinCreatorRoleID");
       options.TokenValidationParameters.NameClaimType = "name";
       options.TokenValidationParameters.RoleClaimType = "role";
       options.Scope.Add("facilityman");

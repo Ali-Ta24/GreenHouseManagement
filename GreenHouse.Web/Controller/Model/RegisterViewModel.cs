@@ -4,7 +4,7 @@ namespace GreenHouse.Web.Controller.Model
 {
     public class RegisterViewModel
     {
-        public string? Username { get; set; }
+        public string? UserName { get; set; }
 
         [Required(ErrorMessage = "وارد کردن نام اجباری است")]
         public string FirstName { get; set; }
@@ -26,17 +26,11 @@ namespace GreenHouse.Web.Controller.Model
 
         public string? ReturnUrl { get; set; }
         public string? RoleName { get; set; }
-        //public string CaptchaCode { get; set; }
-        public string? OneTimePassword { get; set; }
-
 
         public bool AllowRememberLogin { get; set; } = true;
         public bool EnableLocalLogin { get; set; } = true;
 
         public IEnumerable<ExternalProvider> ExternalProviders { get; set; } = Enumerable.Empty<ExternalProvider>();
         public IEnumerable<ExternalProvider> VisibleExternalProviders => ExternalProviders.Where(x => !String.IsNullOrWhiteSpace(x.DisplayName));
-
-        //public bool IsExternalLoginOnly => EnableLocalLogin == false && ExternalProviders?.Count() == 1;
-        //public string ExternalLoginScheme => IsExternalLoginOnly ? ExternalProviders?.SingleOrDefault()?.AuthenticationScheme : null;
     }
 }

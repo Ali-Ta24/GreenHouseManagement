@@ -1814,7 +1814,7 @@ a {
     /*background: #001572 ;*/
 
     background-image: url('../imgs/bg/bg-login-register.jpg');
-    background-size: cover;
+    background-size: auto;
     right: 0;
     left: 0;
     width: 225%;

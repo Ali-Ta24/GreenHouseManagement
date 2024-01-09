@@ -2,6 +2,7 @@
 using GreenHouse.Services;
 using GreenHouse.Web.Controller.Api.Base;
 using GreenHouse.Web.Controller.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MZBase.Infrastructure;
 using MZBase.Infrastructure.Service.Exceptions;
@@ -20,7 +21,7 @@ namespace GreenHouse.Web.Controller.Api
             _service = service;
             _dateTimeProvider = dateTimeProvider;
         }
-
+        //[AllowAnonymous]
         [HttpPost("Post")]
         public async Task<ActionResult> Post(UserGreenhouseHallDto dto)
         {
