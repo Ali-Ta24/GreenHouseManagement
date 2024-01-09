@@ -34,7 +34,7 @@
                             <input type="hidden" asp-for="ReturnUrl" />
 
                             <div class="col-12">
-                                <label asp-for="NationalCodeId" class="form-label">کد ملی شما</label>
+                                <label asp-for="UserName" class="form-label">کد ملی شما</label>
                                 <input data-val="true"
                                        required
                                        pattern="^\d{10}$"
@@ -43,7 +43,7 @@
                                        data-msg-minlength="نام کاربری رمزعبور حداقل ۴ کاراکتر استاست"
                                        data-msg-maxlength=" ملی حداکثر 10 رقم استد"
                                        data-val-required="لطفا کد ملی را وارد کنید"
-                                       data-msg-pattern="کد ملی وارد شده معتبر نیست" class="form-control" placeholder="کد ملی" asp-for="NationalCodeId" id="NationalCodeId" autofocus>
+                                       data-msg-pattern="کد ملی وارد شده معتبر نیست" class="form-control" placeholder="کد ملی" asp-for="UserName" id="NationalCodeId" autofocus>
                                 <div class="invalid-feedback" data-valmsg-for="NationalCodeId" data-valmsg-replace="true" for="NationalCodeId"></div>
                             </div>
 
