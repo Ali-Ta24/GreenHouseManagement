@@ -9,8 +9,8 @@ namespace GreenHouse.DomainEntitty.Identity
         public string LastName { get; set; }
 
         [Required]
-        [StringLength(10, ErrorMessageResourceName = null, ErrorMessageResourceType = null, MinimumLength = 10)]
-        public string NationalCodeId { get; set; }
+        [StringLength(25, ErrorMessageResourceName = null, ErrorMessageResourceType = null, MinimumLength = 4)]
+        public override string UserName { get; set; }
 
         public bool IsActive { get; set; }
         //public ICollection<ProfilePictureUserEntity>? profilePictureUserEntities { get; set; }
