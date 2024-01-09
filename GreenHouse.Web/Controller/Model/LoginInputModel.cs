@@ -5,7 +5,7 @@ namespace GreenHouse.Web.Controller.Model
     public class LoginInputModel
     {
         [Required(ErrorMessage = "وارد کردن فیلد کد ملی ضروری است")]
-        public string NationalCodeId { get; set; }
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "وارد کردن فیلد رمزعبور ضروری است")]
         public string Password { get; set; }

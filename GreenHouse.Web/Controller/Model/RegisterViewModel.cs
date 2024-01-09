@@ -6,10 +6,6 @@ namespace GreenHouse.Web.Controller.Model
     {
         public string? Username { get; set; }
 
-        [Required(ErrorMessage = "وارد کردن ایمیل اجباری است")]
-        [EmailAddress(ErrorMessage = "ایمیلی که وارد کردید نامعتبر است . لطفا یک ایمیل معتبر وارد کنید")]
-        public string Email { get; set; }
-
         [Required(ErrorMessage = "وارد کردن نام اجباری است")]
         public string FirstName { get; set; }
 
@@ -27,18 +23,6 @@ namespace GreenHouse.Web.Controller.Model
         [StringLength(11, ErrorMessage = "لطفا یک شماره تلفن معتبر وارد کنید", ErrorMessageResourceName = null, ErrorMessageResourceType = null, MinimumLength = 11)]
         [Required(ErrorMessage = "وارد کردن شماره تلفن همراه اجباری است")]
         public string PhoneNumber { get; set; }
-
-        [Required(ErrorMessage = "وارد کردن نام شرکت اجباری است")]
-        public string CompanyName { get; set; }
-
-
-        [Required(ErrorMessage = "وارد کردن شماره ثبتی شرکت اجباری است")]
-        [StringLength(11, ErrorMessage = "شماره ملی شرکت باید 11 رقمی باشد", ErrorMessageResourceName = null, ErrorMessageResourceType = null, MinimumLength = 11)]
-        public string CompanyuniqueId { get; set; }
-
-        [Required(ErrorMessage = "وارد کردن کد ملی اجباری است")]
-        [StringLength(10, ErrorMessage = "کد ملی شما باید 10 رقمی باشد", ErrorMessageResourceName = null, ErrorMessageResourceType = null, MinimumLength = 10)]
-        public string NationalCodeId { get; set; }
 
         public string? ReturnUrl { get; set; }
         public string? RoleName { get; set; }
