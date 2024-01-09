@@ -9,6 +9,7 @@ using MZBase.Infrastructure.Service.Exceptions;
 
 namespace GreenHouse.Web.Controller.Api
 {
+    [AllowAnonymous]
     [Route("[controller]")]
     [ApiController]
     public class UserGreenhouseHallController : BaseApiController
@@ -21,7 +22,7 @@ namespace GreenHouse.Web.Controller.Api
             _service = service;
             _dateTimeProvider = dateTimeProvider;
         }
-        //[AllowAnonymous]
+
         [HttpPost("Post")]
         public async Task<ActionResult> Post(UserGreenhouseHallDto dto)
         {

@@ -16,6 +16,7 @@ namespace GreenHouse.Web.Controller.Api.Base
                 {
                     if (User.Identity is ClaimsIdentity claimsIdentity)
                     {
+                        var ss= claimsIdentity.FindFirst(JwtClaimTypes.Id)?.Value;
                         return claimsIdentity.FindFirst(JwtClaimTypes.GivenName)?.Value;
                     }
                 }

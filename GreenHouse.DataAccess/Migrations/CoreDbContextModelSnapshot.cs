@@ -48,7 +48,7 @@ namespace GreenHouse.DataAccess.Migrations
 
                     b.HasIndex("HumiditySensorID");
 
-                    b.ToTable("HumiditySensorDetail");
+                    b.ToTable("HumiditySensorDetail", (string)null);
                 });
 
             modelBuilder.Entity("GreenHouse.DomainEntitty.HumiditySensorEntity", b =>
@@ -89,7 +89,7 @@ namespace GreenHouse.DataAccess.Migrations
 
                     b.HasIndex("GreenhouseHallID");
 
-                    b.ToTable("HumiditySensor");
+                    b.ToTable("HumiditySensor", (string)null);
                 });
 
             modelBuilder.Entity("GreenHouse.DomainEntitty.Identity.ApplicationUser", b =>
@@ -157,7 +157,7 @@ namespace GreenHouse.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicationUser");
+                    b.ToTable("ApplicationUser", (string)null);
                 });
 
             modelBuilder.Entity("GreenHouse.DomainEntitty.LightIntensitySensorDetailEntity", b =>
@@ -186,7 +186,7 @@ namespace GreenHouse.DataAccess.Migrations
 
                     b.HasIndex("LightIntensitySensorID");
 
-                    b.ToTable("LightIntensitySensorDetail");
+                    b.ToTable("LightIntensitySensorDetail", (string)null);
                 });
 
             modelBuilder.Entity("GreenHouse.DomainEntitty.LightIntensitySensorEntity", b =>
@@ -227,7 +227,7 @@ namespace GreenHouse.DataAccess.Migrations
 
                     b.HasIndex("GreenhouseHallID");
 
-                    b.ToTable("LightIntensitySensor");
+                    b.ToTable("LightIntensitySensor", (string)null);
                 });
 
             modelBuilder.Entity("GreenHouse.DomainEntitty.TemperatureSensorDetailEntity", b =>
@@ -256,7 +256,7 @@ namespace GreenHouse.DataAccess.Migrations
 
                     b.HasIndex("TemperatureSensorID");
 
-                    b.ToTable("TemperatureSensorDetail");
+                    b.ToTable("TemperatureSensorDetail", (string)null);
                 });
 
             modelBuilder.Entity("GreenHouse.DomainEntitty.TemperatureSensorEntity", b =>
@@ -297,7 +297,7 @@ namespace GreenHouse.DataAccess.Migrations
 
                     b.HasIndex("GreenhouseHallID");
 
-                    b.ToTable("TemperatureSensor");
+                    b.ToTable("TemperatureSensor", (string)null);
                 });
 
             modelBuilder.Entity("GreenHouse.DomainEntitty.UserGreenhouseHallEntity", b =>
@@ -337,7 +337,7 @@ namespace GreenHouse.DataAccess.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("UserGreenhouseHall");
+                    b.ToTable("UserGreenhouseHall", (string)null);
                 });
 
             modelBuilder.Entity("GreenHouse.DomainEntitty.HumiditySensorDetailEntity", b =>

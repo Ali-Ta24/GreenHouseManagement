@@ -327,6 +327,8 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddScoped<IDateTimeProviderService, DateTimeProviderService>();
 builder.Services.AddScoped<ICoreUnitOfWork, CoreUnitOfWork>();
 builder.Services.AddScoped<UserGreenhouseHallService, UserGreenhouseHallService>();
+builder.Services.AddScoped<TemperatureSensorService, TemperatureSensorService>();
+
 builder.Services.AddDbContext<CoreDbContext>();
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
