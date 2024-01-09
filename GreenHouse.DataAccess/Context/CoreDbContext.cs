@@ -20,6 +20,8 @@ namespace GreenHouse.DataAccess.Context
         }
 
         public DbSet<UserGreenhouseHallEntity> UserGreenhouseHall { get; set; }
+        public DbSet<TemperatureSensorEntity> TemperatureSensor { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(getConnectionString());

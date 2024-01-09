@@ -4,6 +4,7 @@ using GreenHouse.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenHouse.DataAccess.Migrations
 {
     [DbContext(typeof(CoreDbContext))]
-    partial class CoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240109110702_UpdateApplicationUserTable")]
+    partial class UpdateApplicationUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,47 +93,6 @@ namespace GreenHouse.DataAccess.Migrations
                     b.ToTable("ApplicationUser");
                 });
 
-            modelBuilder.Entity("GreenHouse.DomainEntitty.TemperatureSensorEntity", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(100);
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnOrder(102);
-
-                    b.Property<int>("GreenhouseHallID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("LastModificationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnOrder(103);
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(101);
-
-                    b.Property<string>("TemperatureSensorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("GreenhouseHallID");
-
-                    b.ToTable("TemperatureSensor");
-                });
-
             modelBuilder.Entity("GreenHouse.DomainEntitty.UserGreenhouseHallEntity", b =>
                 {
                     b.Property<int>("ID")
@@ -169,17 +131,6 @@ namespace GreenHouse.DataAccess.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("UserGreenhouseHall");
-                });
-
-            modelBuilder.Entity("GreenHouse.DomainEntitty.TemperatureSensorEntity", b =>
-                {
-                    b.HasOne("GreenHouse.DomainEntitty.UserGreenhouseHallEntity", "UserGreenhouseHall")
-                        .WithMany()
-                        .HasForeignKey("GreenhouseHallID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserGreenhouseHall");
                 });
 
             modelBuilder.Entity("GreenHouse.DomainEntitty.UserGreenhouseHallEntity", b =>
