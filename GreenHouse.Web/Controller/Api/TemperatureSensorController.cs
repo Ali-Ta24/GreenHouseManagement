@@ -29,7 +29,7 @@ namespace GreenHouse.Web.Controller.Api
 
             try
             {
-                item.CreatedBy = UserName;
+                item.CreatedBy = UserName ?? "manual";
                 item.CreationTime = _dateTimeProvider.GetNow();
                 item.LastModificationTime = item.CreationTime;
                 item.LastModifiedBy = item.CreatedBy;
@@ -60,7 +60,7 @@ namespace GreenHouse.Web.Controller.Api
             {
 
                 item.LastModificationTime = _dateTimeProvider.GetNow();
-                item.LastModifiedBy = UserName;
+                item.LastModifiedBy = UserName ?? "manual";
 
                 await _service.ModifyAsync(item);
 
@@ -103,7 +103,7 @@ namespace GreenHouse.Web.Controller.Api
         {
             try
             {
-                var rtn = await _service.GetTemperatureSensors(request, greenhouseId);
+                var rtn = await _service.ItemsAsync(request, greenhouseId);
                 return Ok(rtn);
             }
             catch (ServiceException ex)
