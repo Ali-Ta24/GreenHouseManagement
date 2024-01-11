@@ -2,14 +2,12 @@
 using GreenHouse.Services;
 using GreenHouse.Web.Controller.Api.Base;
 using GreenHouse.Web.Controller.Dto;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MZBase.Infrastructure;
 using MZBase.Infrastructure.Service.Exceptions;
 
 namespace GreenHouse.Web.Controller.Api
 {
-    [AllowAnonymous]
     [Route("[controller]")]
     [ApiController]
     public class UserGreenhouseHallController : BaseApiController

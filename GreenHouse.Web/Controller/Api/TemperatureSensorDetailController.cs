@@ -9,6 +9,9 @@ using MZSimpleDynamicLinq.Core;
 
 namespace GreenHouse.Web.Controller.Api
 {
+    [Route("[controller]")]
+    [ApiController]
+
     public class TemperatureSensorDetailController : BaseApiController
     {
         private readonly TemperatureSensorDetailService _service;
