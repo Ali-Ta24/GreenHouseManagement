@@ -7,6 +7,7 @@ namespace GreenHouse.Web.Controller.MVC
 {
     public class HomeController : Microsoft.AspNetCore.Mvc.Controller
     {
+        [Authorize]
         public IActionResult Index()
         {
             return View();
