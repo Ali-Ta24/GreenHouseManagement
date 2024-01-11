@@ -30,7 +30,7 @@ namespace GreenHouse.Web.Controller.Api
 
             try
             {
-                item.CreatedBy = UserName ?? "manual";
+                item.CreatedBy = UserId ?? "manual";
                 item.CreationTime = _dateTimeProvider.GetNow();
                 item.LastModificationTime = item.CreationTime;
                 item.LastModifiedBy = item.CreatedBy;

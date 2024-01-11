@@ -7,16 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Account\Login.cshtml" />
-    <Content Remove="Views\Account\Register.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Views\Account\Login.cshtml" />
-    <EmbeddedResource Include="Views\Account\Register.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Duende.IdentityServer" Version="6.1.3" />
     <PackageReference Include="IdentityModel" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.14" />

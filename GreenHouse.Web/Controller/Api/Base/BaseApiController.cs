@@ -16,8 +16,22 @@ namespace GreenHouse.Web.Controller.Api.Base
                 {
                     if (User.Identity is ClaimsIdentity claimsIdentity)
                     {
-                        var ss= claimsIdentity.FindFirst(JwtClaimTypes.Id)?.Value;
                         return claimsIdentity.FindFirst(JwtClaimTypes.GivenName)?.Value;
+                    }
+                }
+                return null;
+
+            }
+        }
+        public string? UserId
+        {
+            get
+            {
+                if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    if (User.Identity is ClaimsIdentity claimsIdentity)
+                    {
+                        return claimsIdentity.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value.Split(":").LastOrDefault(); ;
                     }
                 }
                 return null;
