@@ -7,5 +7,6 @@ namespace GreenHouse.DataAccess.UnitOfWork
     {
         IUserGreenhouseHallRepository UserGreenhouseHalls { get; }
         ITemperatureSensorRepository TemperatureSensors { get; }
+        ITemperatureSensorDetailRepository TemperatureSensorDetails { get; }
     }
 }

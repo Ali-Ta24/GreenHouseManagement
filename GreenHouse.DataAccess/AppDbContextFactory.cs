@@ -14,7 +14,7 @@ namespace GreenHouse.DataAccess
         public CoreDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<CoreDbContext>();
-            optionsBuilder.UseSqlServer("Server=.;Database=GreenHouse;User Id=sa;password=1qaz@WSX;TrustServerCertificate=True;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer("Server=.\\MSSQL;Database=GreenHouse;Integrated Security=SSPI;TrustServerCertificate=True;MultipleActiveResultSets=true");
 
             return new CoreDbContext(optionsBuilder.Options);
         }

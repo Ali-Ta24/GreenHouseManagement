@@ -206,6 +206,7 @@ builder.Services.AddScoped<IDateTimeProviderService, DateTimeProviderService>();
 builder.Services.AddScoped<ICoreUnitOfWork, CoreUnitOfWork>();
 builder.Services.AddScoped<UserGreenhouseHallService, UserGreenhouseHallService>();
 builder.Services.AddScoped<TemperatureSensorService, TemperatureSensorService>();
+builder.Services.AddScoped<TemperatureSensorDetailService, TemperatureSensorDetailService>();
 
 builder.Services.AddDbContext<CoreDbContext>();
 builder.Services.AddDbContext<ApplicationDbContext>();
