@@ -223,7 +223,6 @@ namespace GreenHouse.Web.Controller.MVC.Account
         }
 
         [HttpGet]
-        [Route("{controller}/Register")]
         public async Task<IActionResult> Register(string? returnUrl)
         {
             // build a model so we know what to show on the reg page

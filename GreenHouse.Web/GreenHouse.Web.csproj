@@ -9,13 +9,11 @@
   <ItemGroup>
     <Content Remove="Views\Account\Login.cshtml" />
     <Content Remove="Views\Account\Register.cshtml" />
-    <Content Remove="Views\Home\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Views\Account\Login.cshtml" />
     <EmbeddedResource Include="Views\Account\Register.cshtml" />
-    <EmbeddedResource Include="Views\Home\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

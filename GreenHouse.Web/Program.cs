@@ -3,6 +3,7 @@ using GreenHouse.DataAccess.Context;
 using GreenHouse.DataAccess.UnitOfWork;
 using GreenHouse.DomainEntitty.Identity;
 using GreenHouse.Services;
+using GreenHouse.Web.Initializer;
 using GreenHouse.Web.Library;
 using IdentityModel;
 using IdentityModel.Client;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MZBase.Infrastructure;
@@ -202,14 +204,16 @@ builder.Services.AddControllersWithViews(options =>
 }
 ).AddNewtonsoftJson();
 
+builder.Services.AddDbContext<CoreDbContext>();
+builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddScoped<IDateTimeProviderService, DateTimeProviderService>();
 builder.Services.AddScoped<ICoreUnitOfWork, CoreUnitOfWork>();
 builder.Services.AddScoped<UserGreenhouseHallService, UserGreenhouseHallService>();
 builder.Services.AddScoped<TemperatureSensorService, TemperatureSensorService>();
 builder.Services.AddScoped<TemperatureSensorDetailService, TemperatureSensorDetailService>();
 
-builder.Services.AddDbContext<CoreDbContext>();
-builder.Services.AddDbContext<ApplicationDbContext>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
@@ -220,12 +224,15 @@ try
     var app = builder.Build();
 
     app.UseMiddleware<ErrorHandlerMiddleware>();
+  
     using (var scope = app.Services.CreateScope())
     {
-        //var dataContext = scope.ServiceProvider.GetRequiredService<WebLogDBContext>();
-        //dataContext.Database.Migrate();
-    }
+        var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        dataContext.Database.Migrate();
 
+        var f = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        f.Initialize();
+    }
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
@@ -241,6 +248,7 @@ try
     }
 
     app.UseHttpsRedirection();
+    app.UseStaticFiles();
     app.UseRouting();
     app.UseCors();
     //app.UseEndpoints(endpoints =>
@@ -284,7 +292,7 @@ try
     //            pattern: "workflow/{*workflow-definitions}",
     //            defaults: new { controller = "workflow", action = "index" });
 
-    app.UseStaticFiles();
+    //app.UseStaticFiles();
 
     app.MapControllerRoute(
         name: "default",
