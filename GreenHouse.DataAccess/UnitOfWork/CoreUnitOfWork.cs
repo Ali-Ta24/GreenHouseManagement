@@ -13,11 +13,12 @@ namespace GreenHouse.DataAccess.UnitOfWork
         public CoreUnitOfWork() : base(new CoreDbContext())
         {
             UserGreenhouseHalls = new UserGreenhouseHallRepository(_dbContext);
-            TemperatureSensors = new TemperatureSensorRepository(_dbContext);   
+            TemperatureSensors = new TemperatureSensorRepository(_dbContext);
+            TemperatureSensorDetails = new TemperatureSensorDetailRepository(_dbContext);
         }
         public IUserGreenhouseHallRepository UserGreenhouseHalls { get; private set; }
-
         public ITemperatureSensorRepository TemperatureSensors { get; private set; }
+        public ITemperatureSensorDetailRepository TemperatureSensorDetails { get; private set; }
 
         public ILDRCompatibleRepositoryAsync<T, PrimKey> GetRepo<T, PrimKey>()
            where T : Model<PrimKey>
@@ -33,7 +34,10 @@ namespace GreenHouse.DataAccess.UnitOfWork
             {
                 ff = TemperatureSensors as ILDRCompatibleRepositoryAsync<T, PrimKey>;
             }
-
+            else if (typeof(T) == typeof(TemperatureSensorDetail))
+            {
+                ff = TemperatureSensorDetails as ILDRCompatibleRepositoryAsync<T, PrimKey>;
+            }
             return ff;
         }
     }

@@ -14,10 +14,10 @@ namespace GreenHouse.Services
         private readonly ICoreUnitOfWork _unitOfWork;
         private readonly ILDRCompatibleRepositoryAsync<TemperatureSensor, int> _baseRepo;
 
-        public TemperatureSensorService(ICoreUnitOfWork eMSUnitOfWork, ILogger<TemperatureSensor> logger, IDateTimeProviderService dateTimeProvider)
+        public TemperatureSensorService(ICoreUnitOfWork coreUnitOfWork, ILogger<TemperatureSensor> logger, IDateTimeProviderService dateTimeProvider)
             : base(logger, dateTimeProvider, 200)
         {
-            _unitOfWork = eMSUnitOfWork;
+            _unitOfWork = coreUnitOfWork;
             _baseRepo = _unitOfWork.GetRepo<TemperatureSensor, int>();
         }
 

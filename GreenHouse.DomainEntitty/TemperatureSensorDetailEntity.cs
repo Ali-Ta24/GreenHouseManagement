@@ -1,11 +1,5 @@
-﻿using GreenHouse.DomainEntitty.Identity;
-using GreenHouse.Model;
-using System;
-using System.Collections.Generic;
+﻿using GreenHouse.Model;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GreenHouse.DomainEntitty
 {
