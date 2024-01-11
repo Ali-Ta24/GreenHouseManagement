@@ -15,8 +15,7 @@ namespace GreenHouse.Services
         private readonly ILDRCompatibleRepositoryAsync<TemperatureSensorDetail, long> _baseRepo;
 
         public TemperatureSensorDetailService(ICoreUnitOfWork coreUnitOfWork, ILogger<TemperatureSensorDetail> logger,
-            IDateTimeProviderService dateTimeProvider,
-            int logBaseID) : base(logger, dateTimeProvider, logBaseID)
+            IDateTimeProviderService dateTimeProvider) : base(logger, dateTimeProvider, 300)
         {
             _unitOfWork = coreUnitOfWork;
             _baseRepo = _unitOfWork.GetRepo<TemperatureSensorDetail, long>();
