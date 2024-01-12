@@ -1,5 +1,6 @@
 ﻿using GreenHouse.DataAccess.UnitOfWork;
 using GreenHouse.DomainEntitty;
+using GreenHouse.DomainEntitty.Views;
 using GreenHouse.Model;
 using Microsoft.Extensions.Logging;
 using MZBase.Infrastructure;
@@ -54,7 +55,7 @@ namespace GreenHouse.Services
             }
         }
 
-        public async Task<LinqDataResult<TemperatureSensor>> ItemsAsync(LinqDataRequest request, int GreenHouseID)
+        public async Task<LinqDataResult<TemperatureSensorViewEntity>> ItemsAsync(LinqDataRequest request, int GreenHouseID)
         {
             var req = await _unitOfWork.UserGreenhouseHalls.FirstOrDefaultAsync(uu => uu.ID == GreenHouseID);
 
@@ -63,7 +64,7 @@ namespace GreenHouse.Services
                 Log(301, "GetTemperatureSensors failed: request with the given id not found", GreenHouseID.ToString(), LogTypeEnum.ErrorLog);
                 throw new ServiceObjectNotFoundException(nameof(UserGreenhouseHall));
             }
-            LinqDataResult<TemperatureSensor> item = new LinqDataResult<TemperatureSensor>();
+            LinqDataResult<TemperatureSensorViewEntity> item = new LinqDataResult<TemperatureSensorViewEntity>();
             try
             {
                 item.Data = await _unitOfWork.TemperatureSensors.GetTemperatureSensorsByGreenhouseHall(GreenHouseID);

@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GreenHouse.DomainEntitty\GreenHouse.DomainEntitty.csproj" />
+    <ProjectReference Include="..\GreenHouse.DomainEntitty\GreenHouse.DomainEntity.csproj" />
     <ProjectReference Include="..\GreenHouse.Model\GreenHouse.Model.csproj" />
   </ItemGroup>
 

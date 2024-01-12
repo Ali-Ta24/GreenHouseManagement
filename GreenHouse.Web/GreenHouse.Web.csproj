@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GreenHouse.DataAccess\GreenHouse.DataAccess.csproj" />
-    <ProjectReference Include="..\GreenHouse.DomainEntitty\GreenHouse.DomainEntitty.csproj" />
+    <ProjectReference Include="..\GreenHouse.DomainEntitty\GreenHouse.DomainEntity.csproj" />
     <ProjectReference Include="..\GreenHouse.Services\GreenHouse.Services.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,5 @@
 ﻿using GreenHouse.DomainEntitty;
-using GreenHouse.DomainEntitty.Views;
+using GreenHouse.DomainEntity.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 namespace GreenHouse.DataAccess.Context
@@ -29,6 +29,8 @@ namespace GreenHouse.DataAccess.Context
         public DbSet<LightIntensitySensorEntity> LightIntensitySensor { get; set; }
         public DbSet<LightIntensitySensorDetailEntity> LightIntensitySensorDetail { get; set; }
 
+
+        public DbSet<TemperatureSensorViewEntity> TemperatureSensorView { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GreenHouse.DomainEntitty.Views
+namespace GreenHouse.DomainEntity.Views
 {
     [Keyless]
     [NotMapped]

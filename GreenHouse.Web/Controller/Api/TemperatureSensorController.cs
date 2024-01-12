@@ -1,4 +1,5 @@
-﻿using GreenHouse.Model;
+﻿using GreenHouse.DomainEntity.Views;
+using GreenHouse.Model;
 using GreenHouse.Services;
 using GreenHouse.Web.Controller.Api.Base;
 using GreenHouse.Web.Controller.Dto;
@@ -100,7 +101,7 @@ namespace GreenHouse.Web.Controller.Api
         }
 
         [HttpPost("GetTemperatureSensors")]
-        public async Task<ActionResult<LinqDataResult<TemperatureSensorDto>>> GetTemperatureSensors(LinqDataRequest request, int greenhouseId)
+        public async Task<ActionResult<LinqDataResult<TemperatureSensorViewEntity>>> GetTemperatureSensors(LinqDataRequest request, int greenhouseId)
         {
             try
             {

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenHouse.DomainEntitty", "GreenHouse.DomainEntitty\GreenHouse.DomainEntitty.csproj", "{8D3CDE07-E122-4691-9767-5F606D1A09BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenHouse.DomainEntity", "GreenHouse.DomainEntitty\GreenHouse.DomainEntity.csproj", "{8D3CDE07-E122-4691-9767-5F606D1A09BE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenHouse.Services", "GreenHouse.Services\GreenHouse.Services.csproj", "{A06D0C8F-5883-4A69-B667-4EF5C5FF122C}"
 EndProject

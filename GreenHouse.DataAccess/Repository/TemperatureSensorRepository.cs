@@ -1,6 +1,7 @@
 ﻿using GreenHouse.DataAccess.Context;
 using GreenHouse.DataAccess.Repository.Interfaces;
 using GreenHouse.DomainEntitty;
+using GreenHouse.DomainEntity.Views;
 using GreenHouse.Model;
 using Microsoft.EntityFrameworkCore;
 using MZBase.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace GreenHouse.DataAccess.Repository
             _dbContext = context;
         }
 
-        public async Task<IEnumerable<TemperatureSensor>> GetTemperatureSensorsByGreenhouseHall(int greenhouseId)    
-            => await _dbContext.TemperatureSensor.Where(ss => ss.GreenhouseHallID == greenhouseId).ToListAsync();
+        public async Task<IEnumerable<TemperatureSensorViewEntity>> GetTemperatureSensorsByGreenhouseHall(int greenhouseId)    
+            => await _dbContext.TemperatureSensorView.Where(ss => ss.GreenhouseHallID == greenhouseId).ToListAsync();
     }
 }
