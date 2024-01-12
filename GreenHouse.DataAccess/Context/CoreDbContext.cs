@@ -1,4 +1,5 @@
 ﻿using GreenHouse.DomainEntitty;
+using GreenHouse.DomainEntitty.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 namespace GreenHouse.DataAccess.Context
@@ -17,6 +18,7 @@ namespace GreenHouse.DataAccess.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<TemperatureSensorViewEntity>().ToView("Vw_TemperatureSensor");
         }
 
         public DbSet<UserGreenhouseHallEntity> UserGreenhouseHall { get; set; }
