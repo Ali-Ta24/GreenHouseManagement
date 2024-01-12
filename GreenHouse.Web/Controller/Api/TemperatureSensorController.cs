@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using MZBase.Infrastructure;
 using MZBase.Infrastructure.Service.Exceptions;
 using MZSimpleDynamicLinq.Core;
+using MZSimpleDynamicLinq.HttpRequestExtensions;
 
 namespace GreenHouse.Web.Controller.Api
 {
@@ -100,12 +101,13 @@ namespace GreenHouse.Web.Controller.Api
             }
         }
 
-        [HttpPost("GetTemperatureSensors")]
-        public async Task<ActionResult<LinqDataResult<TemperatureSensorViewEntity>>> GetTemperatureSensors(LinqDataRequest request, int greenhouseId)
+        [HttpGet("GetTemperatureSensors")]
+        public async Task<ActionResult<LinqDataResult<TemperatureSensorViewEntity>>> GetTemperatureSensors()
         {
+            var request = Request.ToLinqDataRequest();
             try
             {
-                var rtn = await _service.ItemsAsync(request, greenhouseId);
+                var rtn = await _service.ItemsAsync(request, 3);
                 return Ok(rtn);
             }
             catch (ServiceException ex)
