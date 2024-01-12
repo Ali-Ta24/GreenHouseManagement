@@ -326,7 +326,7 @@
         area.find("[data-role-operation ='add']").click(function () {
             bootbox.dialog({
                 message: addtemplate,
-                title: "افزودن تسهیلات قدیمی",
+                title: "افزودن سنسور دما",
             }).bind('shown.bs.modal', function () {
                 $('.modal-dialog').css('max-width', '90%');
                 $('.bootbox-close-button').css("display", "inline");
@@ -1270,11 +1270,11 @@
         function getTemplate() {
             var ss = `<div class="card">
                             <div class="card-body" id="ArchiveOldFacility">
-                                <h4 class="mb-0">آرشیو تسهیلات قدیمی</h4>
+                                <h4 class="mb-0">مدیریت سنسور دما</h4>
                                 <hr>
                                 <nav class="navbar navbar-expand-lg navbar-dark bg-info rounded p-2 mb-2">
                                     <div class="sticky">
-                                        <button type="button" class="btn btn-success text-dark" data-role-operation="add" alt="افزودن تسهیلات قدیمی"><i class="bx bx-message-square-add"></i>افزودن تسهیلات</button>
+                                        <button type="button" class="btn btn-success text-dark" data-role-operation="add" alt="افزودن سنسور دما"><i class="bx bx-message-square-add"></i>افزودن سنسور دما</button>
                                         <button type="button" class="btn btn-warning d-none ms-2" id="editSessionRoomBtn"  data-role-operation="edit"><i class="bx bx-message-square-edit"></i>ویرایش تسهیلات</button>
                                         <button type="button" class="btn btn-danger text-dark d-none ms-2" id="deleteSessionRoomBtn" data-role-remove><i class="bx bx-comment-minus"></i>حذف تسهیلات</button>
                                         <button class="btn btn-light ms-2" href="#headerfilters" data-bs-toggle="collapse" data-toggle="collapse" title="جستجو"><i class='bx bx-search'></i>جستجو</button>

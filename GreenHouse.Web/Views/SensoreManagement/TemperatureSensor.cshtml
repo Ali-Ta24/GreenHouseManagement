@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "مدیریت سنسور دما";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .table-border thead tr td {
+        text-align: center;
+    }
+
+    /* .btn-outline-secondary.buttons-excel {
+            display: none;
+        }*/
+
+    #cartable_length {
+    }
+
+    #cartable_filter {
+        width: 250px;
+        left: 25px;
+        position: absolute;
+        margin-top: -40px;
+    }
+
+    /*    .dataTables_filter {
+            display: none;
+        }*/
+
+    thead tr th {
+        border-width: 1px;
+        padding: 5px !important;
+    }
+</style>
+
+<div id="oldFacilityRequest">
+</div>
+
+
+@section scripts {
+    <script src="~/Scripts/Plugins/facility/oldFacilityArchivePlugin.js"></script>
+    <script src="~/Scripts/Plugins/uploadFile/uploadFilePlugin2.js"></script>
+
+    <script>
+        $("#oldFacilityRequest").oldFacilityArchivePlugin();
+    </script>
+}

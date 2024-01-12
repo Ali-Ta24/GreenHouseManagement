@@ -310,6 +310,14 @@ else
                             <div class="menu-title">شرایط و ضوابط استفاده از تسهیلات وجوه اداره شده</div>
                         </a>
                     </li>
+                    <li>
+                        <a href="/SensoreManagement/TemperatureSensor">
+                            <div class="parent-icon">
+                                <i class="lni lni-book"></i>
+                            </div>
+                            <div class="menu-title">مدیریت سنسور دما</div>
+                        </a>
+                    </li>
                     @if (User.Identity.IsAuthenticated && userRoleName != null && (userRoleName.Any(a => a.ToLower() == "admin")
                    || userRoleName.Any(a => a.ToLower() == "committee_user")
                    || userRoleName.Any(a => a.ToLower() == "committee_admin")
@@ -321,7 +329,7 @@ else
                                 <div class="parent-icon">
                                     <i class='bx bx-archive'></i>
                                 </div>
-                                <div class="menu-title">آرشیو تسهیلات قدیمی</div>
+                                <div class="menu-title">مدیریت سنسور دما</div>
                             </a>
                         </li>
                     }
@@ -351,9 +359,9 @@ else
                                     <a class="nav-link" href="/SessionManagement"><i class='bx bx-calendar' data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="مدیریت جلسات"></i></a>
                                 </li>
                             } *@
-                            <li class="nav-item">
+                           @*  <li class="nav-item">
                                 <a class="nav-link" href="/InternalMessage/InternalMessage"><i class="bx bx-envelope" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="مدیریت پیام داخلی"></i></a>
-                            </li>
+                            </li> *@
                             @* <li class="nav-item">
                                 <a class="nav-link" href="/home/UserGuide"><i class="bx bx-message-square-error" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="راهنمای کاربری"></i></a>
                             </li> *@
@@ -366,10 +374,10 @@ else
                     </div>
                     @if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Any(a => a.ToLower() == "customer"))
                     {
-                        <div>
+                      @*   <div>
                             <a class="btn btn-primary customerBtnNavbar" href="/CompanyRegistration">ثبت اطلاعات شرکت</a>
                             <a class="btn btn-primary customerBtnNavbar" href="/FacilityRegistration">ثبت تسهیلات</a>
-                        </div>
+                        </div> *@
                     }
                     <div class="search-bar flex-grow-1">
                         <div class="position-relative search-bar-box">
@@ -755,7 +763,7 @@ else
         <!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
         <!--End Back To Top Button-->
         <footer class="page-footer">
-            <span class="mb-0">کپی رایت © <span id="copyRight"></span> تمامی حقوق محفوظ است</span>  <span style="margin:0 5px">|</span>  <span>شماره پشتیبانی فنی: 91079127 - داخلی 180</span>
+            <span class="mb-0">کپی رایت © <span id="copyRight"></span> تمامی حقوق محفوظ است</span>  @* <span style="margin:0 5px">|</span>   <span>شماره پشتیبانی فنی: 91079127 - داخلی 180</span>*@
         </footer>
     </div>
     <!--end wrapper-->
