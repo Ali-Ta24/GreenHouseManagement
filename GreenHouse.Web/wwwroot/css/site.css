@@ -1,4 +1,4 @@
-html {
+﻿/*html {
   font-size: 14px;
 }
 
@@ -12,7 +12,350 @@ html {
   position: relative;
   min-height: 100%;
 }
-
+       
 body {
   margin-bottom: 60px;
+}*/
+
+/*.table tbody tr.highlight td {
+    background-color: #ddd;
+}*/
+thead tr th, tbody tr td, tr th, tr th {
+    text-align: center !important
+}
+
+td {
+    border: 1px #DDD solid;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: #2079FD;
+    color: #FFF;
+}
+
+.page-wrapper {
+    height: auto !important
+}
+
+#programCarable_filter {
+    text-align: left;
+}
+
+table.dataTable.cell-border tbody th,
+table.dataTable.cell-border tbody td {
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+table.dataTable.cell-border tbody tr th:first-child,
+table.dataTable.cell-border tbody tr td:first-child {
+    border-left: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+table.dataTable.cell-border tbody tr:first-child th,
+table.dataTable.cell-border tbody tr:first-child td {
+    border-top: none;
+}
+
+table.dataTable.stripe > tbody > tr.odd > *,
+table.dataTable.display > tbody > tr.odd > * {
+    box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.023);
+}
+
+table.dataTable.stripe > tbody > tr.odd.selected > *,
+table.dataTable.display > tbody > tr.odd.selected > * {
+    box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.923);
+}
+
+
+
+table.dataTable.display > tbody > tr.odd > .sorting_1,
+table.dataTable.order-column.stripe > tbody > tr.odd > .sorting_1 {
+    box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.054);
+}
+
+table.dataTable.display > tbody > tr.odd > .sorting_2,
+table.dataTable.order-column.stripe > tbody > tr.odd > .sorting_2 {
+    box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.047);
+}
+
+table.dataTable.display > tbody > tr.odd > .sorting_3,
+table.dataTable.order-column.stripe > tbody > tr.odd > .sorting_3 {
+    box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.039);
+}
+
+table.dataTable.display > tbody > tr.odd.selected > .sorting_1,
+table.dataTable.order-column.stripe > tbody > tr.odd.selected > .sorting_1 {
+    box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.954);
+}
+
+table.dataTable.display > tbody > tr.odd.selected > .sorting_2,
+table.dataTable.order-column.stripe > tbody > tr.odd.selected > .sorting_2 {
+    box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.947);
+}
+
+table.dataTable.display > tbody > tr.odd.selected > .sorting_3,
+table.dataTable.order-column.stripe > tbody > tr.odd.selected > .sorting_3 {
+    box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.939);
+}
+
+table.dataTable.display > tbody > tr.even > .sorting_1,
+table.dataTable.order-column.stripe > tbody > tr.even > .sorting_1 {
+    box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.019);
+}
+
+table.dataTable.display > tbody > tr.even > .sorting_2,
+table.dataTable.order-column.stripe > tbody > tr.even > .sorting_2 {
+    box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.011);
+}
+
+table.dataTable.display > tbody > tr.even > .sorting_3,
+table.dataTable.order-column.stripe > tbody > tr.even > .sorting_3 {
+    box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.003);
+}
+
+table.dataTable.display > tbody > tr.even.selected > .sorting_1,
+table.dataTable.order-column.stripe > tbody > tr.even.selected > .sorting_1 {
+    box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.919);
+}
+
+table.dataTable.display > tbody > tr.even.selected > .sorting_2,
+table.dataTable.order-column.stripe > tbody > tr.even.selected > .sorting_2 {
+    box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.911);
+}
+
+table.dataTable.display > tbody > tr.even.selected > .sorting_3,
+table.dataTable.order-column.stripe > tbody > tr.even.selected > .sorting_3 {
+    box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.903);
+}
+
+.pointer{
+    cursor:pointer !important;
+}
+
+.heightModalInformationCompany-program {
+    min-height:10vh;
+    max-height: 60vh;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
+
+.heightModal-body {
+    max-height: 65vh;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
+
+.child-table {
+    margin-right: 32px
+}
+
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+.datepicker-plot-area {
+    z-index: 1111111111
+}
+
+.successInput {
+    /*border: 1px solid #FD3550;*/
+    border-color: #15CA20;
+    padding-left: calc(1.5em + .75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: left calc(.375em + .1875rem) center;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem)
+}
+
+.errorInput {
+    border-color: #dc3545 !important;
+    padding-left: calc(1.5em + .75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat;
+    background-position: left calc(.375em + .1875rem) center;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}
+
+.errorTable {
+    border:1px solid #dc3545 !important;
+}
+
+.typeDoc {
+    padding: 5px;
+    border: 1px solid;
+    /* text-align: center; */
+    height: 46px;
+    width: 46px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.files input {
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    padding: 120px 0px 85px 35%;
+    text-align: center !important;
+    margin: 0;
+    width: 100% !important;
+}
+
+    .files input:focus {
+        outline: 2px dashed #92b0b3;
+        outline-offset: -10px;
+        -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        border: 1px solid #92b0b3;
+    }
+
+.files {
+    position: relative;
+}
+
+    .files:after {
+        pointer-events: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 50px;
+        right: 0;
+        height: 56px;
+        content: "";
+        /*background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);*/
+        display: block;
+        margin: 0 auto;
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+.color input {
+    background-color: #f1f1f1;
+}
+
+.files:before {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    pointer-events: none;
+    width: 100%;
+    right: 0;
+    height: 57px;
+    content: "فایل را در اینجا رها کنید";
+    display: block;
+    margin: 0 auto;
+    color: #2ea591;
+    font-weight: 600;
+    text-transform: capitalize;
+    text-align: center;
+}
+
+.card-itemsFile{
+    display:flex;
+    flex-wrap:wrap;
+}
+
+.des-file, .title-file {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 25ch;
+}
+
+
+
+.customers-list-item {
+    width: 48%;
+    border: 1px solid #4e4e4e;
+    margin: 5px;
+}
+
+.generalDoc-item {
+   
+    border: 1px solid #4e4e4e;
+    margin: 5px;
+}
+
+.showDetailsWidget{
+    display:none
+}
+
+.heightWidgetCustomer{
+    height:110px;
+}
+
+@media(max-width: 767px) {
+    .customerBtnNavbar{
+        display:none
+    }
+    .customers-list-item {
+        width: 100%;
+    }
+    .showDetailsWidget {
+        display: block
+    }
+}
+
+.bootbox-close-button {
+    display: none;
+}
+
+.title-info-topDash, .value-info-topDash {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 35ch;
+}
+
+.c-title-info-topDash {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /*max-width: 30ch;*/
+}
+
+.c-value-info-topDash {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 25ch;
+}
+
+@media(max-width: 1400px) {
+    .c-title-info-topDash {
+        max-width: 25ch;
+    }
+
+}
+
+/*@media(min-width: 1200px) {
+    .c-title-info-topDash {
+        max-width: 25ch;
+    }
+}*/
+
+@media(max-width: 1200px) {
+    .title-info-topDash, .value-info-topDash {
+        max-width: unset;
+    }
+    .c-title-info-topDash {
+        max-width: unset;
+    }
+    .c-value-info-topDash {
+
+        max-width: 45ch;
+    }
+}
+
+@media(max-width: 992px) {
+
+    .c-value-info-topDash {
+        max-width: 100ch;
+    }
 }
