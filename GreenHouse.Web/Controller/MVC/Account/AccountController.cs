@@ -1,4 +1,5 @@
-﻿using GreenHouse.DataAccess.Context;
+﻿using Duende.IdentityServer.Extensions;
+using GreenHouse.DataAccess.Context;
 using GreenHouse.DomainEntitty.Identity;
 using GreenHouse.Services;
 using GreenHouse.Web.Controller.Model;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 
@@ -87,7 +89,7 @@ namespace GreenHouse.Web.Controller.MVC.Account
                 Regex n = new Regex("^[0-9]+$");
                 if (!n.IsMatch(model.UserName))
                 {
-                    ModelState.AddModelError("NationalcodeId", "فقط استفاده از ارقام 0 - 9 برای کد ملی مجاز است");
+                    //ModelState.AddModelError("NationalcodeId", "فقط استفاده از ارقام 0 - 9 برای کد ملی مجاز است");
 
                 }
             }
@@ -190,15 +192,15 @@ namespace GreenHouse.Web.Controller.MVC.Account
                         {
                             return Redirect(model.ReturnUrl);
                         }
-                        else if (string.IsNullOrEmpty(model.ReturnUrl))
-                        {
-                            //return Redirect("~/");
-                            return Redirect(_configuration.GetSection("UrlOtherApplication").GetSection("FacilityManWeb").Value);
-                        }
-                        else
-                        {
-                            throw new Exception("invalid return url");
-                        }
+                        //else if (string.IsNullOrEmpty(model.ReturnUrl))
+                        //{
+                        //    //return Redirect("~/");
+                        //    return Redirect(_configuration.GetSection("UrlOtherApplication").GetSection("FacilityManWeb").Value);
+                        //}
+                        //else
+                        //{
+                        //    throw new Exception("invalid return url");
+                        //}
                     }
 
                     //LogContext.PushProperty("UserName", user.UserName);
@@ -502,6 +504,98 @@ namespace GreenHouse.Web.Controller.MVC.Account
             }
 
         }
+
+        /// <summary>
+        /// Show logout page
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> Logout(string logoutId)
+        {
+            // build a model so the logout page knows what to display
+            var vm = await BuildLogoutViewModelAsync(logoutId);
+
+            if (vm.ShowLogoutPrompt == false)
+            {
+
+                return await Logout(vm);
+            }
+
+            return View(vm);
+        }
+
+        /// <summary>
+        /// Handle logout page postback
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout(LogoutInputModel model)
+        {
+            // build a model so the logged out page knows what to display
+            var vm = await BuildLoggedOutViewModelAsync(model.LogoutId);
+
+            if (User?.Identity.IsAuthenticated == true)
+            {
+                // delete local authentication cookie
+                // await HttpContext.SignOutAsync();
+                await _signInManager.SignOutAsync();
+
+                // raise the logout event
+                //await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
+            }
+
+            // check if we need to trigger sign-out at an upstream identity provider
+            if (vm.TriggerExternalSignout)
+            {
+                // build a return URL so the upstream provider will redirect back
+                // to us after the user has logged out. this allows us to then
+                // complete our single sign-out processing.
+                string url = Url.Action("Logout", new { logoutId = vm.LogoutId });
+
+                // this triggers a redirect to the external provider for sign-out
+                return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
+            }
+            return RedirectToAction(nameof(Login));
+            //return View("Login", vm);
+        }
+
+        private async Task<LoggedOutViewModel> BuildLoggedOutViewModelAsync(string logoutId)
+        {
+            // get context information (client name, post logout redirect URI and iframe for federated signout)
+            //var logout = await _interaction.GetLogoutContextAsync(logoutId);
+
+            var vm = new LoggedOutViewModel
+            {
+                AutomaticRedirectAfterSignOut = AccountOptions.AutomaticRedirectAfterSignOut,
+                //PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
+                //ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
+                //SignOutIframeUrl = logout?.SignOutIFrameUrl,
+                LogoutId = logoutId
+            };
+
+            if (User?.Identity.IsAuthenticated == true)
+            {
+                var idp = User.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
+                if (idp != null && idp != Duende.IdentityServer.IdentityServerConstants.LocalIdentityProvider)
+                {
+                    var providerSupportsSignout = await HttpContext.GetSchemeSupportsSignOutAsync(idp);
+                    if (providerSupportsSignout)
+                    {
+                        if (vm.LogoutId == null)
+                        {
+                            // if there's no current logout context, we need to create one
+                            // this captures necessary info from the current logged in user
+                            // before we signout and redirect away to the external IdP for signout
+                            //vm.LogoutId = await _interaction.CreateLogoutContextAsync();
+                        }
+
+                        vm.ExternalAuthenticationScheme = idp;
+                    }
+                }
+            }
+
+            return vm;
+        }
+
         private async Task<RegisterViewModel> BuildRegisterViewModelAsync(string? returnUrl)
         {
             //var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
@@ -568,6 +662,29 @@ namespace GreenHouse.Web.Controller.MVC.Account
             var vm = await BuildLoginViewModelAsync(model.ReturnUrl);
             vm.Username = model.Username;
             vm.RememberLogin = model.RememberLogin;
+            return vm;
+        }
+        private async Task<LogoutViewModel> BuildLogoutViewModelAsync(string logoutId)
+        {
+            var vm = new LogoutViewModel { LogoutId = logoutId, ShowLogoutPrompt = AccountOptions.ShowLogoutPrompt };
+
+            if (User?.Identity.IsAuthenticated != true)
+            {
+                // if the user is not authenticated, then just show logged out page
+                vm.ShowLogoutPrompt = false;
+                return vm;
+            }
+
+            //var context = await _interaction.GetLogoutContextAsync(logoutId);
+            //if (context?.ShowSignoutPrompt == false)
+            //{
+            //    // it's safe to automatically sign-out
+            //    vm.ShowLogoutPrompt = false;
+            //    return vm;
+            //}
+
+            // show the logout prompt. this prevents attacks where the user
+            // is automatically signed out by another malicious web page.
             return vm;
         }
         private async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl)
