@@ -1,0 +1,337 @@
+﻿@{
+    List<string> userRoleName = null;
+}
+@if (User.Identity.IsAuthenticated)
+{
+    var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
+
+    if (claimsIdentity != null)
+    {
+        userRoleName = claimsIdentity.FindAll("role").Select(a => a.Value).ToList();
+    }
+}
+<div id="divCPTabs" class="divCPTabs controlBox row">
+
+
+    <div class="cpPanelContainer" id="cpPanelContainer">
+        <div class="cpPanel">
+            <div class="cpPanelTop">
+                <div class="cpPanelTop_l">
+                </div>
+                <div class="cpPanelTop_r">
+                </div>
+                <div class="cpPanelTop_content">
+                    <div style="overflow: hidden">
+                    </div>
+                    <div class="cpHSeperator" style="visibility: hidden">
+                    </div>
+                </div>
+            </div>
+            <div class="cpPanelBody" id="cpPanelBody">
+                <div class="cpPanelBody_l">
+                </div>
+                <div class="cpPanelBody_r">
+                </div>
+                <div class="cpPanelBody_m">
+                    <div class="cpPanelBodyContents">
+                        <div id="divTotalContents">
+
+                            <style type="text/css">
+                                .ui-widget-overlay {
+                                    position: fixed !important;
+                                    top: 0;
+                                    left: 0;
+                                }
+
+                                .portlet-placeholder {
+                                    border: 2px dotted black;
+                                    margin: 0 1em 1em 0;
+                                    height: 50px;
+                                }
+
+                                .portlet-toggle {
+                                    position: absolute;
+                                    top: 50%;
+                                    right: 0;
+                                    margin-top: -8px;
+                                }
+
+                                .portlet-content {
+                                    padding: 0.4em;
+                                }
+                            </style>
+
+
+                            @if (userRoleName != null && userRoleName.Any(x => x.ToLower() != "customer"))
+                            {
+                                <div id="PanelContainer">
+
+                                    <div id="menuPabel">
+                                        <div class="dashboardToolbar">
+                                            <span id="showMenuBtn" class="dashboardSettingButtonDown btn btn-default" onclick="
+                                                 if (jQuery('#showMenuBtn').hasClass('dashboardSettingButtonDown'))
+                                                 {
+                                                     jQuery('#hiddenMenu').show('slow');
+                                                     jQuery('#showMenuBtn').removeClass('dashboardSettingButtonDown');
+                                                     jQuery('#showMenuBtn').addClass('dashboardSettingButtonUp');
+                                                     return false;
+                                                 }
+                                                 else {
+                                                     jQuery('#hiddenMenu').hide('slow');
+                                                     jQuery('#showMenuBtn').removeClass('dashboardSettingButtonUp');
+                                                     jQuery('#showMenuBtn').addClass('dashboardSettingButtonDown');
+                                                     return false;
+                                                 }"
+                                                  style="display:none"
+                                                  title="تنظیمات"></span>
+                                            <span id="showWidgetsBtn" class="dashboardWidgetsButtonDown btn btn-default" onclick="
+    if (jQuery('#showWidgetsBtn').hasClass('dashboardWidgetsButtonDown'))
+    {
+        jQuery('#hiddenWidgets').show('slow');
+        jQuery('#showWidgetsBtn').removeClass('dashboardWidgetsButtonDown');
+        jQuery('#showWidgetsBtn').addClass('dashboardWidgetsButtonUp');
+        return false;
+    }
+    else {
+        jQuery('#hiddenWidgets').hide('slow');
+        jQuery('#showWidgetsBtn').removeClass('dashboardWidgetsButtonUp');
+        jQuery('#showWidgetsBtn').addClass('dashboardWidgetsButtonDown');
+        return false;
+    }"
+                                                  title="افزودن ویجت"></span>
+                                        </div>
+                                        <div id="submenuContainer" s>
+                                            <div id="hiddenMenu" class="dashboardMenu" style="width: auto; display: none;">
+                                                <input type="button" id="saveDashboardBtn" value="ذخیره چیدمان کنونی" />
+                                                <input type="button" id="loadDefaultBtn" value="بارگذاری چیدمان پیشفرض" />
+                                            </div>
+                                            <div id="hiddenWidgets" class="dashboardMenu" style="width: auto; height: 95px; display: none;">
+                                                <table>
+
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="padding: 5px">
+                                                                نوع ویجت
+                                                            </td>
+                                                            <td style="padding: 5px">
+                                                                <select id="ddlWidgets" class="widgetsddl" style="width: 220px">
+                                                                </select>
+
+                                                            </td>
+
+                                                            <td style="padding: 5px">
+                                                                محل ویجت
+                                                            </td>
+                                                            <td>
+
+                                                                <select id="ddlContainers" class="widgetsddl" style="width: 200px">
+                                                                    <option text="" value="divTopDashboard"
+                                                                            data-image="../images/dashboard/Containers/1.gif">
+                                                                        بالا کامل
+                                                                    </option>
+                                                                    <option text="" value="divCenter1LeftDashboard"
+                                                                            data-image="../images/dashboard/Containers/2.gif">
+                                                                        وسط چپ عریض
+                                                                    </option>
+                                                                    <option text="" value="divCenter1RightDashboard"
+                                                                            data-image="../images/dashboard/Containers/3.gif">
+                                                                        وسط راست ستونی
+                                                                    </option>
+
+                                                                    <option text="" value="divCenter2LeftDashboard"
+                                                                            data-image="../images/dashboard/Containers/4.gif">
+                                                                        وسط چپ ستوی
+                                                                    </option>
+                                                                    <option text="" value="divCenter2RightDashboard"
+                                                                            data-image="../images/dashboard/Containers/5.gif">
+                                                                        وسط راست عریض
+                                                                    </option>
+                                                                    <option text="" value="divBottomDashboard"
+                                                                            data-image="../images/dashboard/Containers/6.gif">
+                                                                        پایین کامل
+                                                                    </option>
+
+                                                                </select>
+
+
+                                                            </td>
+                                                            <td style="padding: 5px">
+                                                                <input id="btnAddWidget" type="button" class="btn btn-outline-primary" value="افزودن ویجت" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="divTopDashboard" class="row dashcol dashRow ui-sortable" style="clear:both">
+                                    </div>
+                                    <div id="divCenter1Dashboard" class="row dashRow">
+
+                                        <div id="divCenter1RightDashboard" class="column dashcol col-md-4 ui-sortable">
+                                        </div>
+                                        <div id="divCenter1LeftDashboard" class="column dashcol col-md-8 ui-sortable">
+                                        </div>
+
+                                    </div>
+                                    <div id="divCenter2Dashboard" class="row dashRow">
+
+                                        <div id="divCenter2RightDashboard" class="column dashcol col-md-8 ui-sortable">
+                                        </div>
+                                        <div id="divCenter2LeftDashboard" class="column dashcol col-md-4 ui-sortable">
+                                        </div>
+
+                                    </div>
+                                    <div id="divBottomDashboard" class="row dashcol dashRow ui-sortable">
+                                    </div>
+
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="cpPanelBottom">
+                <div class="cpPanelBottom_l">
+                </div>
+                <div class="cpPanelBottom_r">
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="widgetSettingWindow" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-primary"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+
+
+                        <div id="widgetSetting">
+
+                            <div class="k-edit-label">
+                                <label for="widgetSettings_title" class="form-label">
+                                    عنوان:
+                                </label>
+                                <input id="widgetSettings_title" name="widgetSettings_title" type="text" class="form-control" />
+                            </div>
+
+
+                            <div class="k-edit-label">
+                                <label class="form-label" for="widgetSettings_height">
+                                    ارتفاع:
+                                </label>
+
+                                <input type="number" min="1" class="form-control" id="widgetSettings_height" name="widgetSettings_height"
+                                       data-val="true"
+                                       pattern="[0-9]+"
+                                       style="width:100px"
+                                       data-val-required="لطفا تعداد را وارد کنید"
+                                       data-msg-pattern="مقدار وارد شده معتبر نیست"
+                                       oninput="checkMaxValue(this.id,1)"
+                                       required>
+                                <div class="invalid-feedback" data-valmsg-for="widgetSettings_height" data-valmsg-replace="true" for="numberCompany"></div>
+                                px
+                            </div>
+
+
+                            <div class="">
+                                <button class="btn btn-success" id="widgetSettingSave">
+                                    ذخیره
+                                </button>
+                                <button class="btn btn-cancel" id="widgetSettingCancel" data-bs-dismiss="modal" aria-label="Close">
+                                    لغو
+                                </button>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div id="widgetConfigWindow" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-primary"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formLogs" class="row g-3 needs-validation">
+
+
+                            <div class="">
+                                <div id="widgetConfig">
+                                </div>
+                            </div>
+
+
+
+                            <div class="">
+                                <button class="k-button btnSave" id="widgetConfigSave">
+                                    ذخیره
+                                </button>
+                                <button class="k-button btnCancel" id="widgetConfigCancel">
+                                    لغو
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="log_details" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formLogs" class="row g-3 needs-validation">
+                    <input hidden type="text" id="idLog" />
+
+                    <div class="">
+                        <label for="validationCustom01" class="form-label"> جزئیات پیام</label>
+                        <div id="divMessageDetails" style="direction:ltr">
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <label for="validationCustom01" class="form-label"> جزئیات خطا</label>
+                        <div id="divErrorDetails" style="direction:ltr">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

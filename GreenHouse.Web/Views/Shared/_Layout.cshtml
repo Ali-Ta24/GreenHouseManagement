@@ -1,33 +1,938 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Microsoft.AspNetCore.Authentication
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Http
+@{
+    Layout = null;
+    System.Security.Claims.Claim userFirstName = null;
+    System.Security.Claims.Claim userLastName = null;
+    // System.Security.Claims.Claim userRole = null;
+    List<string> userRoleName = null;
+    //System.Security.Claims.Claim userUniversityID = null;
+    //System.Security.Claims.Claim userOrganizationUnitID = null;
+    //System.Security.Claims.Claim userOrganizationOfficeID = null;
+    //System.Security.Claims.Claim userUniversityName = null;
+    //System.Security.Claims.Claim userOrganizationUnitTitle = null;
+    //System.Security.Claims.Claim userOrganizationOfficeTitle = null;
+    //System.Security.Claims.Claim userHasVisitingResponsibility = null;
+    //System.Security.Claims.Claim userImpersonation = null;
+    //System.Security.Claims.Claim originalUsername = null;
+    var UserRoleNameShowToUser = "";
+}
+
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
+
+    if (claimsIdentity != null)
+    {
+        userFirstName = claimsIdentity.FindFirst("Given_Name");
+        userLastName = claimsIdentity.FindFirst("family_name");
+        userRoleName = claimsIdentity.FindAll("role").Select(a => a.Value).ToList();
+
+        //userUniversityID = claimsIdentity.FindFirst("UniversityID");
+        //userOrganizationUnitID = claimsIdentity.FindFirst("OrganizationUnitID");
+        //userOrganizationOfficeID = claimsIdentity.FindFirst("OrganizationOfficeID");
+        //userOrganizationOfficeTitle = claimsIdentity.FindFirst("OrganizationOfficeTitle");
+        //userOrganizationUnitTitle = claimsIdentity.FindFirst("OrganizationUnitTitle");
+        //userImpersonation = claimsIdentity.FindFirst("UserImpersonation");
+        //originalUsername = claimsIdentity.FindFirst("OriginalUsername");
+    }
+}
+else
+{
+
+}
+
+@{
+    ViewBag.lang = "fa";
+}
+<html lang="en" dir="@(((string)ViewBag.lang=="fa")?"rtl":"")">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--favicon-->
 
-    <title>Duende IdentityServer</title>
+    <link rel="icon" type="image/x-icon" href="~/PanelContent/logo/logo/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/PanelContent/logo/logo/android-chrome-512x512.png" />
+    <!--plugins-->
+    <!--plugins-notifications-->
+    <link rel="stylesheet" href="/PanelContent/rtl/assets/plugins/notifications/css/lobibox.min.css" />
 
-    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
-    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+    <link href="/PanelContent/rtl/assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap4-glyphicons/css/bootstrap-glyphicons.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="/PanelContent/rtl/assets/plugins/input-tags/css/tagsinput.css" rel="stylesheet" />
 
+    <link href="/PanelContent/rtl/assets/plugins/smart-wizard/css/smart_wizard_all.min.css" rel="stylesheet" type="text/css" />
+
+    <!--plugins-upload-->
+    <link href="/PanelContent/rtl/assets/plugins/fancy-file-uploader/fancy_fileupload.css" rel="stylesheet" />
+    <link href="/PanelContent/rtl/assets/plugins/Drag-And-Drop/dist/imageuploadify.min.css" rel="stylesheet" />
+
+    <!--plugins persian datepicker -->
+    <link href="/PanelContent/rtl/assets/plugins/datetimepicker/css/classic.css" rel="stylesheet" />
+    <link href="/PanelContent/rtl/assets/plugins/datetimepicker/css/classic.time.css" rel="stylesheet" />
+    <link href="/PanelContent/rtl/assets/plugins/datetimepicker/css/classic.date.css" rel="stylesheet" />
+    <link href="@(((string)ViewBag.lang=="fa")?"/PanelContent/rtl/assets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.min.css":"/PanelContent/ltr/assets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.min.css")" rel="stylesheet">
+    <link href="/PanelContent/rtl/assets/plugins/persiandatepicker/persian-datepicker-0.4.5.min.css" rel="stylesheet" />
+
+    <!--plugins select2 -->
+    <link href="@(((string)ViewBag.lang=="fa")?"/PanelContent/rtl/assets/plugins/select2/css/select2.min.css":"/PanelContent/ltr/assets/plugins/select2/css/select2.min.css")" rel="stylesheet" />
+    <link href="@(((string)ViewBag.lang=="fa")?"/PanelContent/rtl/assets/plugins/select2/css/select2-bootstrap4.css":"/PanelContent/ltr/assets/plugins/select2/css/select2-bootstrap4.css")" rel="stylesheet" />
+
+    <!--plugins necessary -->
+    <link href="/PanelContent/rtl/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="/PanelContent/rtl/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="/PanelContent/rtl/assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+
+    <!-- loader-->
+    @*        <link href="/PanelContent/rtl/assets/css/pace.min.css" rel="stylesheet" />
+    <script src="/PanelContent/rtl/assets/js/pace.min.js"></script>*@
+
+    <!-- Bootstrap CSS -->
+    <link href="@(((string)ViewBag.lang=="fa")?"/PanelContent/rtl/assets/css/bootstrap.min.css":"/PanelContent/ltr/assets/css/bootstrap.min.css")" rel="stylesheet">
+    <link href="@(((string)ViewBag.lang=="fa")?"/PanelContent/rtl/assets/css/bootstrap-extended.css":"/PanelContent/ltr/assets/css/bootstrap-extended.css")" rel="stylesheet">
+    <link href="@(((string)ViewBag.lang=="fa")?"/PanelContent/rtl/assets/css/app.css":"/PanelContent/ltr/assets/css/app.css")" rel="stylesheet">
+    <link href="/PanelContent/rtl/assets/css/icons.css" rel="stylesheet">
+    <!-- Theme Style CSS -->
+    <link rel="stylesheet" href="/PanelContent/rtl/assets/css/dark-theme.css" />
+    <link rel="stylesheet" href="/PanelContent/rtl/assets/css/semi-dark.css" />
+    <link rel="stylesheet" href="/PanelContent/rtl/assets/css/header-colors.css" />
+
+    <link rel="stylesheet" href="/lib/jQueryDatatable/datatables.css" />
+    <link rel="stylesheet" href="/lib/jQueryDatatable/DataTables-1.12.1/css/dataTables.bootstrap5.min.css" />
+
+
+    <link rel="stylesheet" href="/PanelContent/plugins/ImageViewer/imageviewer.css" />
+    <link rel="stylesheet" href="/css/NewFolder/ProfilePhoto.css" type="text/css" />
+    <link rel="stylesheet" href="/css/site.css" />
+    <link rel="stylesheet" href="/PanelContent/loading/loading.css" />
+    @await RenderSectionAsync("Csses", required: false)
+    <title>@ViewData["Title"] - سامانه مدیریت گلخانه</title>
+    <script>
+        @if (userRoleName == null || userRoleName.Any())
+        {
+            @: var userRoleName = '';
+            @:UserRoleNameShowToUser ='';
+        }
+    </script>
 </head>
-<body>
-    <partial name="_Nav" />
+<body class="@(((string)ViewBag.lang=="fa")?"rtl":"")">
+    <!--wrapper-->
+    <style>
+        .logo-icon {
+            width: 170px !important;
+        }
 
-    <div class="container body-container">
+        .topbar {
+            z-index: 1 !important
+        }
 
-        @RenderBody()
+        .blockLogo {
+            display: block
+        }
+
+        .noneLogo {
+            display: none
+        }
+
+    </style>
+
+    <div class="wrapper">
+        <!--sidebar wrapper -->
+        <div class="sidebar-wrapper" data-simplebar="true">
+            <div class="sidebar-header">
+
+
+                <a href="/">
+                    <img id="mainLgon" src="/PanelContent/logo/logo/newLogoBanaderWithSideText.png" class="logo-icon " alt="logo icon">
+                    <img id="smallLgon" src="/panelcontent/logo/logo/android-chrome-512x512.png" class="noneLogo" style="width:48px" alt="logo icon">
+                </a>
+                @*<div>
+                <h4 style="font-size:12px !important; text-align:center" class="logo-text">سامانه مدیریت گلخانه</h4>
+                </div>*@
+                <div class="toggle-icon ms-auto" onclick="toggleMenu()">
+                    <i class="bx bx-last-page"></i>
+                </div>
+                @*             <div class="toggle-icon ms-auto">
+                <i class="bx @(((string)ViewBag.lang=="fa")?"bx-last-page":"bx-first-page")"></i>
+                <i class="bx bx-last-page" ></i>
+                </div>*@
+            </div>
+
+            <!--navigation-->
+            <ul class="metismenu" id="menu">
+                @if (User.Identity.IsAuthenticated)
+                {
+
+                    @if (userRoleName != null && userRoleName.Any(x => x.ToLower() == "admin"))
+                    {
+
+
+                        <li>
+                            <a class="has-arrow" href="javascript:;">
+                                <div class="parent-icon">
+                                    <i class='bx bx-cog'></i>
+                                </div>
+                                <div class="menu-title">مدیریت</div>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="/Workflow/">
+                                        <div class="parent-icon">
+                                            <i class="bx @(((string)ViewBag.lang=="fa")?"bx-left-arrow-alt":"bx-right-arrow-alt")  ">
+                                            </i>
+                                        </div>
+                                        <div class="menu-title">  مدیریت چرخه های کاری سازمان</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/Administration/ControlPanel">
+                                        <div class="parent-icon">
+                                            <i class="bx @(((string)ViewBag.lang=="fa")?"bx-left-arrow-alt":"bx-right-arrow-alt")  "> </i>
+                                        </div>
+                                        <div class="menu-title"> پنل کنترل</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/IdentityManagement/UserManagement">
+                                        <div class="parent-icon">
+                                            <i class="bx @(((string)ViewBag.lang=="fa")?"bx-left-arrow-alt":"bx-right-arrow-alt")  "> </i>
+                                        </div>
+                                        <div class="menu-title">مدیریت کاربرهای سازمانی</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="/FacilityRegistration/Cartable">
+                                <div class="parent-icon">
+                                    <i class='lni lni-clipboard'></i>
+                                </div>
+                                <div class="menu-title">کارتابل تسهیلات</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="javascript:;">
+                                <div class="parent-icon">
+                                    <i class='bx bx-cog'></i>
+                                </div>
+                                <div class="menu-title">مالی</div>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="/FinancialCartable/Index">
+                                        <div class="parent-icon">
+                                            <i class="bx @(((string)ViewBag.lang=="fa")?"bx-left-arrow-alt":"bx-right-arrow-alt")  ">
+                                            </i>
+                                        </div>
+                                        <div class="menu-title">کارتابل</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    }
+                    else if (userRoleName != null && userRoleName.Any(x => x.ToLower() != "customer"))
+                    {
+                        <li>
+                            <a href="/FacilityRegistration/Cartable">
+                                <div class="parent-icon">
+                                    <i class='lni lni-clipboard'></i>
+                                </div>
+                                <div class="menu-title">کارتابل تسهیلات</div>
+                            </a>
+                        </li>
+                
+                        <li>
+                            <a class="has-arrow" href="javascript:;">
+                                <div class="parent-icon">
+                                    <i class='bx bx-cog'></i>
+                                </div>
+                                <div class="menu-title">مالی</div>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="/FinancialCartable/Index">
+                                        <div class="parent-icon">
+                                            <i class="bx @(((string)ViewBag.lang=="fa")?"bx-left-arrow-alt":"bx-right-arrow-alt")  ">
+                                            </i>
+                                        </div>
+                                        <div class="menu-title">کارتابل</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        @if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Any(a => a.ToLower() == "customer"))
+                        {
+                            <li>
+                                <a href="/CompanyRegistration/">
+                                    <div class="parent-icon">
+                                        <i class='bx bx-building'></i>
+                                    </div>
+                                    <div class="menu-title"> مشاهده و ویرایش اطلاعات شرکت</div>
+                                </a>
+                            </li>
+                        }
+
+                        <li>
+                            <a href="/FacilityRegistration/Cartable">
+                                <div class="parent-icon">
+                                    <i class='lni lni-clipboard'></i>
+                                </div>
+                                <div class="menu-title">کارتابل تسهیلات</div>
+                            </a>
+                        </li>
+                        @if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Any(a => a.ToLower() == "customer"))
+                        {
+                            <li>
+                                <a href="/FacilityRegistration/">
+                                    <div class="parent-icon">
+                                        <i class='lni lni-clipboard'></i>
+                                    </div>
+                                    <div class="menu-title"> درخواست تسهیلات روی طرح جدید</div>
+                                </a>
+                            </li>
+                        }
+
+                    }
+
+                    <li>
+                        <a href="/home/RolesOfOrganization">
+                            <div class="parent-icon">
+                                <i class="lni lni-book"></i>
+                            </div>
+                            <div class="menu-title">شرایط و ضوابط استفاده از تسهیلات وجوه اداره شده</div>
+                        </a>
+                    </li>
+                    @if (User.Identity.IsAuthenticated && userRoleName != null && (userRoleName.Any(a => a.ToLower() == "admin")
+                   || userRoleName.Any(a => a.ToLower() == "committee_user")
+                   || userRoleName.Any(a => a.ToLower() == "committee_admin")
+                   || userRoleName.Any(a => a.ToLower() == "committee_financialoffice_user")
+                   || userRoleName.Any(a => a.ToLower() == "committee_financialoffice_admin")))
+                    {
+                        <li>
+                            <a href="/OldFacilityRegistration/Archive">
+                                <div class="parent-icon">
+                                    <i class='bx bx-archive'></i>
+                                </div>
+                                <div class="menu-title">آرشیو تسهیلات قدیمی</div>
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+            <!--end navigation-->
+        </div>
+        <!--end sidebar wrapper -->
+        <!--start header -->
+        <header>
+            <div class="topbar d-flex align-items-center" style="z-index: 2 !important">
+                <nav class="navbar navbar-expand">
+                    <div class="mobile-toggle-menu">
+                        <i class='bx bx-menu'></i>
+                    </div>
+                    <div class="top-menu-left d-none d-lg-block">
+                        <ul class="nav">
+                            <li hidden class="nav-item">
+                                <a class="nav-link" href="#"><i class='bx bx-envelope'></i></a>
+                            </li>
+                            <li hidden class="nav-item">
+                                <a class="nav-link" href="#"><i class='bx bx-message'></i></a>
+                            </li>
+                            @* @if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Any(a => a.ToLower() != "customer"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/SessionManagement"><i class='bx bx-calendar' data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="مدیریت جلسات"></i></a>
+                                </li>
+                            } *@
+                            <li class="nav-item">
+                                <a class="nav-link" href="/InternalMessage/InternalMessage"><i class="bx bx-envelope" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="مدیریت پیام داخلی"></i></a>
+                            </li>
+                            @* <li class="nav-item">
+                                <a class="nav-link" href="/home/UserGuide"><i class="bx bx-message-square-error" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="راهنمای کاربری"></i></a>
+                            </li> *@
+                            <li hidden class="nav-item">
+                                <a class="nav-link" href="#"><i class='bx bx-check-square'></i></a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                    @if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Any(a => a.ToLower() == "customer"))
+                    {
+                        <div>
+                            <a class="btn btn-primary customerBtnNavbar" href="/CompanyRegistration">ثبت اطلاعات شرکت</a>
+                            <a class="btn btn-primary customerBtnNavbar" href="/FacilityRegistration">ثبت تسهیلات</a>
+                        </div>
+                    }
+                    <div class="search-bar flex-grow-1">
+                        <div class="position-relative search-bar-box">
+                            <input type="text" class="form-control search-control" placeholder="جستجو ..."> <span class="position-absolute top-50 search-show translate-middle-y"><i class='bx bx-search'></i></span>
+                            <span class="position-absolute top-50 search-close translate-middle-y"><i class='bx bx-x'></i></span>
+                        </div>
+                    </div>
+                    <div class="top-menu ms-auto">
+                        <ul class="navbar-nav align-items-center">
+                            <li hidden class="nav-item mobile-search-icon">
+                                <a class="nav-link" href="#">
+                                    <i class='bx bx-search'></i>
+                                </a>
+                            </li>
+                            <li hidden class="nav-item dropdown dropdown-large">
+                                <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class='bx bx-category'></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <div class="row row-cols-3 g-3 p-3">
+                                        <div class="col text-center">
+                                            <div class="app-box mx-auto bg-gradient-cosmic text-white">
+                                                <i class='bx bx-group'></i>
+                                            </div>
+                                            <div class="app-title">تیم ها</div>
+                                        </div>
+                                        <div class="col text-center">
+                                            <div class="app-box mx-auto bg-gradient-burning text-white">
+                                                <i class='bx bx-atom'></i>
+                                            </div>
+                                            <div class="app-title">پروژه ها</div>
+                                        </div>
+                                        <div class="col text-center">
+                                            <div class="app-box mx-auto bg-gradient-lush text-white">
+                                                <i class='bx bx-shield'></i>
+                                            </div>
+                                            <div class="app-title">وظایف</div>
+                                        </div>
+                                        <div class="col text-center">
+                                            <div class="app-box mx-auto bg-gradient-kyoto text-dark">
+                                                <i class='bx bx-notification'></i>
+                                            </div>
+                                            <div class="app-title">نظرات</div>
+                                        </div>
+                                        <div class="col text-center">
+                                            <div class="app-box mx-auto bg-gradient-blues text-dark">
+                                                <i class='bx bx-file'></i>
+                                            </div>
+                                            <div class="app-title">فایل ها</div>
+                                        </div>
+                                        <div class="col text-center">
+                                            <div class="app-box mx-auto bg-gradient-moonlit text-white">
+                                                <i class='bx bx-filter-alt'></i>
+                                            </div>
+                                            <div class="app-title">هشدار ها</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li hidden class="nav-item dropdown dropdown-large">
+                                <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="alert-count">7</span>
+                                    <i class='bx bx-bell'></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a href="javascript:;">
+                                        <div class="msg-header">
+                                            <p class="msg-header-title">اعلان ها</p>
+                                            <p class="msg-header-clear ms-auto">علامت گذاری همه به عنوان خوانده شده</p>
+                                        </div>
+                                    </a>
+                                    <div class="header-notifications-list">
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-primary text-primary">
+                                                    <i class="bx bx-group"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">کاربران جدید<span class="msg-time float-end">14 ثانیه پیش</span></h6>
+                                                    <p class="msg-info">5 کاربر جدید ثبت نام کردند</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-danger text-danger">
+                                                    <i class="bx bx-cart-alt"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">سفارشات جدید <span class="msg-time float-end">2 دقیقه پیش</span></h6>
+                                                    <p class="msg-info">شما یک سفارش جدید دریافت کردید</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-success text-success">
+                                                    <i class="bx bx-file"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">24 فایل PDF<span class="msg-time float-end">19 دقیقه پیش</span></h6>
+                                                    <p class="msg-info">فایل های pdf جدید تولید شدند</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-warning text-warning">
+                                                    <i class="bx bx-send"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">زمان پاسخگویی <span class="msg-time float-end">28 دقیقه پیش</span></h6>
+                                                    <p class="msg-info">میانگین زمان پاسخوگیی 5.1 دقیقه است</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-info text-info">
+                                                    <i class="bx bx-home-circle"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">
+                                                        تایید محصول جدید <span class="msg-time float-end">2 ساعت پیش</span>
+                                                    </h6>
+                                                    <p class="msg-info">محصول جدید شما تایید شد</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-danger text-danger">
+                                                    <i class="bx bx-message-detail"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">دیدگاه جدید <span class="msg-time float-end">4 ساعت پیش</span></h6>
+                                                    <p class="msg-info">دیدگاه های جدید کاربران دریافت شد</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-success text-success">
+                                                    <i class='bx bx-check-square'></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">ارسال محصول شما <span class="msg-time float-end">5 ساعت پیش</span></h6>
+                                                    <p class="msg-info">محصول شما با موفقیت ارسال شد</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-primary text-primary">
+                                                    <i class='bx bx-user-pin'></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">24 نویسنده جدید<span class="msg-time float-end">1 روز پیش</span></h6>
+                                                    <p class="msg-info">در هفته گذشته 24 نویسنده جدید به شرکت پیوست</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-warning text-warning">
+                                                    <i class='bx bx-door-open'></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">هشدار های دفاعی <span class="msg-time float-end">2 هفته پیش</span></h6>
+                                                    <p class="msg-info">45% هشدار کمتر در 4 هفته گذشته</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <a href="javascript:;">
+                                        <div class="text-center msg-footer">مشاهده همه اعلان ها</div>
+                                    </a>
+                                </div>
+                            </li>
+                            <li hidden class="nav-item dropdown dropdown-large">
+                                <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="alert-count">8</span>
+                                    <i class='bx bx-comment'></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a href="javascript:;">
+                                        <div class="msg-header">
+                                            <p class="msg-header-title">پیغام ها</p>
+                                            <p class="msg-header-clear ms-auto">علامت گذاری همه به عنوان خوانده شده</p>
+                                        </div>
+                                    </a>
+                                    <div class="header-message-list">
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-online">
+                                                    <img src="/PanelContent/rtl/assets/images/avatars/avatar-1.png" class="msg-avatar" alt="user avatar">
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">رضا افشار <span class="msg-time float-end">5 ثانیه پیش</span></h6>
+                                                    <p class="msg-info">این یک پیام استاندارد است</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-online">
+                                                    <img src="/PanelContent/rtl/assets/images/avatars/avatar-2.png" class="msg-avatar" alt="user avatar">
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">پریسا توکلی <span class="msg-time float-end">14 ثانیه پیش</span></h6>
+                                                    <p class="msg-info">پکیج های جدید منتشر شدند</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-online">
+                                                    <img src="/PanelContent/rtl/assets/images/avatars/avatar-3.png" class="msg-avatar" alt="user avatar">
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">پدرام شریفی <span class="msg-time float-end">8 دقیقه پیش</span></h6>
+                                                    <p class="msg-info">نسخه جدید قالب به روز رسانی شد</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-online">
+                                                    <img src="/PanelContent/rtl/assets/images/avatars/avatar-4.png" class="msg-avatar" alt="user avatar">
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">یلدا رسولی <span class="msg-time float-end">15 دقیقه پیش</span></h6>
+                                                    <p class="msg-info">اولین نسخه اپلیکیشن به درستی ایجاد شد</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-online">
+                                                    <img src="/PanelContent/rtl/assets/images/avatars/avatar-5.png" class="msg-avatar" alt="user avatar">
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">امیر صبوری <span class="msg-time float-end">22 دقیقه پیش</span></h6>
+                                                    <p class="msg-info">لورم ایپسوم متن ساختگی نامفهوم</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-online">
+                                                    <img src="/PanelContent/rtl/assets/images/avatars/avatar-6.png" class="msg-avatar" alt="user avatar">
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">ساناز پگاه <span class="msg-time float-end">2 ساعت پیش</span></h6>
+                                                    <p class="msg-info">ویژگی های جدید محصول تعریف شد</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-online">
+                                                    <img src="/PanelContent/rtl/assets/images/avatars/avatar-7.png" class="msg-avatar" alt="user avatar">
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">سعید صادقی <span class="msg-time float-end">4 ساعت پیش</span></h6>
+                                                    <p class="msg-info">لورم اپیسوم متن ساختگی</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-online">
+                                                    <img src="/PanelContent/rtl/assets/images/avatars/avatar-8.png" class="msg-avatar" alt="user avatar">
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">فریبا سبحانی <span class="msg-time float-end">6 ساعت پیش</span></h6>
+                                                    <p class="msg-info">این مورد در 1960 ثانیه محبوب شد</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-online">
+                                                    <img src="/PanelContent/rtl/assets/images/avatars/avatar-9.png" class="msg-avatar" alt="user avatar">
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">علیرضا قربانی <span class="msg-time float-end">2 ساعت پیش</span></h6>
+                                                    <p class="msg-info">نسخه جدید قالب به روز رسانی شد</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-online">
+                                                    <img src="/PanelContent/rtl/assets/images/avatars/avatar-10.png" class="msg-avatar" alt="user avatar">
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">محمد خالقی <span class="msg-time float-end">2 روز پیش</span></h6>
+                                                    <p class="msg-info">شما می توانید این پیام را ذخیره کنید</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-online">
+                                                    <img src="/PanelContent/rtl/assets/images/avatars/avatar-11.png" class="msg-avatar" alt="user avatar">
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">جواد علیپور <span class="msg-time float-end">5 روز پیش</span></h6>
+                                                    <p class="msg-info">لورم ایپسوم متن ساختگی نامفهوم</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <a href="javascript:;">
+                                        <div class="text-center msg-footer">مشاهده همه پیغام ها</div>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="user-box dropdown">
+                            <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @*<form asp-action="GetProfilePhoto" asp-controller="User">*@
+
+                                @*<img src="/api/User/GetProfilePhoto" class="user-img" alt="user profile">*@
+                                <img src="/PanelContent/logo/logo/logo-IVS.jpg" class="user-img" alt="user avatar">
+                                @*</form>*@
+                                @*<img src="/PanelContent/logo/logo/logo-IVS.jpg" class="user-img" alt="user profile">*@
+                                <div class="user-info ps-3">
+                                    <p class="user-name mb-0">
+                                        @Html.Raw(userFirstName != null ? userFirstName.Value : "") <text>&nbsp;</text> @Html.Raw(userLastName != null ? userLastName.Value : "")
+                                    </p>
+                                    <p class="designattion mb-0" id="nameRole"></p>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="/Home/UserProfile"><i class="bx bx-user"></i><span>پروفایل</span></a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/"><i class='bx bx-home-circle'></i><span>داشبورد</span></a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/home/UserGuide"><i class="  bx bx-message-square-error"></i><span>راهنمای کاربری</span></a>
+                                </li>
+                                <li>
+                                    <div class="dropdown-divider mb-0"></div>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-action="Logout" asp-controller="Home">
+                                        <i class='bx bx-log-out-circle'></i>
+                                        خروج
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+
+                        <a class="nav-link" asp-action="Login" asp-controller="Home">
+                            ورود
+                        </a>
+
+                    }
+                </nav>
+            </div>
+        </header>
+        <!--end header -->
+        <!--start page wrapper -->
+        <div class="page-wrapper">
+            <div class="page-content">
+                @RenderBody()
+            </div>
+        </div>
+        <!--end page wrapper -->
+        <!--start overlay-->
+        <div class="overlay toggle-icon"></div>
+        <!--end overlay-->
+        <!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
+        <!--End Back To Top Button-->
+        <footer class="page-footer">
+            <span class="mb-0">کپی رایت © <span id="copyRight"></span> تمامی حقوق محفوظ است</span>  <span style="margin:0 5px">|</span>  <span>شماره پشتیبانی فنی: 91079127 - داخلی 180</span>
+        </footer>
     </div>
+    <!--end wrapper-->
+    <!--start switcher-->
+    <!--end switcher-->
+    <div class="modal" id="alertProvider" role="dialog" aria-hidden="true" style="z-index:2060">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alertProvider_title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="alertProvider_inner" class="alert border-0 border-start border-5 border-success alert-dismissible fade show py-2" role="alert">
+                        <div id="alertProvider_message">
+                        </div>
+                    </div>
+                </div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    @RenderSection("scripts", required: false)
+            </div>
+        </div>
+    </div>
+    <!--start Bootstrap JS -->
+    <script src="/PanelContent/rtl/assets/js/bootstrap.bundle.min.js"></script>
+    <!--end Bootstrap JS -->
+    <!--start plugins-->
+    <!--start necessary plugins-->
+    @await RenderSectionAsync("ScriptsJqueryOlder", required: false)
+
+    <script src="/PanelContent/rtl/assets/js/jquery.min.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/simplebar/js/simplebar.min.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/metismenu/js/metisMenu.min.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+    <script src="/scripts/common/htmlminify.js"></script>
+    <script src="~/scripts/common/commonstrings.js"></script>
+    <script src="~/Scripts/Common/RoleName.js"></script>
+    <script src="/PanelContent/plugins/bootbox/bootbox.js"></script>
+    <script src="/PanelContent/plugins/bootbox/bootbox.locales.js"></script>
+
+    <script>
+        @{
+            var context = new HttpContextAccessor().HttpContext;
+            var accessToken = await context.GetTokenAsync("access_token");
+        }
+            $(function () {
+                $(document).ajaxSend(function (event, request, settings) {
+                    //console.log("Setting bearer token.");
+                    if (request.headers) {
+                        request.headers.Authorization = 'Bearer ' + '@accessToken';
+                    } else {
+                        request.headers = { 'Authorization': 'Bearer ' + '@accessToken' };
+                    }
+                });
+            });
+    </script>
+
+    <!--end necessary plugins-->
+
+    <script src="/PanelContent/rtl/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+
+
+    <script src="/PanelContent/rtl/assets/plugins/input-tags/js/tagsinput.js"></script>
+
+    <script src="/PanelContent/rtl/assets/plugins/smart-wizard/js/jquery.smartWizard.min.js"></script>
+
+    <script src='/PanelContent/rtl/assets/plugins/tinymce-rtl/tinymce.js'></script>
+    <script src='@(((string)ViewBag.lang=="fa")?"/PanelContent/rtl/assets/plugins/ckeditor/ckeditor.js":"") '></script>
+
+    <script src="/PanelContent/rtl/assets/plugins/fancy-file-uploader/jquery.ui.widget.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/fancy-file-uploader/jquery.fileupload.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/fancy-file-uploader/jquery.iframe-transport.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/Drag-And-Drop/dist/imageuploadify.min.js"></script>
+
+    <script src="/PanelContent/rtl/assets/plugins/datetimepicker/js/legacy.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/datetimepicker/js/picker.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/datetimepicker/js/picker.time.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/datetimepicker/js/picker.date.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/persiandatepicker/persian-date-0.1.8.min.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/persiandatepicker/persian-datepicker-0.4.5.min.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js"></script>
+
+    <script src="/PanelContent/rtl/assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js"></script>
+
+    <script src="/PanelContent/rtl/assets/plugins/select2/js/select2.min.js"></script>
+
+    <!--notification js -->
+    <script src="/PanelContent/rtl/assets/plugins/notifications/js/lobibox.min.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/notifications/js/notifications.min.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/notifications/js/notification-custom-script.js"></script>
+
+    <!--jalali-moment js -->
+    <script src="/PanelContent/ltr/assets/plugins/jalali-moment/jalali-moment.browser.js"></script>
+    <script>
+        var getDateNow = moment().locale('fa').format('YYYY');
+        document.getElementById('copyRight').innerHTML = getDateNow;
+    </script>
+
+    <!--chart js -->
+    @*     <script src="/PanelContent/rtl/assets/plugins/chartjs/js/Chart.min.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/chartjs/js/chartjs-custom.js"></script>*@
+
+    <!--image viewer js -->
+    <script src="/PanelContent/plugins/ImageViewer/imageviewer.min.js"></script>
+
+
+    <!-- highcharts js -->
+    <script src="/PanelContent/loading/loading.js"></script>
+
+    @*    <script src="/PanelContent/rtl/assets/plugins/highcharts/js/highcharts.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/highcharts/js/highcharts-more.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/highcharts/js/variable-pie.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/highcharts/js/solid-gauge.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/highcharts/js/highcharts-3d.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/highcharts/js/cylinder.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/highcharts/js/funnel3d.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/highcharts/js/exporting.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/highcharts/js/export-data.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/highcharts/js/accessibility.js"></script>
+    <script src="/PanelContent/rtl/assets/plugins/highcharts/js/highcharts-custom.script.js"></script>*@
+
+    <script src="/PanelContent/plugins/cleave/cleave.min.js"></script>
+    <script src="/PanelContent/plugins/cleave/cleavePhone.js"></script>
+    <script src="/PanelContent/plugins/PersianTools/persian-tools.js"></script>
+    <script src="/Scripts/Plugins/common/drapdownPlugin.js"></script>
+
+    <script src="/js/site.js"></script>
+    <script src="~/scripts/notify.min.js"></script>
+    <!--end plugins-->
+    <!--start app JS-->
+    <script src="/PanelContent/rtl/assets/js/app.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("LastScripts", required: false)
+
+    <script>
+        $(function () {
+            $('[data-bs-toggle="popover"]').popover();
+            $('[data-bs-toggle="tooltip"]').tooltip();
+
+            $.ajaxSetup({
+                error: function (x, e) {
+                    //console.log(x);
+                    //console.log(e);
+                    if (x.status == 401) {
+                        // alert("Unauthorized Access");
+                        window.location.replace(x.getResponseHeader("login-address"));
+                    }
+                }
+            });
+        });
+
+        //$(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
+
+        //    if (xhr.status == 401) {
+        //        // alert("Unauthorized Access");
+        //         window.location.replace(x.getResponseHeader("login-address"));
+        //     }
+        //});
+    </script>
+    <script>
+        document.getElementById("nameRole").innerHTML = GetRoleName("@userRoleName?[0].ToString()");
+
+        function toggleMenu() {
+
+            var smallLgon = document.getElementById("smallLgon");
+            smallLgon.classList.toggle("noneLogo");
+
+            var mainLgon = document.getElementById("mainLgon");
+            mainLgon.classList.toggle("noneLogo");
+        }
+    </script>
+    <!--end app JS-->
+
 </body>
+
 </html>

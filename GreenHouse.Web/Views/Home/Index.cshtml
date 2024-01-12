@@ -1,6 +1,273 @@
 ﻿@{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    System.Security.Claims.Claim userRoleName = null;
+    if (User.Identity.IsAuthenticated)
+    {
 
-<h1>Index</h1>
+        var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
+
+        if (claimsIdentity != null)
+        {
+            userRoleName = claimsIdentity.FindFirst("role");
+
+        }
+    }
+    else
+    {
+
+    }
+}
+<link href="/css/msdropdown/dd.css" rel="stylesheet" />
+<link href="/css/jqueryui/jquery-ui.css" rel="stylesheet" />
+<link href="/css/jqueryui/jquery-ui.structure.css" rel="stylesheet" />
+<link href="/css/jqueryui/jquery-ui.theme.css" rel="stylesheet" />
+<link href="/css/dashboard/dashboard.css" rel="stylesheet" />
+
+
+
+
+
+@if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Value.
+ToLower() != "customer")
+{
+    @*<div class="row row-cols-1 row-cols-lg-2">*@
+    <div class="row ">
+        <div class="col-xl-6 col-lg-6">
+            <div class="card radius-10 overflow-hidden bg-gradient-cosmic" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="تعداد کل تسهیلاتی که ثبت درخواست آنها قبلا بوسیله متقاضی نهایی شده و در سیستم جهت بررسی در حال طی فرآیند تایید میباشند">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-white title-info-topDash">تعداد کل تسهیلات در فرآیند تایید</p>
+                            <br />
+                            <h3 class="mb-0 text-white value-info-topDash" id="totalInAcceptanceProgressFacilities">درحال دریافت</h3>
+                            <i data-bs-toggle="popover" data-bs-placement="bottom"
+                               data-bs-content="تعداد کل تسهیلات در فرآیند تایید: تعداد کل تسهیلاتی که ثبت درخواست آنها قبلا بوسیله متقاضی نهایی شده و در سیستم جهت بررسی در حال طی فرآیند تایید میباشند" class="text-white showDetailsWidget bx bx-info-circle cursor-pointer"></i>
+
+                        </div>
+                        <div class="ms-auto text-white icon-info-topDash">
+                            <i class="font-35 bx bx-check-double"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6">
+            <div class="card radius-10 overflow-hidden bg-gradient-burning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="مبلغ درخواستی کل تسهیلاتی که ثبت درخواست آنها قبلا بوسیله متقاضی نهایی شده و در سیستم جهت بررسی در حال طی فرآیند تایید میباشند">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-white title-info-topDash">مبلغ کل تسهیلات در فرآیند تایید</p>
+                            <br />
+                            <h3 class="mb-0 text-white value-info-topDash"><span id="totalInAcceptanceProgressFacilityAmounts">درحال دریافت</span></h3>
+                            <i data-bs-toggle="popover" data-bs-placement="bottom"
+                               data-bs-content="مبلغ کل تسهیلات در فرآیند تایید: مبلغ درخواستی کل تسهیلاتی که ثبت درخواست آنها قبلا بوسیله متقاضی نهایی شده و در سیستم جهت بررسی در حال طی فرآیند تایید میباشند" class="showDetailsWidget text-white bx bx-info-circle cursor-pointer"></i>
+
+                        </div>
+                        <div class="ms-auto text-white icon-info-topDash">
+                            <i class="font-35 bx bx-money"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6">
+            <div class="card radius-10 overflow-hidden bg-gradient-Ohhappiness" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="تعداد کل تسهیلاتی که در فرآیند تاییدشان نهایی شده و در حال طی چرخه مالی میباشند">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-white title-info-topDash">تعداد کل تسهیلات در فرآیند مالی</p>
+                            <br />
+                            <h3 class="mb-0 text-white value-info-topDash" id="totalInFinancialProgressFacilities">درحال دریافت</h3>
+                            <i data-bs-toggle="popover" data-bs-placement="bottom"
+                               data-bs-content="تعداد کل تسهیلات در فرآیند مالی : تعداد کل تسهیلاتی که در فرآیند تاییدشان نهایی شده و در حال طی چرخه مالی میباشند" class="text-white  showDetailsWidget bx bx-info-circle cursor-pointer"></i>
+
+                        </div>
+                        <div class="ms-auto text-white icon-info-topDash">
+                            <i class="font-35 bx bx-wallet-alt"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6">
+            <div class="card radius-10 overflow-hidden bg-gradient-moonlit" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="تعداد کل شرکتهایی که در سامانه ثبت نام کرده اند">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-white title-info-topDash">تعداد کل شرکتهای ثبت نام کرده</p>
+                            <br />
+                            <h3 class="mb-0 text-white value-info-topDash" id="totalRegisteredCompanies">درحال دریافت</h3>
+                            <i data-bs-toggle="popover" data-bs-placement="bottom"
+                               data-bs-content="تعداد کل شرکتهای ثبت نام کرده: تعداد کل شرکتهایی که در سامانه ثبت نام کرده اند" class="text-white showDetailsWidget bx bx-info-circle cursor-pointer"></i>
+
+                        </div>
+                        <div class="ms-auto text-white icon-info-topDash">
+                            <i class=" font-35 bx bx-buildings"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@if (User.Identity.IsAuthenticated)
+{
+    @if (userRoleName != null && userRoleName.Value.ToLower() == "customer")
+    {
+        <div class="row ">
+
+            <div class="col-xl-6 col-lg-6">
+                <div class="card radius-10 bg-success heightWidgetCustomer">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <p class="mb-0 text-white c-title-info-topDash">مجموع باز پرداخت تسهیلات تا کنون</p>
+                                <br />
+                                <h4 class="my-1 text-white c-value-info-topDash">در دست ساخت</h4>
+                            </div>
+                            <div class="widgets-icons bg-white text-success ms-auto">
+                                <i class="bx bxs-wallet"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6">
+                <div class="card radius-10 bg-info heightWidgetCustomer">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <p class="mb-0 text-dark c-title-info-topDash">تعداد بازدید شما از سایت </p>
+                                <br />
+                                <h4 class="my-1 text-dark c-value-info-topDash" id="loginCount">درحال دریافت</h4>
+                            </div>
+                            <div class="widgets-icons bg-white text-dark ms-auto">
+                                <i class="bx bxs-group"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6">
+                <div class="card radius-10 bg-danger heightWidgetCustomer">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <p class="mb-0 text-white c-title-info-topDash">مرحله فعلی چرخه دریافت تسهیلات</p>
+                                <br />
+                                <div id="companyLatestInProgressFacilityState" class="text-white c-value-info-topDash mw-100"><h4 class="text-white">درحال دریافت</h4></div>
+                            </div>
+                            <div class="widgets-icons bg-white text-danger ms-auto">
+                                <i class="bx bxs-binoculars"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6">
+                <div class="card radius-10 bg-warning heightWidgetCustomer">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <p class="mb-0 text-dark c-title-info-topDash">نرخ پیشرفت مراحل تسهیلات</p>
+                                <br />
+                                <div id="companyLatestInProgressFacilityProgressPercent" class="c-value-info-topDash"><h4 class="my-1 text-dark ">درحال دریافت</h4></div>
+                            </div>
+                            <div class="widgets-icons bg-white text-dark ms-auto">
+                                <i class="bx bx-line-chart-down"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col">
+
+            @if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Value.ToLower() == "customer")
+            {
+                <div id="FacilityNotApprovedForCustomer"></div>
+            }
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+
+            @Html.Partial("~/Views/shared/Dashboard/_dashboardSchema.cshtml")
+
+        </div>
+    </div>
+}
+
+
+@section scripts {
+    <script>
+        var dashboardWidgets = [];
+    </script>
+    <script src="/lib/apexcharts-bundle/js/apexcharts.min.js"></script>
+    <script src="/Scripts/FacilityRegistration/WidgetFacility.js"> </script>
+    <script src="/Scripts/jQueryUI/jquery-ui.min.js"></script>
+    <script src="/Scripts/MSDropdown/jquery.dd.min.js"></script>
+    <script src="/Scripts/print/jquery.printElementModified.js"></script>
+    <script src="/Scripts/Dashboard/dashboardStrs.js"> </script>
+    <script src="/Scripts/Dashboard/dashboardModuleContainer.js"> </script>
+    <script src="/Scripts/Dashboard/widgetInstantiator.js"> </script>
+
+    <script src="/scripts/dashboard/widgets/w_averagesteptimes.js"></script>
+    <script src="/scripts/dashboard/widgets/w_registeredAndAcceptedRequestAmountsByTimePeriod.js"></script>
+    <script src="/scripts/dashboard/widgets/w_registeredAndAcceptedRequestByTimePeriod.js"></script>
+    <script src="/scripts/dashboard/widgets/w_GetCountOfFacilityInSpecialStep.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            //GetAllFacilityRequests();
+
+            var moduleContainer = jQuery(".cpPanel").dashboardModuleContainer({
+                dashboardTabsType: 'maindash',
+            });
+            //console.log(moduleContainer);
+            moduleContainer.reBind('maindash');
+        })
+    </script>
+
+    <script>
+
+        $(function () {
+            $('[data-bs-toggle="popover"]').popover();
+            $('[data-bs-toggle="tooltip"]').tooltip();
+
+
+        })
+
+    </script>
+
+
+
+    @if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Value.ToLower() != "customer" && userRoleName.Value.ToLower() != "thirdParty")
+    {
+        <script src="/Scripts/home/coreReportsForOrgUser.js"></script>
+        <script src="/Scripts/home/financialReportsForOrgUser.js"></script>
+    }
+
+    @if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Value.ToLower() == "customer")
+    {
+        <script src="/Scripts/home/coreReportsForCustomer.js"></script>
+        <script src="/scripts/FacilityRegistration/FacilityNotApprovedForCustomer.js"></script>
+
+        <script>
+            $('#FacilityNotApprovedForCustomer').FacilityNotApprovedForCustomer();
+        </script>
+    }
+
+}
+
