@@ -1,8 +1,8 @@
-﻿using GreenHouse.DomainEntitty.Identity;
+﻿using GreenHouse.DomainEntity.Identity;
 using GreenHouse.Model;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GreenHouse.DomainEntitty
+namespace GreenHouse.DomainEntity
 {
     [Table("UserGreenhouseHall")]
     public class UserGreenhouseHallEntity : UserGreenhouseHall

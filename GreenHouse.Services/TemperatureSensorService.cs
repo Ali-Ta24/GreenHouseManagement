@@ -1,6 +1,6 @@
 ﻿using GreenHouse.DataAccess.UnitOfWork;
-using GreenHouse.DomainEntitty;
-using GreenHouse.DomainEntitty.Views;
+using GreenHouse.DomainEntity;
+using GreenHouse.DomainEntity.Views;
 using GreenHouse.Model;
 using Microsoft.Extensions.Logging;
 using MZBase.Infrastructure;
@@ -175,9 +175,9 @@ namespace GreenHouse.Services
             return item;
         }
 
-        public async Task<LinqDataResult<TemperatureSensor>> GetTemperatureSensors(LinqDataRequest request, int greenhouseId)
+        public async Task<LinqDataResult<TemperatureSensorViewEntity>> GetTemperatureSensors(LinqDataRequest request, int greenhouseId)
         {
-            LinqDataResult<TemperatureSensor> item = new LinqDataResult<TemperatureSensor>();
+            LinqDataResult<TemperatureSensorViewEntity> item = new LinqDataResult<TemperatureSensorViewEntity>();
             try
             {
                 item.Data = await _unitOfWork.TemperatureSensors.GetTemperatureSensorsByGreenhouseHall(greenhouseId);

@@ -9,5 +9,6 @@
         public DateTime LastModificationTime { get; set; }
         public string TemperatureSensorName { get; set; }
         public string HallName { get; set; }
+        public int GreenhouseHallID { get; set; }
     }
 }

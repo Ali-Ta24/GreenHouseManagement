@@ -1,4 +1,4 @@
-﻿using GreenHouse.DomainEntitty;
+﻿using GreenHouse.DomainEntity;
 using GreenHouse.DomainEntity.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

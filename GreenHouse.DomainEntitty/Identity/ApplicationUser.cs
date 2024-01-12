@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace GreenHouse.DomainEntitty.Identity
+namespace GreenHouse.DomainEntity.Identity
 {
     public class ApplicationUser : IdentityUser
     {

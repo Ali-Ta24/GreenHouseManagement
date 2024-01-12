@@ -1,5 +1,5 @@
 ﻿using GreenHouse.DataAccess.Context;
-using GreenHouse.DomainEntitty.Identity;
+using GreenHouse.DomainEntity.Identity;
 using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;

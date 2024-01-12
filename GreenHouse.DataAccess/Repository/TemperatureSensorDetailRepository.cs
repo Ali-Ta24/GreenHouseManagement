@@ -1,6 +1,6 @@
 ﻿using GreenHouse.DataAccess.Context;
 using GreenHouse.DataAccess.Repository.Interfaces;
-using GreenHouse.DomainEntitty;
+using GreenHouse.DomainEntity;
 using GreenHouse.Model;
 using Microsoft.EntityFrameworkCore;
 using MZBase.EntityFrameworkCore;

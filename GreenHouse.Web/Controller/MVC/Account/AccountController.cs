@@ -1,6 +1,6 @@
 ﻿using Duende.IdentityServer.Extensions;
 using GreenHouse.DataAccess.Context;
-using GreenHouse.DomainEntitty.Identity;
+using GreenHouse.DomainEntity.Identity;
 using GreenHouse.Services;
 using GreenHouse.Web.Controller.Model;
 using GreenHouse.Web.IdentityServerHost;

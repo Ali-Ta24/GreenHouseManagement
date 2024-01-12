@@ -1,5 +1,5 @@
 ﻿using GreenHouse.DataAccess.UnitOfWork;
-using GreenHouse.DomainEntitty;
+using GreenHouse.DomainEntity;
 using GreenHouse.Model;
 using Microsoft.Extensions.Logging;
 using MZBase.Infrastructure;

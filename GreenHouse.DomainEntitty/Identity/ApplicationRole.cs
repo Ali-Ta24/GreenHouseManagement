@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace GreenHouse.DomainEntitty.Identity
+namespace GreenHouse.DomainEntity.Identity
 {
     public class ApplicationRole : IdentityRole
     {

@@ -1,4 +1,4 @@
-﻿using GreenHouse.DomainEntitty.Identity;
+﻿using GreenHouse.DomainEntity.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

@@ -1,7 +1,7 @@
 using GreenHouse.DataAccess;
 using GreenHouse.DataAccess.Context;
 using GreenHouse.DataAccess.UnitOfWork;
-using GreenHouse.DomainEntitty.Identity;
+using GreenHouse.DomainEntity.Identity;
 using GreenHouse.Services;
 using GreenHouse.Web.Initializer;
 using GreenHouse.Web.Library;

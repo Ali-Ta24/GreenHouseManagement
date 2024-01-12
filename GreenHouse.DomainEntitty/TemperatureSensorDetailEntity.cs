@@ -1,7 +1,7 @@
 ﻿using GreenHouse.Model;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GreenHouse.DomainEntitty
+namespace GreenHouse.DomainEntity
 {
     [Table("TemperatureSensorDetail")]
     public class TemperatureSensorDetailEntity : TemperatureSensorDetail
