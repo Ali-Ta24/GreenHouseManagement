@@ -55,7 +55,7 @@ namespace GreenHouse.Services
             }
         }
 
-        public async Task<LinqDataResult<TemperatureSensorViewEntity>> ItemsAsync(LinqDataRequest request, int GreenHouseID)
+        public async Task<LinqDataResult<TemperatureSensorViewEntity>> ItemsAsync(LinqDataRequest request, int GreenHouseID, string UserName)
         {
             var req = await _unitOfWork.UserGreenhouseHalls.FirstOrDefaultAsync(uu => uu.ID == GreenHouseID);
 
@@ -67,7 +67,7 @@ namespace GreenHouse.Services
             LinqDataResult<TemperatureSensorViewEntity> item = new LinqDataResult<TemperatureSensorViewEntity>();
             try
             {
-                item.Data = await _unitOfWork.TemperatureSensors.GetTemperatureSensorsByGreenhouseHall(GreenHouseID);
+                item.Data = await _unitOfWork.TemperatureSensors.GetTemperatureSensorsByGreenhouseHall(GreenHouseID, UserName);
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace GreenHouse.Services
             currentItem.LastModificationTime = item.LastModificationTime;
 
             currentItem.TemperatureSensorName = item.TemperatureSensorName;
-   
+
             try
             {
                 await _unitOfWork.CommitAsync();
@@ -180,7 +180,7 @@ namespace GreenHouse.Services
             LinqDataResult<TemperatureSensorViewEntity> item = new LinqDataResult<TemperatureSensorViewEntity>();
             try
             {
-                item.Data = await _unitOfWork.TemperatureSensors.GetTemperatureSensorsByGreenhouseHall(greenhouseId);
+                //item.Data = await _unitOfWork.TemperatureSensors.GetTemperatureSensorsByGreenhouseHall(greenhouseId);
             }
             catch (Exception ex)
             {

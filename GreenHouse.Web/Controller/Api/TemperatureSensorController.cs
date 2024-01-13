@@ -12,8 +12,9 @@ using MZSimpleDynamicLinq.HttpRequestExtensions;
 
 namespace GreenHouse.Web.Controller.Api
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TemperatureSensorController : BaseApiController
     {
         private readonly TemperatureSensorService _service;
@@ -32,7 +33,7 @@ namespace GreenHouse.Web.Controller.Api
 
             try
             {
-                item.CreatedBy = UserId ?? "manual";
+                item.CreatedBy = UserIdName;
                 item.CreationTime = _dateTimeProvider.GetNow();
                 item.LastModificationTime = item.CreationTime;
                 item.LastModifiedBy = item.CreatedBy;
@@ -63,7 +64,7 @@ namespace GreenHouse.Web.Controller.Api
             {
 
                 item.LastModificationTime = _dateTimeProvider.GetNow();
-                item.LastModifiedBy = UserName ?? "manual";
+                item.LastModifiedBy = UserIdName;
 
                 await _service.ModifyAsync(item);
 
@@ -102,12 +103,12 @@ namespace GreenHouse.Web.Controller.Api
         }
 
         [HttpGet("GetTemperatureSensors")]
-        public async Task<ActionResult<LinqDataResult<TemperatureSensorViewEntity>>> GetTemperatureSensors()
+        public async Task<ActionResult<LinqDataResult<TemperatureSensorViewEntity>>> GetTemperatureSensors(int GreenHouseID)
         {
             var request = Request.ToLinqDataRequest();
             try
             {
-                var rtn = await _service.ItemsAsync(request, 3);
+                var rtn = await _service.ItemsAsync(request, GreenHouseID, UserIdName);
                 return Ok(rtn);
             }
             catch (ServiceException ex)

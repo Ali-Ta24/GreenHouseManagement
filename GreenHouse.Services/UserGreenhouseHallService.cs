@@ -30,7 +30,7 @@ namespace GreenHouse.Services
                 throw ex;
             }
 
-            await ValidateOnAddAsync(item);
+            //await ValidateOnAddAsync(item);
             var g = await _baseRepo.InsertAsync(new UserGreenhouseHallEntity(item));
             try
             {

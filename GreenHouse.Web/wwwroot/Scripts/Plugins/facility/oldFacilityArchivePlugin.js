@@ -3,17 +3,17 @@
     $.fn.oldFacilityArchivePlugin = function (options) {
         var settings = $.extend({
 
-            postOldFaciltyApiAddress: "/api/TemperatureSensor/post",
-            putOldFaciltyApiAddress: "/api/TemperatureSensor/put",
-            deleteOldFaciltyApiAddress: "/api/TemperatureSensor/Delete",
+            postOldFaciltyApiAddress: "/api/OldFacilityRequest/post",
+            putOldFaciltyApiAddress: "/api/OldFacilityRequest/put",
+            deleteOldFaciltyApiAddress: "/api/OldFacilityRequest/Delete",
             AllItemsApiAddress: "/api/TemperatureSensor/GetTemperatureSensors",
-            GetOldFacilityByIDApiAddress: "/api/TemperatureSensor/GetOldFacilityByID",
-            GetAllOldFacilityesForExport: "/api/TemperatureSensor/GetAllOldFacilityesForExport",
+            GetOldFacilityByIDApiAddress: "/api/OldFacilityRequest/GetOldFacilityByID",
+            GetAllOldFacilityesForExport: "/api/OldFacilityRequest/GetAllOldFacilityesForExport",
 
-            ////for Document
-            //postDocumentToRequest: "/api/TemperatureSensor/PostDocumentToTemperatureSensor",
-            //deleteDocumentFromFacilityRequest: "/api/TemperatureSensor/RemoveDocumentFromTemperatureSensor",
-            //getFacilityRequestDocumentsByGroup: "/api/TemperatureSensor/GetTemperatureSensorDocumentsByID",
+            //for Document
+            postDocumentToRequest: "/api/OldFacilityRequest/PostDocumentToOldFacilityRequest",
+            deleteDocumentFromFacilityRequest: "/api/OldFacilityRequest/RemoveDocumentFromOldFacilityRequest",
+            getFacilityRequestDocumentsByGroup: "/api/OldFacilityRequest/GetOldFacilityRequestDocumentsByID",
 
             hasTemplate: true
         }, options);
@@ -21,17 +21,17 @@
         var viewModel = undefined;
         var area = this;
 
-        var TemperatureSernsorTableCartable;
+        var OldFacilityTableCartable;
         var cols = [
 
-            { data: "TemperatureSensorName", name: "IntroductionYear", type: "number" },
+            { data: "introductionYear", name: "IntroductionYear", type: "number" },
             { data: "customerName", name: "CustomerName", type: "html" },
             { data: "programType", name: "ProgramType", type: "html" },
             { data: "programTitle", name: "ProgramTitle", type: "html" },
             { data: "organizationPrice", name: "OrganizationPrice", type: "number", render: function (data) { return data != null ? data.toLocaleString('ar-EG') : null } },
             { data: "activityLocation", name: "ActivityLocation", type: "html" },
             {
-                data: "oldFacilityRequestTotalState", name: "TemperatureSensorTotalState", type: "html", render: function (data) {
+                data: "oldFacilityRequestTotalState", name: "OldFacilityRequestTotalState", type: "html", render: function (data) {
                     var obj = FacilityRequestTotalState.find(ss => ss.id == data);
                     return obj.title;
                 }
@@ -53,7 +53,7 @@
                                     </div>
 
                                     <div class="col-4">
-                                        <label class="form-label">نام سنسور</label>
+                                        <label class="form-label">سال معرفی</label>
                                         <input type="number" class="form-control" id="IntroductionYear"
                                             placeholder="سال را به صورت یک عدد چهار رقمی وارد کنید"/>
                                     </div>
@@ -301,20 +301,20 @@
         }
         $('.inputSearch').change(function () {
 
-            TemperatureSernsorTableCartable.columns().search('');
+            OldFacilityTableCartable.columns().search('');
             $('input.inputSearch').filter(function (a) {
                 return $('input.inputSearch')[a].value.length > 0
             }).each(function (a, b) {
                 columnindex = parseInt($("[name='" + b.dataset.name + "']")[0].dataset.columnIndex);
-                TemperatureSernsorTableCartable.columns(columnindex).search(b.value);
+                OldFacilityTableCartable.columns(columnindex).search(b.value);
 
             });
-            TemperatureSernsorTableCartable.draw();
+            OldFacilityTableCartable.draw();
 
         });
 
-        TemperatureSernsorTableCartable.on('select', function (event, dt, type, indexes) {
-            let valueRowSelect = TemperatureSernsorTableCartable.rows({ selected: true }).data()[0];
+        OldFacilityTableCartable.on('select', function (event, dt, type, indexes) {
+            let valueRowSelect = OldFacilityTableCartable.rows({ selected: true }).data()[0];
             $("[data-role-operation='edit']").removeClass("d-none");
             $('[data-role-remove]').removeClass("d-none");
 
@@ -326,7 +326,7 @@
         area.find("[data-role-operation ='add']").click(function () {
             bootbox.dialog({
                 message: addtemplate,
-                title: "افزودن سنسور دما",
+                title: "افزودن تسهیلات قدیمی",
             }).bind('shown.bs.modal', function () {
                 $('.modal-dialog').css('max-width', '90%');
                 $('.bootbox-close-button').css("display", "inline");
@@ -342,7 +342,7 @@
         });
 
         area.find("[data-role-operation ='edit']").click(function () {
-            let idRowSelect = TemperatureSernsorTableCartable.rows({ selected: true }).data()[0].id;
+            let idRowSelect = OldFacilityTableCartable.rows({ selected: true }).data()[0].id;
             $.ajax({
                 type: "get",
                 url: settings.GetOldFacilityByIDApiAddress + "?oldFacilityID=" + idRowSelect,
@@ -373,14 +373,14 @@
         });
 
         area.find("[data-role-remove]").click(function () {
-            let idRowSelect = TemperatureSernsorTableCartable.rows({ selected: true }).data()[0].id;
+            let idRowSelect = OldFacilityTableCartable.rows({ selected: true }).data()[0].id;
             $.ajax({
                 type: "delete",
                 url: settings.deleteOldFaciltyApiAddress + "?id=" + idRowSelect,
                 contentType: 'application/json',
                 success: function () {
                     ivsAlert2('success', ' پیام موفقیت', 'تسهیلات با موفقیت حذف شد.');
-                    TemperatureSernsorTableCartable.rows().ajax.reload();
+                    OldFacilityTableCartable.rows().ajax.reload();
                 },
                 error: function () {
                     ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش تسهیلات قدیمی');
@@ -388,7 +388,7 @@
                 complete: function () {
                     $("[data-role-operation='edit']").addClass("d-none");
                     $('[data-role-remove]').addClass("d-none");
-                    TemperatureSernsorTableCartable.rows('.important').deselect();
+                    OldFacilityTableCartable.rows('.important').deselect();
                 }
             });
         });
@@ -410,10 +410,395 @@
                     RequestCountType.push(...res);
                 }
             });
+
+
+            var ss = $('#table-export-excel').DataTable({
+                ajax:
+                {
+                    contentType: 'application/json',
+                    url: settings.GetAllOldFacilityesForExport,
+                    type: 'get',
+                    dataType: "json",
+                    error: function () {
+                        ivsAlert2('error', 'خطا', 'اشکل در خروجی گرفتن اکسل');
+                    },
+                    complete: function () {
+                        $(".buttons-excel").trigger("click");
+                    },
+                },
+                columns: [
+                    { data: "committeeaApprovalNumber", title: 'کد تفصیلی شماره مصوبه کمیته' },
+                    { data: "introductionYear", title: 'سال معرفی' },
+                    { data: "archiveNumber", title: 'شماره بایگانی' },
+                    { data: "nationalCode", title: 'شناسه ملی حقیقی/حقوقی' },
+                    { data: "detailedCode", title: 'كدتفصيلي' },
+                    { data: "customerName", title: 'نام متقاضي' },
+                    { data: "programType", title: 'نوع طرح' },
+                    {
+                        data: "programTypeKindID", title: 'ساخت/خريد', render: function (data) {
+                            var obj = ProgramTypeKind.find(ss => ss.id == data);
+                            return obj.title;
+                        }
+                    },
+                    { data: "programTitle", title: 'موضوع طرح' },
+                    { data: "requestCapacity", title: 'ظرفيت' },
+                    { data: "requestCount", title: 'تعداد' },
+                    {
+                        data: "requestCountTypeID", title: 'نوع تعداد', render: function (data) {
+                            var obj = RequestCountType.find(ss => ss.id == data);
+                            return obj.title;
+                        }
+                    },
+                    { data: "programPrice", title: 'مبلغ ارزش طرح', render: function (data) { return data != null ? data.toLocaleString('en-US') : null } },
+                    { data: "organizationPrice", title: 'مبلغ تسهيلات مصوب سازمان', render: function (data) { return data != null ? data.toLocaleString('en-US') : null } },
+                    { data: "amountFacilityPaid", title: 'مبلغ  تسهیلات پرداختي', render: function (data) { return data != null ? data.toLocaleString('en-US') : null } },
+                    { data: "balanceSubsidyObligations", title: 'مانده تعهدات يارانه ', render: function (data) { return data != null ? data.toLocaleString('en-US') : null } },
+                    { data: "subsidyDuringParticipation", title: 'يارانه دوران مشاركت', render: function (data) { return data != null ? data.toLocaleString('en-US') : null } },
+                    { data: "rentSubsidy", title: 'يارانه اجاره', render: function (data) { return data != null ? data.toLocaleString('en-US') : null } },
+                    { data: "paidSubsidy", title: 'يارانه پرداختي ', render: function (data) { return data != null ? data.toLocaleString('en-US') : null } },
+                    { data: "bankName", title: 'بانک عامل' },
+                    {
+                        data: "oldFacilityRequestTotalState", title: 'وضعيت پروژه', render: function (data) {
+                            var obj = FacilityRequestTotalState.find(ss => ss.id == data);
+                            return obj.title;
+                        },
+                    },
+                    { data: "facilityDescription", title: 'توضيحات طرح' },
+                    { data: "announced", title: 'تاریخ معرفی', render: function (data) { return data != null ? moment(data, 'YYYY/MM/DD').format('jYYYY-jMM-jDD') : null } },
+                    { data: "issuanceBankApproval", title: 'تاریخ صدور مصوبه بانکی', render: function (data) { return data != null ? moment(data, 'YYYY/MM/DD').format('jYYYY-jMM-jDD') : null } },
+                    { data: "introductionDeadline", title: 'مهلت معرفی نامه ', render: function (data) { return data != null ? moment(data, 'YYYY/MM/DD').format('jYYYY-jMM-jDD') : null } },
+                    { data: "subsidyPercentage", title: 'درصد یارانه ' },
+                    { data: "numberInstallments", title: 'تعداد اقساط ' },
+                    { data: "contractRegistrationDate", title: 'تاريخ ثبت قرارداد', render: function (data) { return data != null ? moment(data, 'YYYY/MM/DD').format('jYYYY-jMM-jDD') : null } },
+                    { data: "creatorLocation", title: 'سازنده' },
+                    { data: "activityLocation", title: 'محل اجراي پرو‍ژه' },
+                    { data: "pathAndPhone", title: 'آدرس و شماره تماس' },
+                ],
+                dom: '<"#excel_btn.d-none" B>',
+                buttons: [
+                    'excel'
+                ],
+                destroy: true,
+            });
+
         });
+
+        area.find('#btnExel').click(function () {
+            exportTemplate = `<div class ="row" id="exportModal">
+                                <p>ستون هایی که میخواهید در خروجی نشان داده شود را انتخاب کنید.</p>
+                                <hr>
+                                <h4>اطلاعات مربوط به تسهیلات قدیمی</h4>
+                                <span class="m-2"></span>
+                                <div class="col-2">
+                                    <label class="form-check-label" for="introductionYear">سال معرفی</label>
+                                    <input class="form-check-input" type="checkbox" title="سال معرفی" id="introductionYear">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="archiveNumber">شماره بایگانی</label>
+                                    <input class="form-check-input" type="checkbox" title="شماره بایگانی" id="archiveNumber">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="nationalCode">شناسه ملی حقیقی/حقوقی</label>
+                                    <input class="form-check-input" type="checkbox" title="شناسه ملی حقیقی/حقوقی" id="nationalCode">
+                                </div>
+                                
+                                <div class="col-2">
+                                    <label class="form-check-label" for="detailedCode">كدتفصيلی</label>
+                                    <input class="form-check-input" type="checkbox" title="كدتفصیلی" id="detailedCode">
+                                </div>
+
+                                <div class="col-3">
+                                    <label class="form-check-label" for="committeeaApprovalNumber">شماره مصوبه کمیته</label>
+                                    <input class="form-check-input" type="checkbox" title="شماره مصوبه کمیته" id="committeeaApprovalNumber">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="customerName">نام متقاضی</label>
+                                    <input class="form-check-input" type="checkbox" title="نام متقاضی" id="customerName">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="programType">نوع طرح</label>
+                                    <input class="form-check-input" type="checkbox" title="نوع طرح" id="programType">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="programTypeKindID">ساخت/خرید</label>
+                                    <input class="form-check-input" type="checkbox" title="ساخت/خرید" id="programTypeKindID">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="programTitle">موضوع طرح</label>
+                                    <input class="form-check-input" type="checkbox" title="موضوع طرح" id="programTitle">
+                                </div>
+
+                                <div class="col-3">
+                                    <label class="form-check-label" for="requestCapacity">ظرفیت</label>
+                                    <input class="form-check-input" type="checkbox" title="ظرفیت" id="requestCapacity">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="requestCount">تعداد</label>
+                                    <input class="form-check-input" type="checkbox" title="تعداد" id="requestCount">
+                                </div>
+
+                                 <div class="col-2">
+                                    <label class="form-check-label" for="requestCountTypeID">نوع تعداد</label>
+                                    <input class="form-check-input" type="checkbox" title="نوع تعداد" id="requestCountTypeID">
+                                </div>
+
+                                 <div class="col-2">
+                                    <label class="form-check-label" for="programPrice">مبلغ ارزش طرح</label>
+                                    <input class="form-check-input" type="checkbox" title="مبلغ ارزش طرح" id="programPrice">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="amountFacilityPaid">مبلغ تسهیلات پرداختی</label>
+                                    <input class="form-check-input" type="checkbox" title="مبلغ تسهیلات پرداختی" id="amountFacilityPaid">
+                                </div>
+                                
+                                <div class="col-3">
+                                    <label class="form-check-label" for="organizationPrice">مبلغ تسهیلات مصوب سازمان</label>
+                                    <input class="form-check-input" type="checkbox" title="مبلغ تسهیلات مصوب سازمان" id="organizationPrice">
+                                </div>
+                                
+                                <div class="col-2">
+                                    <label class="form-check-label" for="balanceSubsidyObligations">مانده تعهدات یارانه</label>
+                                    <input class="form-check-input" type="checkbox" title="مانده تعهدات یارانه" id="balanceSubsidyObligations">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="subsidyDuringParticipation">یارانه دوران مشارکت</label>
+                                    <input class="form-check-input" type="checkbox" title="یارانه دوران مشارکت" id="subsidyDuringParticipation">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="rentSubsidy">یارانه اجاره</label>
+                                    <input class="form-check-input" type="checkbox" title="یارانه اجاره" id="rentSubsidy">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="paidSubsidy">یارانه پرداختی</label>
+                                    <input class="form-check-input" type="checkbox" title="یارانه پرداختی" id="paidSubsidy">
+                                </div>
+
+                                <div class="col-3">
+                                    <label class="form-check-label" for="bankName">بانک عامل</label>
+                                    <input class="form-check-input" type="checkbox" title="بانک عامل" id="bankName">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="facilityDescription">توضیحات طرح</label>
+                                    <input class="form-check-input" type="checkbox" title="توضیحات طرح" id="facilityDescription">
+                                </div>
+                                
+                                <div class="col-2">
+                                    <label class="form-check-label" for="oldFacilityRequestTotalState">وضعیت پروژه</label>
+                                    <input class="form-check-input" type="checkbox" title="وضعیت پروژه" id="oldFacilityRequestTotalState">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="announced">تاریخ معرفی</label>
+                                    <input class="form-check-input" type="checkbox" title="تاریخ معرفی" id="announced">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="issuanceBankApproval">تاریخ صدور مصوبه بانکی</label>
+                                    <input class="form-check-input" type="checkbox" title="تاریخ صدور مصوبه بانکی" id="issuanceBankApproval">
+                                </div>
+
+                                <div class="col-3">
+                                    <label class="form-check-label" for="introductionDeadline">مهلت معرفی نامه</label>
+                                    <input class="form-check-input" type="checkbox" title="مهلت معرفی نامه" id="introductionDeadline">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="numberInstallments">تعداد اقساط</label>
+                                    <input class="form-check-input" type="checkbox" title="تعداد اقساط" id="numberInstallments">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="contractRegistrationDate">تاریخ ثبت قرارداد</label>
+                                    <input class="form-check-input" type="checkbox" title="تاریخ ثبت قرارداد" id="contractRegistrationDate">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="creatorLocation">سازنده</label>
+                                    <input class="form-check-input" type="checkbox" title="سازنده" id="creatorLocation">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="activityLocation">محل اجرای پروژه</label>
+                                    <input class="form-check-input" type="checkbox" title="محل اجرای پروژه" id="activityLocation">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="form-check-label" for="pathAndPhone">آدرس و شماره تماس</label>
+                                    <input class="form-check-input" type="checkbox" title="آدرس و شماره تماس" id="pathAndPhone">
+                                </div>
+                                
+                                <div class="col-2">
+                                    <label class="form-check-label" for="subsidyPercentage">درصد یارانه</label>
+                                    <input class="form-check-input" type="checkbox" title="درصد یارانه" id="subsidyPercentage">
+                                </div>
+
+                                <span class="m-2"></span>
+
+                              </div>
+
+
+                            <div class="modal-footer">
+                                <div class="btn btn-success" id="exportBtn">نمایش گزارش</div>
+                                <div class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">لغو</div>
+                            </div>`
+            bootbox.dialog({
+                message: exportTemplate,
+                title: "گزارشگیری",
+            }).bind('shown.bs.modal', function () {
+                $('.modal-dialog').css('max-width', '80%');
+                $('.bootbox-close-button').css("display", "inline");
+                $('.bootbox-close-button').addClass("btn-close");
+                $('.bootbox-close-button').text("");
+            });
+
+
+            var ProgramTypeKind = [];
+            var RequestCountType = [];
+            $.ajax({
+                type: 'Get',
+                url: '/api/Program/GetAllProgramTypeKinds',
+                success: function (res) {
+                    ProgramTypeKind.push(...res);
+                }
+            });
+            $.ajax({
+                type: 'Get',
+                url: '/api/Program/GetAllRequestCountTypes',
+                success: function (res) {
+                    RequestCountType.push(...res);
+                }
+            });
+
+            $("#exportBtn").click(function () {
+                var allInputSelected = $('#exportModal input[type="checkbox"]:checked');
+                if (allInputSelected.length == 0) {
+                    ivsAlert2('warning', 'اخطار', 'لطفا حداقل یک مورد را جهت گزارش گیری انتخاب کنید.');
+                    return;
+                }
+                var tableTemp = `<nav class="navbar navbar-expand-lg navbar-dark rounded p-2 mb-2" style="background-color:#008080">
+                                        <div class="sticky">
+                                            <button class="menu-items btn btn-light me-2 mb-1" href="#headerfiltersExport" data-bs-toggle="collapse" data-toggle="collapse" title="فیلتر"><i class='bx bx-search'></i>فیلتر</button>
+                                        </div>
+                                        <div class="dropdown me-2 mb-1">
+                                            <button class="btn btn-info" type="button" onclick="$('.buttons-excel').trigger('click');">
+                                                دانلود گزارش
+                                            </button>
+                                        </div>
+                                     </nav>
+                                    <table id="exportTable" class="table table-border" style="width:100%">
+                                     <thead>
+                                          <tr id="headerfiltersExport" class="collapse">`
+
+                for (var i = 0; i < allInputSelected.length; i++) {
+                    tableTemp += `<th scope="col" class="cartablefilter">`
+                    tableTemp += '<input type="text" class="inputSearchExport form-control" data-name=' + allInputSelected[i].id + ' placeholder="' + allInputSelected[i].title + '"/>';
+                    tableTemp += `</th>`
+                }
+
+                tableTemp += `</tr>
+                          <tr>`;
+
+                for (var i = 0; i < allInputSelected.length; i++) {
+                    tableTemp += '<th scope="col" name-export="' + allInputSelected[i].id + '"><b>' + allInputSelected[i].title + '</b></th>';
+                }
+
+                tableTemp += `</thead>  
+                             </table>`;
+
+
+                var col = [];
+                var renderFuncTime = function (data) { return data != null ? moment(data, 'YYYY/MM/DD').format('jYYYY/jMM/jDD') : null };
+                var renderFuncPrice = function (data) { return data != null ? data.toLocaleString('en-US') : null };
+                var renderRequestShow = function (data, type, row) { return row.requestCount + ' ' + row.requestCountTypeTitle };
+                var renderCapacityShow = function (data, type, row) { return row.requestCapacity + ' ' + row.fleetCapacityUnitName };
+                var renderStatusProject = function (data) { var obj = FacilityRequestTotalState.find(ss => ss.id == data); return obj.title; }
+                var renderProgramTypeKind = function (data) { var obj = ProgramTypeKind.find(ss => ss.id == data); return obj.title; }
+
+
+                for (var i = 0; i < allInputSelected.length; i++) {
+                    if (allInputSelected[i].id == "introductionDeadline" || allInputSelected[i].id == "contractRegistrationDate" || allInputSelected[i].id == "announced" || allInputSelected[i].id == "issuanceBankApproval") {
+                        col.push({ data: allInputSelected[i].id, name: allInputSelected[i].id, type: 'html', render: renderFuncTime });
+                        continue;
+                    }
+                    if (allInputSelected[i].id == "organizationPrice" || allInputSelected[i].id == "balanceSubsidyObligations" || allInputSelected[i].id == "paidSubsidy" || allInputSelected[i].id == "subsidyDuringParticipation" || allInputSelected[i].id == "programPrice" || allInputSelected[i].id == "rentSubsidy" || allInputSelected[i].id == "amountFacilityPaid") {
+                        col.push({ data: allInputSelected[i].id, name: allInputSelected[i].id, type: 'html', render: renderFuncPrice });
+                        continue;
+                    }
+                    if (allInputSelected[i].id == "programTypeKindID") {
+                        col.push({ data: allInputSelected[i].id, name: allInputSelected[i].id, type: 'html', render: renderProgramTypeKind });
+                        continue;
+                    }
+                    if (allInputSelected[i].id == "oldFacilityRequestTotalState") {
+                        col.push({ data: allInputSelected[i].id, name: allInputSelected[i].id, type: 'html', render: renderStatusProject });
+                        continue;
+                    }
+                    col.push({ data: allInputSelected[i].id, name: allInputSelected[i].id, type: 'html' });
+                }
+                bootbox.dialog({
+                    message: tableTemp,
+                    title: "گزارشگیری",
+                }).bind('shown.bs.modal', function () {
+                    $('.modal-dialog').css('max-width', '95%');
+                    $('#exportTable_wrapper').css('overflow-x', 'scroll');
+                    $('.bootbox-close-button').css("display", "inline");
+                    $('.bootbox-close-button').addClass("btn-close");
+                    $('.bootbox-close-button').text("");
+                });
+                var exportDataTable = $('#exportTable').DataTable({
+                    ajax:
+                    {
+                        contentType: 'application/json',
+                        url: settings.GetAllOldFacilityesForExport,
+                        type: 'get',
+                        dataType: "json",
+                        error: function () {
+                            ivsAlert2('error', 'خطا', 'اشکل در خروجی گرفتن اکسل');
+                        }
+                    },
+                    destroy: true,
+                    colReorder: true,
+                    searchPanes: true,
+                    serverSide: true,
+                    paging: true,
+                    paginationType: "full_numbers",
+                    columns: col,
+                    serverMethod: 'post',
+                    dom: 'rlt<".d-none" B>p',
+                    buttons: [
+                        'excel'
+                    ],
+                    language: {
+                        url: '/lib/jQueryDatatable/fa.json'
+                    },
+                });
+                $('.inputSearchExport').change(function () {
+                    exportDataTable.columns().search('');
+                    $('input.inputSearchExport').filter(function (a) {
+                        return $('input.inputSearchExport')[a].value.length > 0
+                    }).each(function (a, b) {
+                        columnindex = parseInt($("[name-export='" + b.dataset.name + "']")[0].dataset.columnIndex);
+                        exportDataTable.columns(columnindex).search(b.value);
+                    });
+                    exportDataTable.draw();
+                });
+            });
+        });
+
         function putOldFacility(click) {
             var editModal = {
-                Id: TemperatureSernsorTableCartable.rows({ selected: true }).data()[0].id,
+                Id: OldFacilityTableCartable.rows({ selected: true }).data()[0].id,
                 CommitteeaApprovalNumber: $("#CommitteeaApprovalNumber").val(),
                 IntroductionYear: $("#IntroductionYear").val(),
                 ArchiveNumber: $("#ArchiveNumber").val(),
@@ -433,7 +818,7 @@
                 RentSubsidy: $("#RentSubsidy").val(),
                 PaidSubsidy: $("#PaidSubsidy").val(),
                 BankName: $("#BankName").val(),
-                TemperatureSensorTotalState: $("#TemperatureSensorTotalState").val(),
+                OldFacilityRequestTotalState: $("#OldFacilityRequestTotalState").val(),
                 FacilityDescription: $("#FacilityDescription").val(),
                 Announced: moment($("#Announced").val(), 'jYYYY/jM/jD').format('YYYY-M-D'),
                 IssuanceBankApproval: moment($("#IssuanceBankApproval").val(), 'jYYYY/jM/jD').format('YYYY-M-D'),
@@ -464,7 +849,7 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     ivsAlert2('success', ' پیام موفقیت', 'تسهیلات با موفقیت تغییر یافت.');
-                    TemperatureSernsorTableCartable.rows().ajax.reload();
+                    OldFacilityTableCartable.rows().ajax.reload();
                     $("[aria-label='Close']").trigger('click');
                     if ($(click.target)[0].id == "editsubmitBtn") {
 
@@ -483,7 +868,7 @@
                             deleteDocumentFromFacilityRequest: settings.deleteDocumentFromFacilityRequest,
                             getFacilityRequestDocumentsByGroup: settings.getFacilityRequestDocumentsByGroup,
 
-                            objectId: TemperatureSernsorTableCartable.rows({ selected: true }).data()[0].id
+                            objectId: OldFacilityTableCartable.rows({ selected: true }).data()[0].id
                         });
                     }
                 },
@@ -493,7 +878,7 @@
                 complete: function () {
                     $("[data-role-operation='edit']").addClass("d-none");
                     $('[data-role-remove]').addClass("d-none");
-                    TemperatureSernsorTableCartable.rows('.important').deselect();
+                    OldFacilityTableCartable.rows('.important').deselect();
                 }
             });
         }
@@ -508,9 +893,9 @@
                                     </div>
 
                                     <div class="col-4">
-                                        <label class="form-label">نام سنسور</label>
+                                        <label class="form-label">سال معرفی</label>
                                         <input type="number" class="form-control" id="IntroductionYear"
-                                            placeholder="سال را به صورت یک عدد چهار رقمی وارد کنید" value="${result.TemperatureSensorName == null ? "" : result.TemperatureSensorName}"/>
+                                            placeholder="سال را به صورت یک عدد چهار رقمی وارد کنید" value="${result.introductionYear == null ? "" : result.introductionYear}"/>
                                     </div>
 
                                     <div class="col-4">
@@ -783,7 +1168,7 @@
                 RentSubsidy: $("#RentSubsidy").val(),
                 PaidSubsidy: $("#PaidSubsidy").val(),
                 BankName: $("#BankName").val(),
-                TemperatureSensorTotalState: $("#TemperatureSensorTotalState").val(),
+                OldFacilityRequestTotalState: $("#OldFacilityRequestTotalState").val(),
                 FacilityDescription: $("#FacilityDescription").val(),
                 Announced: moment($("#Announced").val(), 'jYYYY/jM/jD').format('YYYY-M-D'),
                 IssuanceBankApproval: moment($("#IssuanceBankApproval").val(), 'jYYYY/jM/jD').format('YYYY-M-D'),
@@ -803,7 +1188,7 @@
 
                 success: function (result) {
                     ivsAlert2('success', ' پیام موفقیت', 'تسهیلات با موفقیت ثبت شد.');
-                    TemperatureSernsorTableCartable.rows().ajax.reload();
+                    OldFacilityTableCartable.rows().ajax.reload();
                     $("[aria-label='Close']").trigger('click');
 
                     if ($(click.target)[0].id == "submitBtn") {
@@ -833,18 +1218,18 @@
                 complete: function () {
                     $("[data-role-operation='edit']").addClass("d-none");
                     $('[data-role-remove]').addClass("d-none");
-                    TemperatureSernsorTableCartable.rows('.important').deselect();
+                    OldFacilityTableCartable.rows('.important').deselect();
                 }
             });
         }
 
         function getAllItems() {
             var areaCartable = area.find("#cartable");
-            TemperatureSernsorTableCartable = areaCartable.DataTable({
+            OldFacilityTableCartable = areaCartable.DataTable({
                 ajax:
                 {
                     contentType: 'application/json',
-                    url: "/api/GetTemperatureSensorByID" + "?Id=3",
+                    url: settings.AllItemsApiAddress + "?GreenHouseID="+ 4,
                     type: 'get',
                     dataType: "json",
                 },
@@ -864,14 +1249,7 @@
                 },
 
             });
-            TemperatureSernsorTableCartable.on('xhr', function (event, dt, type, indexes) {
-                $.ajax({
-                    type: 'Get',
-                    url: '/api/Program/GetAllProgramTypeKinds',
-                    success: function (res) {
-                        ProgramTypeKind.push(...res);
-                    }
-                });
+            OldFacilityTableCartable.on('xhr', function (event, dt, type, indexes) {
                 let $sum = 0;
                 if (type != null) {
                     $.each(type.data, function (a, b) {
@@ -885,14 +1263,15 @@
         function getTemplate() {
             var ss = `<div class="card">
                             <div class="card-body" id="ArchiveOldFacility">
-                                <h4 class="mb-0">مدیریت سنسور دما</h4>
+                                <h4 class="mb-0">آرشیو تسهیلات قدیمی</h4>
                                 <hr>
                                 <nav class="navbar navbar-expand-lg navbar-dark bg-info rounded p-2 mb-2">
                                     <div class="sticky">
-                                        <button type="button" class="btn btn-success text-dark" data-role-operation="add" alt="افزودن سنسور دما"><i class="bx bx-message-square-add"></i>افزودن سنسور دما</button>
-                                        <button type="button" class="btn btn-warning d-none ms-2" id="editSessionRoomBtn"  data-role-operation="edit"><i class="bx bx-message-square-edit"></i>ویرایش سنسور دما</button>
-                                        <button type="button" class="btn btn-danger text-dark d-none ms-2" id="deleteSessionRoomBtn" data-role-remove><i class="bx bx-comment-minus"></i>حذف سنسور دما</button>
+                                        <button type="button" class="btn btn-success text-dark" data-role-operation="add" alt="افزودن تسهیلات قدیمی"><i class="bx bx-message-square-add"></i>افزودن تسهیلات</button>
+                                        <button type="button" class="btn btn-warning d-none ms-2" id="editSessionRoomBtn"  data-role-operation="edit"><i class="bx bx-message-square-edit"></i>ویرایش تسهیلات</button>
+                                        <button type="button" class="btn btn-danger text-dark d-none ms-2" id="deleteSessionRoomBtn" data-role-remove><i class="bx bx-comment-minus"></i>حذف تسهیلات</button>
                                         <button class="btn btn-light ms-2" href="#headerfilters" data-bs-toggle="collapse" data-toggle="collapse" title="جستجو"><i class='bx bx-search'></i>جستجو</button>
+                                        <button id="btnExel" class="menu-items btn bg-warning ms-2">گزارشگیری</button>
                                     </div>
                                     <hr>
                                 </nav>
@@ -901,7 +1280,7 @@
                                     <thead>
                                         <tr id="headerfilters" class="collapse">
                                             <th scope="col" class="cartablefilter" >
-                                                <input type="number" placeholder="نام سنسور" class="inputSearch form-control" data-name="TemperatureSensorName" />
+                                                <input type="number" placeholder="سال معرفی" class="inputSearch form-control" data-name="introductionYear" />
                                                 </th>
                                             <th scope="col" class="cartablefilter">
                                                 <input type="text" class="inputSearch form-control" placeholder="نام متقاضی" data-name="customerName" />
@@ -919,7 +1298,7 @@
                                             <th scope="col" class="cartablefilter"></th>
                                         </tr>
                                         <tr>
-                                            <th scope="col" name="TemperatureSensorName"><b>نام سنسور</b></th>
+                                            <th scope="col" name="introductionYear"><b>سال معرفی</b></th>
                                             <th scope="col" name="customerName"><b>نام متقاضی</b></th>
                                             <th scope="col" name="programType"><b>نوع طرح</b></th>
                                             <th scope="col" name="programTitle"><b>موضوع طرح</b></th>

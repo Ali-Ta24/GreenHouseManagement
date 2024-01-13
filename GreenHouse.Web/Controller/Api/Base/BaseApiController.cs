@@ -68,6 +68,21 @@ namespace GreenHouse.Web.Controller.Api.Base
 
             }
         }
+        public string? UserIdName
+        {
+            get
+            {
+                if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    if (User.Identity is ClaimsIdentity claimsIdentity)
+                    {
+                        return claimsIdentity.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value.Split(":").LastOrDefault(); ;
+                    }
+                }
+                return null;
+
+            }
+        }
         public List<string>? LoweredUserRoleNames
         {
             get

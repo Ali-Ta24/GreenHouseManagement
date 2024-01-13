@@ -6,6 +6,6 @@ namespace GreenHouse.DataAccess.Repository.Interfaces
 {
     public interface ITemperatureSensorRepository : ILDRCompatibleRepositoryAsync<TemperatureSensor, int>
     {
-        Task<IEnumerable<TemperatureSensorViewEntity>> GetTemperatureSensorsByGreenhouseHall(int greenhouseId);
+        Task<IEnumerable<TemperatureSensorViewEntity>> GetTemperatureSensorsByGreenhouseHall(int greenhouseId, string userName);
     }
 }
