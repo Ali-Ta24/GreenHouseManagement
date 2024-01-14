@@ -8,7 +8,7 @@ using MZBase.Infrastructure.Service.Exceptions;
 
 namespace GreenHouse.Web.Controller.Api
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserGreenhouseHallController : BaseApiController
     {
@@ -50,6 +50,43 @@ namespace GreenHouse.Web.Controller.Api
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        //[HttpGet("GetGreenhouseHall")]
+        //public async Task<ActionResult<LinqDataResult<TemperatureSensorViewEntity>>> GetGreenhouseHall()
+        //{
+        //    var request = Request.ToLinqDataRequest();
+        //    try
+        //    {
+        //        var rtn = await _service.ItemsAsync(request, GreenHouseID, UserIdName);
+        //        return Ok(rtn);
+        //    }
+        //    catch (ServiceException ex)
+        //    {
+        //        return StatusCode(500, ex.ToServiceExceptionString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, ex.Message);
+        //    }
+        //}
+
+        [HttpGet("GetAllGreenhouseHallByUser")]
+        public async Task<IActionResult> GetAllGreenhouseHallByUser()
+        {
+            try
+            {
+                var rtn = await _service.GetAllGreenHouseByUser(UserId);
+                return Ok(rtn);
+            }
+            catch (ServiceException ex)
+            {
+                return StatusCode(500, ex.ToServiceExceptionString());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
             }
         }
     }

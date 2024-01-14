@@ -47,6 +47,10 @@ namespace GreenHouse.Services
                 throw new ServiceStorageException("Error adding UserGreenhouseHall", ex);
             }
         }
+        public async Task<IEnumerable<UserGreenhouseHall>> GetAllGreenHouseByUser(string userId)
+        {
+            return (await _unitOfWork.UserGreenhouseHalls.AllItemsAsync()).Where(ss => ss.UserID == userId);
+        }
 
         public override Task<LinqDataResult<UserGreenhouseHall>> ItemsAsync(LinqDataRequest request)
         {

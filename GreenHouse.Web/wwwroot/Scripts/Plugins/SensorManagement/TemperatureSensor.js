@@ -2,17 +2,11 @@
     $.fn.TemperatureSensor = function (options) {
         var settings = $.extend({
 
-            postOldFaciltyApiAddress: "/api/OldFacilityRequest/post",
-            putOldFaciltyApiAddress: "/api/OldFacilityRequest/put",
-            deleteOldFaciltyApiAddress: "/api/OldFacilityRequest/Delete",
+            postTemperatureSensorApiAddress: "/api/TemperatureSensor/post",
+            putOldFaciltyApiAddress: "/api/TemperatureSensor/put",
+            deleteTemperatureSensorApiAddress: "/api/TemperatureSensor/Delete",
             AllItemsApiAddress: "/api/TemperatureSensor/GetTemperatureSensors",
-            GetOldFacilityByIDApiAddress: "/api/OldFacilityRequest/GetOldFacilityByID",
-            GetAllOldFacilityesForExport: "/api/OldFacilityRequest/GetAllOldFacilityesForExport",
-
-            //for Document
-            postDocumentToRequest: "/api/OldFacilityRequest/PostDocumentToOldFacilityRequest",
-            deleteDocumentFromFacilityRequest: "/api/OldFacilityRequest/RemoveDocumentFromOldFacilityRequest",
-            getFacilityRequestDocumentsByGroup: "/api/OldFacilityRequest/GetOldFacilityRequestDocumentsByID",
+            GetTemperatureSensorIDApiAddress: "/api/TemperatureSensor/GetTemperatureSensorByID",
 
             hasTemplate: true
         }, options);
@@ -33,249 +27,36 @@
         ];
 
         var addtemplate = `<div class="row" id="addmodal">
-                                <form id="formoldFacility" class="row g-3 needs-validation">
+                                <form id="formTemperatureSensor" class="row g-3 needs-validation">
 
-                                    <div class="col-4">
-                                        <label class="form-label">شماره مصوبه کمیته</label>
-                                        <input type="text" class="form-control" id="CommitteeaApprovalNumber"/>
+                                    <div class="col-6">
+                                        <label class="form-label">شناسه سنسور</label>
+                                        <input type="text" class="form-control" id="TemperatureSensorName" placeholder="شناسه سنسور" required/>
                                     </div>
 
-                                    <div class="col-4">
-                                        <label class="form-label">نام سنسور</label>
-                                        <input type="number" class="form-control" id="IntroductionYear"
-                                            placeholder="سال را به صورت یک عدد چهار رقمی وارد کنید"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">شماره بایگانی</label>
-                                        <input type="text" class="form-control" id="ArchiveNumber"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">شناسه ملی حقیقی/حقوقی</label>
-                                        <input type="text" class="form-control" id="NationalCode"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">كدتفصيلي</label>
-                                        <input type="text" class="form-control" id="DetailedCode"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">نام متقاضي</label>
-                                        <input type="text" class="form-control" id="CustomerName"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">نام سالن</label>
-                                        <input type="text" class="form-control" id="ProgramType"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <div id="ToProgramTypeKindID">
+                                    <div class="col-6">
+                                        <div id="Greenhouse">
                                         </div>
                                     </div>
+                                
+                                 </div>
 
-                                    <script>
-                                                $("#ToProgramTypeKindID").drapdownPlugin({
-                                                    apiAddress: '/api/Program/GetAllProgramTypeKinds',
-                                                    valueOption: 'id',
-                                                    textOption: 'title',
-                                                    idTagName: 'ProgramTypeKindID',
-                                                    dropdownParent: 'formoldFacility',
-                                                    title: 'دسته بندی طرح',
-                                                });
-                                    </script>
-
-                                    <div class="col-4">
-                                        <label class="form-label">ایجاد کننده</label>
-                                        <input type="text" class="form-control" id="ProgramTitle"/>
-                                   </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">ظرفيت</label>
-                                        <input type="number" class="form-control" id="RequestCapacity"/>
-                                    </div>
-            
-                                    <div class="col-4">
-                                        <div id="ToRequestCountTypeID">
-                                        </div>
-                                    </div>
-
-                                    <script>
-                                                $("#ToRequestCountTypeID").drapdownPlugin({
-                                                    apiAddress: '/api/Program/GetAllRequestCountTypes',
-                                                    valueOption: 'id',
-                                                    textOption: 'title',
-                                                    idTagName: 'RequestCountTypeID',
-                                                    dropdownParent: 'formoldFacility',
-                                                    title: 'واحد ظرفیت',
-                                                });
-                                    </script>
-
-                                    <div class="col-4">
-                                        <label class="form-label">تعداد</label>
-                                        <input type="number" class="form-control" id="RequestCount"/>
-                                    </div>
-                    
-                                    <div class="col-4">
-                                        <label class="form-label">مبلغ ارزش طرح</label>
-                                        <input type="number" class="form-control" id="ProgramPrice"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">آخرین ویرایش کننده</label>
-                                        <input type="number" class="form-control" id="OrganizationPrice"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">مبلغ  تسهیلات پرداختي</label>
-                                        <input type="number" class="form-control" id="AmountFacilityPaid"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">مانده تعهدات يارانه</label>
-                                        <input type="number" class="form-control" id="BalanceSubsidyObligations"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">يارانه دوران مشاركت</label>
-                                        <input type="number" class="form-control" id="SubsidyDuringParticipation"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">يارانه اجاره </label>
-                                        <input type="number" class="form-control" id="RentSubsidy"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">يارانه پرداختي</label>
-                                        <input type="number" class="form-control" id="PaidSubsidy"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">بانک عامل</label>
-                                        <input type="text" class="form-control" id="BankName"/>
-                                    </div>
-                                    
-                                    <div class="col-4">
-                                        <label class="mb-2">وضعيت پروژه</label>
-                                        <select class="form-select mb-3">
-                                            <option value="0">بهره برداري</option>
-                                            <option value="1">درحال ساخت</option>
-                                            <option value="2">درحال کارشناسی بانک</option>
-                                            <option value="3">ابطال</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">توضيحات طرح</label>
-                                        <input type="text" class="form-control" id="FacilityDescription"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                       <label class="form-label">تاریخ معرفی</label>
-                                       <input type="text" class="form-control" id="Announced">
-                                    </div>
-
-                                    <script>
-                                        $('#Announced').persianDatepicker({
-                                            'format': 'YYYY/MM/DD',
-                                            'autoclose': true,
-                                            showOtherMonths: true,
-                                            selectOtherMonths: true,
-                                            initialValue: true,
-                                            initialValueType: 'gregorian',
-                                            observer: true,
-            
-                                        });
-                                    </script>
-
-                                    <div class="col-4">
-                                       <label class="form-label">تاریخ صدور مصوبه بانکی</label>
-                                       <input class="form-control" id="IssuanceBankApproval">
-                                      </div>    
-
-                                     <script>
-                                        $('#IssuanceBankApproval').persianDatepicker({
-                                            'format': 'YYYY/MM/DD',
-                                            'autoclose': true,
-                                            showOtherMonths: true,
-                                            selectOtherMonths: true,
-                                            initialValue: true,
-                                            initialValueType: 'gregorian',
-                                            observer: true,
-                                        });
-                                    </script>
-
-                                    <div class="col-4">
-                                       <label class="form-label">مهلت معرفی نامه</label>
-                                       <input type="text" class="form-control" id="IntroductionDeadline">
-                                    </div>
-
-                                    <script>
-                                        $('#IntroductionDeadline').persianDatepicker({
-                                            'format': 'YYYY/MM/DD',
-                                            'autoclose': true,
-                                            showOtherMonths: true,
-                                            selectOtherMonths: true,
-                                            initialValue: true,
-                                            initialValueType: 'gregorian',
-                                            observer: true,
-                                        });
-                                    </script>
-
-                                    <div class="col-4">
-                                        <label class="form-label">درصد یارانه</label>
-                                        <input type="number" class="form-control" id="SubsidyPercentage" min=0 max=100/>
-                                    </div>
-
-
-                                    <div class="col-4">
-                                        <label class="form-label">تعداد اقساط </label>
-                                        <input type="text" class="form-control" id="NumberInstallments" />
-                                    </div>
-
-
-                                    <div class="col-4">
-                                       <label class="form-label">تاريخ ثبت قرارداد </label>
-                                       <input type="text" class="form-control" id="ContractRegistrationDate">
-                                    </div>
-
-                                    <script>
-                                        $('#ContractRegistrationDate').persianDatepicker({
-                                            'format': 'YYYY/MM/DD',
-                                            'autoclose': true,
-                                            showOtherMonths: true,
-                                            selectOtherMonths: true,
-                                            initialValue: true,
-                                            initialValueType: 'gregorian',
-                                            observer: true,
-                                        });
-                                    </script>
-
-                                   <div class="col-4">
-                                        <label class="form-label">سازنده</label>
-                                        <input type="text" class="form-control" id="CreatorLocation" />
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">محل اجراي پرو‍ژه</label>
-                                        <input type="text" class="form-control" id="ActivityLocation" />
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label class="form-label">آدرس و شماره تماس</label>
-                                        <textarea  type="text" class="form-control" id="PathAndPhone"></textarea>
-                                    </div>
-                                    
+                                 <script>
+                                             $("#Greenhouse").drapdownPlugin({
+                                                 apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
+                                                 valueOption: 'id',
+                                                 textOption: 'hallName',
+                                                 idTagName: 'GreenhouseHallModalID',
+                                                 dropdownParent: 'formTemperatureSensor',
+                                                 title: 'نام سالن',
+                                                 isRequire: true
+                                             });
+                                 </script>
                                 </form>
                             </div>
 
-
                             <div class="modal-footer">
-                                <div class="btn btn-success" id="submitBtn">ثبت و افزودن اسناد</div>
-                                <div class="btn btn-info" id="submitBtn2">ثبت بدون افزودن اسناد</div>
+                                <div class="btn btn-success" id="submitBtn">ثبت</div>
                                 <div class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">لغو</div>
                             </div>`;
 
@@ -284,7 +65,7 @@
         function buildInterface() {
             if (settings.hasTemplate) {
                 area.html(getTemplate());
-                getAllItems();
+                    getAllItems();
             }
         }
         $('.inputSearch').change(function () {
@@ -314,48 +95,58 @@
         area.find("[data-role-operation ='add']").click(function () {
             bootbox.dialog({
                 message: addtemplate,
-                title: "افزودن تسهیلات قدیمی",
+                title: "افزودن سنسور دما",
             }).bind('shown.bs.modal', function () {
-                $('.modal-dialog').css('max-width', '90%');
+                $('.modal-dialog').css('max-width', '25%');
                 $('.bootbox-close-button').css("display", "inline");
                 $('.bootbox-close-button').addClass("btn-close");
                 $('.bootbox-close-button').text("");
             });
             $("#submitBtn").click(function (e) {
-                postOldFacility(e);
+                postTemperatureSensor(e);
             });
-            $("#submitBtn2").click(function (e) {
-                postOldFacility(e);
+            $("#GreenhouseNav").drapdownPlugin({
+                apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
+                valueOption: 'id',
+                textOption: 'hallName',
+                idTagName: 'GreenhouseHallNavID',
+                dropdownParent: 'temperatureSensorTab',
+                isRequire: true
             });
         });
 
         area.find("[data-role-operation ='edit']").click(function () {
+            $("#GreenhouseNav").drapdownPlugin({
+                apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
+                valueOption: 'id',
+                textOption: 'hallName',
+                idTagName: 'GreenhouseHallNavID',
+                dropdownParent: 'temperatureSensorTab',
+                isRequire: true
+            });
             let idRowSelect = TemperatureSensorTableCartable.rows({ selected: true }).data()[0].id;
             $.ajax({
                 type: "get",
-                url: settings.GetOldFacilityByIDApiAddress + "?oldFacilityID=" + idRowSelect,
+                url: settings.GetTemperatureSensorIDApiAddress + "?Id=" + idRowSelect,
                 contentType: 'application/json',
                 success: function (result) {
 
                     var template = putTemplateOldFacility(result);
                     bootbox.dialog({
                         message: template,
-                        title: "ویرایش تسهیلات قدیمی",
+                        title: "ویرایش سنسور دما",
                     }).bind('shown.bs.modal', function () {
-                        $('.modal-dialog').css('max-width', '90%');
+                        $('.modal-dialog').css('max-width', '25%');
                         $('.bootbox-close-button').css("display", "inline");
                         $('.bootbox-close-button').addClass("btn-close");
                         $('.bootbox-close-button').text("");
                     });
                     $("#editsubmitBtn").click(function (e) {
-                        putOldFacility(e);
-                    });
-                    $("#editsubmitBtn2").click(function (e) {
-                        putOldFacility(e);
+                        putTemperatureSensor(e);
                     });
                 },
                 error: function () {
-                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش تسهیلات قدیمی');
+                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور دما');
                 }
             });
         });
@@ -364,14 +155,14 @@
             let idRowSelect = TemperatureSensorTableCartable.rows({ selected: true }).data()[0].id;
             $.ajax({
                 type: "delete",
-                url: settings.deleteOldFaciltyApiAddress + "?id=" + idRowSelect,
+                url: settings.deleteTemperatureSensorApiAddress + "?id=" + idRowSelect,
                 contentType: 'application/json',
                 success: function () {
-                    ivsAlert2('success', ' پیام موفقیت', 'تسهیلات با موفقیت حذف شد.');
+                    ivsAlert2('success', ' پیام موفقیت', 'سنسور دما با موفقیت حذف شد.');
                     TemperatureSensorTableCartable.rows().ajax.reload();
                 },
                 error: function () {
-                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش تسهیلات قدیمی');
+                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور دما');
                 },
                 complete: function () {
                     $("[data-role-operation='edit']").addClass("d-none");
@@ -379,86 +170,35 @@
                     TemperatureSensorTableCartable.rows('.important').deselect();
                 }
             });
+            $("#GreenhouseNav").drapdownPlugin({
+                apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
+                valueOption: 'id',
+                textOption: 'hallName',
+                idTagName: 'GreenhouseHallNavID',
+                dropdownParent: 'temperatureSensorTab',
+                isRequire: true
+            });
         });
 
-        function putOldFacility(click) {
+        function putTemperatureSensor(click) {
             var editModal = {
-                Id: TemperatureSensorTableCartable.rows({ selected: true }).data()[0].id,
-                CommitteeaApprovalNumber: $("#CommitteeaApprovalNumber").val(),
-                IntroductionYear: $("#IntroductionYear").val(),
-                ArchiveNumber: $("#ArchiveNumber").val(),
-                NationalCode: $("#NationalCode").val(),
-                DetailedCode: $("#DetailedCode").val(),
-                CustomerName: $("#CustomerName").val(),
-                ProgramType: $("#ProgramType").val(),
-                ProgramTypeKindID: $("#ProgramTypeKindID").val(),
-                ProgramTitle: $("#ProgramTitle").val(),
-                RequestCapacity: $("#RequestCapacity").val(),
-                RequestCountTypeID: $("#RequestCountTypeID").val(),
-                ProgramPrice: $("#ProgramPrice").val(),
-                OrganizationPrice: $("#OrganizationPrice").val(),
-                AmountFacilityPaid: $("#AmountFacilityPaid").val(),
-                BalanceSubsidyObligations: $("#BalanceSubsidyObligations").val(),
-                SubsidyDuringParticipation: $("#SubsidyDuringParticipation").val(),
-                RentSubsidy: $("#RentSubsidy").val(),
-                PaidSubsidy: $("#PaidSubsidy").val(),
-                BankName: $("#BankName").val(),
-                OldFacilityRequestTotalState: $("#OldFacilityRequestTotalState").val(),
-                FacilityDescription: $("#FacilityDescription").val(),
-                Announced: moment($("#Announced").val(), 'jYYYY/jM/jD').format('YYYY-M-D'),
-                IssuanceBankApproval: moment($("#IssuanceBankApproval").val(), 'jYYYY/jM/jD').format('YYYY-M-D'),
-                IntroductionDeadline: moment($("#IntroductionDeadline").val(), 'jYYYY/jM/jD').format('YYYY-M-D'),
-                SubsidyPercentage: $("#SubsidyPercentage").val(),
-                NumberInstallments: $("#NumberInstallments").val(),
-                ContractRegistrationDate: moment($("#ContractRegistrationDate").val(), 'jYYYY/jM/jD').format('YYYY-M-D'),
-                CreatorLocation: $("#CreatorLocation").val(),
-                ActivityLocation: $("#ActivityLocation").val(),
-                PathAndPhone: $("#PathAndPhone").val(),
+                ID: TemperatureSensorTableCartable.rows({ selected: true }).data()[0].id,
+                TemperatureSensorName: $("#TemperatureSensorName").val(),
+                GreenhouseHallID: $("#GreenhouseHallModalID").val(),
             }
-            if (editModal.IntroductionDeadline == "Invalid date") {
-                editModal.IntroductionDeadline = null;
-            }
-            if (editModal.Announced == "Invalid date") {
-                editModal.Announced = null;
-            }
-            if (editModal.IssuanceBankApproval == "Invalid date") {
-                editModal.IssuanceBankApproval = null;
-            }
-            if (editModal.ContractRegistrationDate == "Invalid date") {
-                editModal.ContractRegistrationDate = null;
-            }
+
             $.ajax({
                 type: "put",
                 url: settings.putOldFaciltyApiAddress,
                 data: JSON.stringify(editModal),
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
-                    ivsAlert2('success', ' پیام موفقیت', 'تسهیلات با موفقیت تغییر یافت.');
+                    ivsAlert2('success', ' پیام موفقیت', 'سنسور دما با موفقیت تغییر یافت.');
                     TemperatureSensorTableCartable.rows().ajax.reload();
                     $("[aria-label='Close']").trigger('click');
-                    if ($(click.target)[0].id == "editsubmitBtn") {
-
-                        bootbox.dialog({
-                            message: `<div id="file-body"></div>`,
-                            title: "پیوست اسناد به تسهیلات قدیمی",
-                        }).bind('shown.bs.modal', function () {
-                            $('.modal-dialog').css('max-width', '60%');
-                            $('.bootbox-close-button').css("display", "inline");
-                            $('.bootbox-close-button').addClass("btn-close");
-                            $('.bootbox-close-button').text("");
-                        });
-
-                        $("#file-body").uploadFilePlugin2({
-                            postDocumentToRequest: settings.postDocumentToRequest,
-                            deleteDocumentFromFacilityRequest: settings.deleteDocumentFromFacilityRequest,
-                            getFacilityRequestDocumentsByGroup: settings.getFacilityRequestDocumentsByGroup,
-
-                            objectId: TemperatureSensorTableCartable.rows({ selected: true }).data()[0].id
-                        });
-                    }
                 },
                 error: function (ex, cc, bb) {
-                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش تسهیلات قدیمی');
+                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور دما');
                 },
                 complete: function () {
                     $("[data-role-operation='edit']").addClass("d-none");
@@ -470,335 +210,60 @@
 
         function putTemplateOldFacility(result) {
             var editTemplateModal = `<div class="row" id="editmodal">
-                                <form id="formoldFacility" class="row g-3 needs-validation">
+                                <form id="formTemperatureSensor" class="row g-3 needs-validation">
 
-                                    <div class="col-4">
-                                        <label class="form-label">شماره مصوبه کمیته</label>
-                                        <input type="text" class="form-control" id="CommitteeaApprovalNumber" value="${result.committeeaApprovalNumber == null ? "" : result.committeeaApprovalNumber}"/>
+                                    <div class="col-6">
+                                        <label class="form-label">شناسه سنسور</label>
+                                        <input type="text" class="form-control" id="TemperatureSensorName" value="${result.temperatureSensorName == null ? "" : result.temperatureSensorName}"/>
                                     </div>
 
-                                    <div class="col-4">
-                                        <label class="form-label">نام سنسور</label>
-                                        <input type="number" class="form-control" id="IntroductionYear"
-                                            placeholder="سال را به صورت یک عدد چهار رقمی وارد کنید" value="${result.introductionYear == null ? "" : result.introductionYear}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">شماره بایگانی</label>
-                                        <input type="text" class="form-control" id="ArchiveNumber" value="${result.archiveNumber == null ? "" : result.archiveNumber}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">شناسه ملی حقیقی/حقوقی</label>
-                                        <input type="text" class="form-control" id="NationalCode" value="${result.nationalCode == null ? "" : result.nationalCode}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">كدتفصيلي</label>
-                                        <input type="text" class="form-control" id="DetailedCode" value="${result.detailedCode == null ? "" : result.detailedCode}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">نام متقاضي</label>
-                                        <input type="text" class="form-control" id="CustomerName" value="${result.customerName == null ? "" : result.customerName}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">نام سالن</label>
-                                        <input type="text" class="form-control" id="ProgramType" value="${result.programType == null ? "" : result.programType}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <div id="ToProgramTypeKindID">
+                                    <div class="col-6">
+                                        <div id="Greenhouse">
                                         </div>
                                     </div>
 
                                     <script>
-                                                $("#ToProgramTypeKindID").drapdownPlugin({
-                                                    apiAddress: '/api/Program/GetAllProgramTypeKinds',
-                                                    valueOption: 'id',
-                                                    textOption: 'title',
-                                                    idTagName: 'ProgramTypeKindID',
-                                                    dropdownParent: 'formoldFacility',
-                                                    defaultValue: [${result.programTypeKindID}],
-                                                    title: 'دسته بندی طرح',
-                                                });
+                                    $("#Greenhouse").drapdownPlugin({
+                                                 apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
+                                                 valueOption: 'id',
+                                                 textOption: 'hallName',
+                                                 idTagName: 'GreenhouseHallModalID',
+                                                 dropdownParent: 'formTemperatureSensor',
+                                                 title: 'نام سالن',
+                                                 defaultValue: [${result.greenhouseHallID}],
+                                                 isRequire: true
+                                             });
                                     </script>
 
-                                    <div class="col-4">
-                                        <label class="form-label">ایجاد کننده</label>
-                                        <input type="text" class="form-control" id="ProgramTitle" value="${result.programTitle == null ? "" : result.programTitle}"/>
-                                   </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">ظرفيت</label>
-                                        <input type="number" class="form-control" id="RequestCapacity" value="${result.requestCapacity == null ? "" : result.requestCapacity}"/>
-                                    </div>
-            
-                                    <div class="col-4">
-                                        <div id="ToRequestCountTypeID">
-                                        </div>
-                                    </div>
-
-                                    <script>
-                                                $("#ToRequestCountTypeID").drapdownPlugin({
-                                                    apiAddress: '/api/Program/GetAllRequestCountTypes',
-                                                    valueOption: 'id',
-                                                    textOption: 'title',
-                                                    idTagName: 'RequestCountTypeID',
-                                                    dropdownParent: 'formoldFacility',
-                                                    defaultValue: [${result.requestCountTypeID}],
-                                                    title: 'واحد ظرفیت',
-                                                });
-                                    </script>
-
-                                    <div class="col-4">
-                                        <label class="form-label">تعداد</label>
-                                        <input type="number" class="form-control" id="RequestCount" value="${result.requestCount == null ? "" : result.requestCount}"/>
-                                    </div>
-                    
-                                    <div class="col-4">
-                                        <label class="form-label">مبلغ ارزش طرح</label>
-                                        <input type="number" class="form-control" id="ProgramPrice" value="${result.programPrice == null ? "" : result.programPrice}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">آخرین ویرایش کننده</label>
-                                        <input type="number" class="form-control" id="OrganizationPrice" value="${result.organizationPrice == null ? "" : result.organizationPrice}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">مبلغ  تسهیلات پرداختي</label>
-                                        <input type="number" class="form-control" id="AmountFacilityPaid" value="${result.amountFacilityPaid == null ? "" : result.amountFacilityPaid}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">مانده تعهدات يارانه</label>
-                                        <input type="number" class="form-control" id="BalanceSubsidyObligations" value="${result.balanceSubsidyObligations == null ? "" : result.balanceSubsidyObligations}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">يارانه دوران مشاركت</label>
-                                        <input type="number" class="form-control" id="SubsidyDuringParticipation" value="${result.subsidyDuringParticipation == null ? "" : result.subsidyDuringParticipation}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">يارانه اجاره </label>
-                                        <input type="number" class="form-control" id="RentSubsidy" value="${result.rentSubsidy == null ? "" : result.rentSubsidy}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">يارانه پرداختي</label>
-                                        <input type="number" class="form-control" id="PaidSubsidy" value="${result.paidSubsidy == null ? "" : result.paidSubsidy}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">بانک عامل</label>
-                                        <input type="text" class="form-control" id="BankName" value="${result.bankName == null ? "" : result.bankName}"/>
-                                    </div>
-                                    
-                                    <div class="col-4">
-                                        <label class="mb-2">وضعيت پروژه</label>
-                                        <select class="form-select mb-3" value="${result.oldFacilityRequestTotalState == 0 ? `بهره برداري` : result.oldFacilityRequestTotalState == 1 ? `درحال ساخت` : result.oldFacilityRequestTotalState == 2 ? `درحال کارشناسی بانک` : `ابطال`}">
-                                         <option value="0">بهره برداري</option> 
-                                         <option value="1">درحال ساخت</option>
-                                         <option value="2">درحال کارشناسی بانک</option>
-                                         <option value="3">ابطال</option>
-
-                                        </select>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">توضيحات طرح</label>
-                                        <input type="text" class="form-control" id="FacilityDescription" value="${result.facilityDescription == null ? "" : result.facilityDescription}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                       <label class="form-label">تاریخ معرفی</label>
-                                       <input type="text" class="form-control" id="Announced" value="${result.announced}">
-                                    </div>
-
-                                    <script>
-                                        $('#Announced').persianDatepicker({
-                                            'format': 'YYYY/MM/DD',
-                                            'autoclose': true,
-                                            showOtherMonths: true,
-                                            selectOtherMonths: true,
-                                            initialValue: false,
-                                            initialValueType: 'persian',
-                                            observer: true,
-                                        });
-                                        if(${result.announced == null}){
-                                            $('#Announced').val("");
-                                         }
-                                    </script>
-
-                                    <div class="col-4">
-                                       <label class="form-label">تاریخ صدور مصوبه بانکی</label>
-                                       <input class="form-control" id="IssuanceBankApproval" value="${result.issuanceBankApproval}">
-                                      </div>    
-
-                                     <script>
-                                        $('#IssuanceBankApproval').persianDatepicker({
-                                            'format': 'YYYY/MM/DD',
-                                            'autoclose': true,
-                                            showOtherMonths: true,
-                                            selectOtherMonths: true,
-                                            initialValue: true,
-                                            initialValueType: 'gregorian',
-                                            observer: true,
-                                        });
-                                        if(${result.issuanceBankApproval == null}){
-                                            $('#IssuanceBankApproval').val("");
-                                         }
-                                    </script>
-
-                                    <div class="col-4">
-                                       <label class="form-label">مهلت معرفی نامه</label>
-                                       <input type="text" class="form-control" id="IntroductionDeadline" value="${result.introductionDeadline}">
-                                    </div>
-
-                                    <script>
-                                        $('#IntroductionDeadline').persianDatepicker({
-                                            'format': 'YYYY/MM/DD',
-                                            'autoclose': true,
-                                            showOtherMonths: true,
-                                            selectOtherMonths: true,
-                                            initialValue: true,
-                                            initialValueType: 'gregorian',
-                                            observer: true,
-                                        });
-                                        if(${result.introductionDeadline == null}){
-                                            $('#IntroductionDeadline').val("");
-                                         }
-                                    </script>
-
-                                    <div class="col-4">
-                                        <label class="form-label">درصد یارانه</label>
-                                        <input type="number" class="form-control" id="SubsidyPercentage" min=0 max=100 value="${result.subsidyPercentage == null ? "" : result.subsidyPercentage}"/>
-                                    </div>
-
-
-                                    <div class="col-4">
-                                        <label class="form-label">تعداد اقساط </label>
-                                        <input type="text" class="form-control" id="NumberInstallments"  value="${result.numberInstallments == null ? "" : result.numberInstallments}"/>
-                                    </div>
-
-
-                                    <div class="col-4">
-                                       <label class="form-label">تاريخ ثبت قرارداد </label>
-                                       <input type="text" class="form-control" id="ContractRegistrationDate" value="${result.contractRegistrationDate}">
-                                    </div>
-
-                                    <script>
-                                        $('#ContractRegistrationDate').persianDatepicker({
-                                            'format': 'YYYY/MM/DD',
-                                            'autoclose': true,
-                                            showOtherMonths: true,
-                                            selectOtherMonths: true,
-                                            initialValue: true,
-                                            initialValueType: 'gregorian',
-                                            observer: true,
-                                        });
-                                        if(${result.contractRegistrationDate == null}){
-                                            $('#ContractRegistrationDate').val("");
-                                         }
-                                    </script>
-
-                                   <div class="col-4">
-                                        <label class="form-label">سازنده</label>
-                                        <input type="text" class="form-control" id="CreatorLocation"  value="${result.creatorLocation == null ? "" : result.creatorLocation}"/>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label">محل اجراي پرو‍ژه</label>
-                                        <input type="text" class="form-control" id="ActivityLocation"  value="${result.activityLocation == null ? "" : result.activityLocation}"/>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label class="form-label">آدرس و شماره تماس</label>
-                                        <textarea  type="text" class="form-control" id="PathAndPhone" value="${result.pathAndPhone == null ? "" : result.pathAndPhone}"></textarea>
-                                    </div>
-                                    
                                 </form>
                             </div>
 
 
                             <div class="modal-footer">
-                                <div class="btn btn-success" id="editsubmitBtn">ثبت و تغییر پیوست ها</div>
-                                <div class="btn btn-info" id="editsubmitBtn2">ثبت بدون تغییر پیوست ها</div>
+                                <div class="btn btn-success" id="editsubmitBtn">ثبت</div>
                                 <div class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">لغو</div>
                             </div>`;
             return editTemplateModal;
         }
 
-        function postOldFacility(click) {
+        function postTemperatureSensor(click) {
             var addModal = {
-                CommitteeaApprovalNumber: $("#CommitteeaApprovalNumber").val(),
-                IntroductionYear: $("#IntroductionYear").val(),
-                ArchiveNumber: $("#ArchiveNumber").val(),
-                NationalCode: $("#NationalCode").val(),
-                DetailedCode: $("#DetailedCode").val(),
-                CustomerName: $("#CustomerName").val(),
-                ProgramType: $("#ProgramType").val(),
-                ProgramTypeKindID: $("#ProgramTypeKindID").val(),
-                ProgramTitle: $("#ProgramTitle").val(),
-                RequestCapacity: $("#RequestCapacity").val(),
-                RequestCountTypeID: $("#RequestCountTypeID").val(),
-                ProgramPrice: $("#ProgramPrice").val(),
-                OrganizationPrice: $("#OrganizationPrice").val(),
-                AmountFacilityPaid: $("#AmountFacilityPaid").val(),
-                BalanceSubsidyObligations: $("#BalanceSubsidyObligations").val(),
-                SubsidyDuringParticipation: $("#SubsidyDuringParticipation").val(),
-                RentSubsidy: $("#RentSubsidy").val(),
-                PaidSubsidy: $("#PaidSubsidy").val(),
-                BankName: $("#BankName").val(),
-                OldFacilityRequestTotalState: $("#OldFacilityRequestTotalState").val(),
-                FacilityDescription: $("#FacilityDescription").val(),
-                Announced: moment($("#Announced").val(), 'jYYYY/jM/jD').format('YYYY-M-D'),
-                IssuanceBankApproval: moment($("#IssuanceBankApproval").val(), 'jYYYY/jM/jD').format('YYYY-M-D'),
-                IntroductionDeadline: moment($("#IntroductionDeadline").val(), 'jYYYY/jM/jD').format('YYYY-M-D'),
-                SubsidyPercentage: $("#SubsidyPercentage").val(),
-                NumberInstallments: $("#NumberInstallments").val(),
-                ContractRegistrationDate: moment($("#ContractRegistrationDate").val(), 'jYYYY/jM/jD').format('YYYY-M-D'),
-                CreatorLocation: $("#CreatorLocation").val(),
-                ActivityLocation: $("#ActivityLocation").val(),
-                PathAndPhone: $("#PathAndPhone").val(),
+                TemperatureSensorName: $("#TemperatureSensorName").val(),
+                GreenhouseHallID: $("#GreenhouseHallModalID").val(),
             }
             $.ajax({
                 type: "post",
-                url: settings.postOldFaciltyApiAddress,
+                url: settings.postTemperatureSensorApiAddress,
                 data: JSON.stringify(addModal),
                 contentType: "application/json; charset=utf-8",
 
                 success: function (result) {
-                    ivsAlert2('success', ' پیام موفقیت', 'تسهیلات با موفقیت ثبت شد.');
+                    ivsAlert2('success', ' پیام موفقیت', 'سنسور دما با موفقیت ثبت شد.');
                     TemperatureSensorTableCartable.rows().ajax.reload();
                     $("[aria-label='Close']").trigger('click');
-
-                    if ($(click.target)[0].id == "submitBtn") {
-
-                        bootbox.dialog({
-                            message: `<div id="file-body"></div>`,
-                            title: "پیوست اسناد به تسهیلات قدیمی",
-                        }).bind('shown.bs.modal', function () {
-                            $('.modal-dialog').css('max-width', '60%');
-                            $('.bootbox-close-button').css("display", "inline");
-                            $('.bootbox-close-button').addClass("btn-close");
-                            $('.bootbox-close-button').text("");
-                        });
-
-                        $("#file-body").uploadFilePlugin2({
-                            postDocumentToRequest: settings.postDocumentToRequest,
-                            deleteDocumentFromFacilityRequest: settings.deleteDocumentFromFacilityRequest,
-                            getFacilityRequestDocumentsByGroup: settings.getFacilityRequestDocumentsByGroup,
-
-                            objectId: result
-                        });
-                    }
                 },
                 error: function (ex, cc, bb) {
-                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش تسهیلات قدیمی');
+                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور دما');
                 },
                 complete: function () {
                     $("[data-role-operation='edit']").addClass("d-none");
@@ -810,11 +275,13 @@
 
         function getAllItems() {
             var areaCartable = area.find("#cartable");
+            var GreenhouseHallID = area.find("#GreenhouseHallNavID").val();
+            debugger;
             TemperatureSensorTableCartable = areaCartable.DataTable({
                 ajax:
                 {
                     contentType: 'application/json',
-                    url: settings.AllItemsApiAddress + "?GreenHouseID="+ 4,
+                    url: settings.AllItemsApiAddress + "?GreenHouseID=" + 4,
                     type: 'get',
                     dataType: "json",
                 },
@@ -826,7 +293,7 @@
                 serverSide: true,
                 paging: true,
                 dom: 'rt<"mt-2" l>p',
-                paginationType: "full_numbers",
+                paginationType: "numbers",
                 serverMethod: 'post',
                 columns: cols,
                 language: {
@@ -838,15 +305,28 @@
 
         function getTemplate() {
             var ss = `<div class="card">
-                            <div class="card-body" id="ArchiveOldFacility">
+                            <div class="card-body" id="temperatureSensorTab">
                                 <h4 class="mb-0">کنترل سنسور دما</h4>
                                 <hr>
                                 <nav class="navbar navbar-expand-lg navbar-dark bg-info rounded p-2 mb-2">
                                     <div class="sticky">
-                                        <button type="button" class="btn btn-success text-dark" data-role-operation="add" alt="افزودن تسهیلات قدیمی"><i class="bx bx-message-square-add"></i>افزودن سنسور دما</button>
-                                        <button type="button" class="btn btn-warning d-none ms-2" id="editSessionRoomBtn"  data-role-operation="edit"><i class="bx bx-message-square-edit"></i>ویرایش سنسور دما</button>
-                                        <button type="button" class="btn btn-danger text-dark d-none ms-2" id="deleteSessionRoomBtn" data-role-remove><i class="bx bx-comment-minus"></i>حذف سنسور دما</button>
+                                        <button type="button" class="btn btn-success text-dark" data-role-operation="add" alt="افزودن سنسور دما"><i class="bx bx-message-square-add"></i>افزودن سنسور دما</button>
+                                        <button type="button" class="btn btn-warning d-none ms-2" data-role-operation="edit"><i class="bx bx-message-square-edit"></i>ویرایش سنسور دما</button>
+                                        <button type="button" class="btn btn-danger text-dark d-none ms-2" data-role-remove><i class="bx bx-comment-minus"></i>حذف سنسور دما</button>
                                         <button class="btn btn-light ms-2" href="#headerfilters" data-bs-toggle="collapse" data-toggle="collapse" title="جستجو"><i class='bx bx-search'></i>جستجو</button>
+                                        <span class="text-dark ms-3" style="font-size:17px">سالن</span>
+                                        <button type="button" class="btn mb-2 mt-0 py-0" id="GreenhouseNav"></button>
+
+                                    <script>
+                                             $("#GreenhouseNav").drapdownPlugin({
+                                                 apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
+                                                 valueOption: 'id',
+                                                 textOption: 'hallName',
+                                                 idTagName: 'GreenhouseHallNavID',
+                                                 dropdownParent: 'temperatureSensorTab',
+                                                 isRequire: true
+                                             });
+                                    </script>
                                     </div>
                                     <hr>
                                 </nav>
@@ -855,7 +335,7 @@
                                     <thead>
                                         <tr id="headerfilters" class="collapse">
                                             <th scope="col" class="cartablefilter" >
-                                                <input type="text" placeholder="نام سنسور" class="inputSearch form-control" data-name="temperatureSensorName" />
+                                                <input type="text" placeholder="شناسه سنسور" class="inputSearch form-control" data-name="temperatureSensorName" />
                                             </th>
                                             <th scope="col" class="cartablefilter">
                                                 <input type="text" class="inputSearch form-control" placeholder="گلخانه دار" data-name="userName" />
@@ -875,7 +355,7 @@
                                             </th>
                                         </tr>
                                         <tr>
-                                            <th scope="col" name="temperatureSensorName"><b>نام سنسور</b></th>
+                                            <th scope="col" name="temperatureSensorName"><b>شناسه سنسور</b></th>
                                             <th scope="col" name="userName"><b>گلخانه دار</b></th>
                                             <th scope="col" name="hallName"><b>نام سالن</b></th>
                                             <th scope="col" name="createdBy"><b>ایجاد کننده</b></th>
@@ -892,6 +372,8 @@
 
                         `;
             ss = minifyHtml(ss);
+            var GreenhouseHallID = $("#GreenhouseHallNavID").val();
+            alert(GreenhouseHallID);
             return ss;
 
         }
