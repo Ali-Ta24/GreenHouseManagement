@@ -62,7 +62,7 @@
                             </style>
 
 
-                            @if (userRoleName != null && userRoleName.Any(x => x.ToLower() != "customer"))
+                            @if (userRoleName != null && userRoleName.Any(x => x.ToLower() == "customer"))
                             {
                                 <div id="PanelContainer">
 
