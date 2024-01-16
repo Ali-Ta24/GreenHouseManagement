@@ -39,8 +39,6 @@
                                         </div>
                                     </div>
                                 
-                                 </div>
-
                                  <script>
                                              $("#Greenhouse").drapdownPlugin({
                                                  apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
@@ -65,7 +63,9 @@
         function buildInterface() {
             if (settings.hasTemplate) {
                 area.html(getTemplate());
+                setTimeout(function () {
                     getAllItems();
+                }, 1000);
             }
         }
         $('.inputSearch').change(function () {
@@ -81,16 +81,17 @@
             TemperatureSensorTableCartable.draw();
 
         });
+        setTimeout(function () {
+            TemperatureSensorTableCartable.on('select', function (event, dt, type, indexes) {
+                let valueRowSelect = TemperatureSensorTableCartable.rows({ selected: true }).data()[0];
+                $("[data-role-operation='edit']").removeClass("d-none");
+                $('[data-role-remove]').removeClass("d-none");
 
-        TemperatureSensorTableCartable.on('select', function (event, dt, type, indexes) {
-            let valueRowSelect = TemperatureSensorTableCartable.rows({ selected: true }).data()[0];
-            $("[data-role-operation='edit']").removeClass("d-none");
-            $('[data-role-remove]').removeClass("d-none");
-
-        }).on('deselect', function (event, dt, type, indexes) {
-            $("[data-role-operation='edit']").addClass("d-none");
-            $('[data-role-remove]').addClass("d-none");
-        });
+            }).on('deselect', function (event, dt, type, indexes) {
+                $("[data-role-operation='edit']").addClass("d-none");
+                $('[data-role-remove]').addClass("d-none");
+            });
+        }, 1000);
 
         area.find("[data-role-operation ='add']").click(function () {
             bootbox.dialog({
@@ -110,7 +111,7 @@
                 valueOption: 'id',
                 textOption: 'hallName',
                 idTagName: 'GreenhouseHallNavID',
-                dropdownParent: 'temperatureSensorTab',
+                dropdownParent: 'formTemperatureSensor',
                 isRequire: true
             });
         });
@@ -210,7 +211,7 @@
 
         function putTemplateOldFacility(result) {
             var editTemplateModal = `<div class="row" id="editmodal">
-                                <form id="formTemperatureSensor" class="row g-3 needs-validation">
+                                <form id="formTemperatureSensorAdd" class="row g-3 needs-validation">
 
                                     <div class="col-6">
                                         <label class="form-label">شناسه سنسور</label>
@@ -228,7 +229,7 @@
                                                  valueOption: 'id',
                                                  textOption: 'hallName',
                                                  idTagName: 'GreenhouseHallModalID',
-                                                 dropdownParent: 'formTemperatureSensor',
+                                                 dropdownParent: 'formTemperatureSensorAdd',
                                                  title: 'نام سالن',
                                                  defaultValue: [${result.greenhouseHallID}],
                                                  isRequire: true
@@ -276,12 +277,11 @@
         function getAllItems() {
             var areaCartable = area.find("#cartable");
             var GreenhouseHallID = area.find("#GreenhouseHallNavID").val();
-            debugger;
             TemperatureSensorTableCartable = areaCartable.DataTable({
                 ajax:
                 {
                     contentType: 'application/json',
-                    url: settings.AllItemsApiAddress + "?GreenHouseID=" + 4,
+                    url: settings.AllItemsApiAddress + "?GreenHouseID=" + GreenhouseHallID,
                     type: 'get',
                     dataType: "json",
                 },
@@ -372,10 +372,7 @@
 
                         `;
             ss = minifyHtml(ss);
-            var GreenhouseHallID = $("#GreenhouseHallNavID").val();
-            alert(GreenhouseHallID);
             return ss;
-
         }
 
         return this;
