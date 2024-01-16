@@ -25,96 +25,8 @@
 <link href="/css/jqueryui/jquery-ui.structure.css" rel="stylesheet" />
 <link href="/css/jqueryui/jquery-ui.theme.css" rel="stylesheet" />
 <link href="/css/dashboard/dashboard.css" rel="stylesheet" />
+<script src="/css/icon/iconify-icon.min.js"></script>
 
-
-
-
-
-@if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Value.
-ToLower() != "customer")
-{
-    @*<div class="row row-cols-1 row-cols-lg-2">*@
-    <div class="row ">
-        <div class="col-xl-6 col-lg-6">
-            <div class="card radius-10 overflow-hidden bg-gradient-cosmic" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="تعداد کل تسهیلاتی که ثبت درخواست آنها قبلا بوسیله متقاضی نهایی شده و در سیستم جهت بررسی در حال طی فرآیند تایید میباشند">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <p class="mb-0 text-white title-info-topDash">تعداد کل تسهیلات در فرآیند تایید</p>
-                            <br />
-                            <h3 class="mb-0 text-white value-info-topDash" id="totalInAcceptanceProgressFacilities">درحال دریافت</h3>
-                            <i data-bs-toggle="popover" data-bs-placement="bottom"
-                               data-bs-content="تعداد کل تسهیلات در فرآیند تایید: تعداد کل تسهیلاتی که ثبت درخواست آنها قبلا بوسیله متقاضی نهایی شده و در سیستم جهت بررسی در حال طی فرآیند تایید میباشند" class="text-white showDetailsWidget bx bx-info-circle cursor-pointer"></i>
-
-                        </div>
-                        <div class="ms-auto text-white icon-info-topDash">
-                            <i class="font-35 bx bx-check-double"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-6 col-lg-6">
-            <div class="card radius-10 overflow-hidden bg-gradient-burning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="مبلغ درخواستی کل تسهیلاتی که ثبت درخواست آنها قبلا بوسیله متقاضی نهایی شده و در سیستم جهت بررسی در حال طی فرآیند تایید میباشند">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <p class="mb-0 text-white title-info-topDash">مبلغ کل تسهیلات در فرآیند تایید</p>
-                            <br />
-                            <h3 class="mb-0 text-white value-info-topDash"><span id="totalInAcceptanceProgressFacilityAmounts">درحال دریافت</span></h3>
-                            <i data-bs-toggle="popover" data-bs-placement="bottom"
-                               data-bs-content="مبلغ کل تسهیلات در فرآیند تایید: مبلغ درخواستی کل تسهیلاتی که ثبت درخواست آنها قبلا بوسیله متقاضی نهایی شده و در سیستم جهت بررسی در حال طی فرآیند تایید میباشند" class="showDetailsWidget text-white bx bx-info-circle cursor-pointer"></i>
-
-                        </div>
-                        <div class="ms-auto text-white icon-info-topDash">
-                            <i class="font-35 bx bx-money"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-6 col-lg-6">
-            <div class="card radius-10 overflow-hidden bg-gradient-Ohhappiness" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="تعداد کل تسهیلاتی که در فرآیند تاییدشان نهایی شده و در حال طی چرخه مالی میباشند">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <p class="mb-0 text-white title-info-topDash">تعداد کل تسهیلات در فرآیند مالی</p>
-                            <br />
-                            <h3 class="mb-0 text-white value-info-topDash" id="totalInFinancialProgressFacilities">درحال دریافت</h3>
-                            <i data-bs-toggle="popover" data-bs-placement="bottom"
-                               data-bs-content="تعداد کل تسهیلات در فرآیند مالی : تعداد کل تسهیلاتی که در فرآیند تاییدشان نهایی شده و در حال طی چرخه مالی میباشند" class="text-white  showDetailsWidget bx bx-info-circle cursor-pointer"></i>
-
-                        </div>
-                        <div class="ms-auto text-white icon-info-topDash">
-                            <i class="font-35 bx bx-wallet-alt"></i>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-6 col-lg-6">
-            <div class="card radius-10 overflow-hidden bg-gradient-moonlit" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="تعداد کل شرکتهایی که در سامانه ثبت نام کرده اند">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <p class="mb-0 text-white title-info-topDash">تعداد کل شرکتهای ثبت نام کرده</p>
-                            <br />
-                            <h3 class="mb-0 text-white value-info-topDash" id="totalRegisteredCompanies">درحال دریافت</h3>
-                            <i data-bs-toggle="popover" data-bs-placement="bottom"
-                               data-bs-content="تعداد کل شرکتهای ثبت نام کرده: تعداد کل شرکتهایی که در سامانه ثبت نام کرده اند" class="text-white showDetailsWidget bx bx-info-circle cursor-pointer"></i>
-
-                        </div>
-                        <div class="ms-auto text-white icon-info-topDash">
-                            <i class=" font-35 bx bx-buildings"></i>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-}
 @if (User.Identity.IsAuthenticated)
 {
     @if (userRoleName != null && userRoleName.Value.ToLower() == "customer")
@@ -126,12 +38,12 @@ ToLower() != "customer")
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div>
-                                <p class="mb-0 text-white c-title-info-topDash">مجموع باز پرداخت تسهیلات تا کنون</p>
+                                <p class="mb-0 text-white c-title-info-topDash">تعداد سالن های موجود</p>
                                 <br />
-                                <h4 class="my-1 text-white c-value-info-topDash">در دست ساخت</h4>
+                                <h4 class="my-1 text-white c-value-info-topDash">در حال بررسی</h4>
                             </div>
                             <div class="widgets-icons bg-white text-success ms-auto">
-                                <i class="bx bxs-wallet"></i>
+                                <iconify-icon icon="icon-park-outline:green-house"></iconify-icon>
                             </div>
                         </div>
                     </div>
@@ -142,12 +54,12 @@ ToLower() != "customer")
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div>
-                                <p class="mb-0 text-dark c-title-info-topDash">تعداد بازدید شما از سایت </p>
+                                <p class="mb-0 text-dark c-title-info-topDash">تعداد سنسورهای دما</p>
                                 <br />
                                 <h4 class="my-1 text-dark c-value-info-topDash" id="loginCount">درحال دریافت</h4>
                             </div>
                             <div class="widgets-icons bg-white text-dark ms-auto">
-                                <i class="bx bxs-group"></i>
+                                <iconify-icon icon="mingcute:low-temperature-fill"></iconify-icon>
                             </div>
                         </div>
                     </div>
@@ -158,12 +70,12 @@ ToLower() != "customer")
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div>
-                                <p class="mb-0 text-white c-title-info-topDash">مرحله فعلی چرخه دریافت تسهیلات</p>
+                                <p class="mb-0 text-white c-title-info-topDash">تعداد سنسورهای رطوبت</p>
                                 <br />
                                 <div id="companyLatestInProgressFacilityState" class="text-white c-value-info-topDash mw-100"><h4 class="text-white">درحال دریافت</h4></div>
                             </div>
                             <div class="widgets-icons bg-white text-danger ms-auto">
-                                <i class="bx bxs-binoculars"></i>
+                                <iconify-icon icon="material-symbols:humidity-percentage-rounded"></iconify-icon>
                             </div>
                         </div>
                     </div>
@@ -174,12 +86,12 @@ ToLower() != "customer")
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div>
-                                <p class="mb-0 text-dark c-title-info-topDash">نرخ پیشرفت مراحل تسهیلات</p>
+                                <p class="mb-0 text-dark c-title-info-topDash">تعداد سنسورهای نور</p>
                                 <br />
                                 <div id="companyLatestInProgressFacilityProgressPercent" class="c-value-info-topDash"><h4 class="my-1 text-dark ">درحال دریافت</h4></div>
                             </div>
                             <div class="widgets-icons bg-white text-dark ms-auto">
-                                <i class="bx bx-line-chart-down"></i>
+                                <iconify-icon icon="entypo:light-up"></iconify-icon>
                             </div>
                         </div>
                     </div>

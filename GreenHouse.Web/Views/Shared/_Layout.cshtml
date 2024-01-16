@@ -147,7 +147,7 @@ else
 
 
                 <a href="/">
-                    <img id="mainLgon" src="/PanelContent/logo/logo/newLogoBanaderWithSideText.png" class="logo-icon " alt="logo icon">
+                    <img id="mainLgon" src="/PanelContent/logo/logo/newLogoGreenHouseWithSideText.png" class="logo-icon " alt="logo icon">
                     <img id="smallLgon" src="/panelcontent/logo/logo/android-chrome-512x512.png" class="noneLogo" style="width:48px" alt="logo icon">
                 </a>
                 @*<div>
@@ -703,12 +703,8 @@ else
                     {
                         <div class="user-box dropdown">
                             <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                @*<form asp-action="GetProfilePhoto" asp-controller="User">*@
+                                <img src="/PanelContent/logo/logo/logo-profile.jpg" class="user-img" alt="user avatar">
 
-                                @*<img src="/api/User/GetProfilePhoto" class="user-img" alt="user profile">*@
-                                <img src="/PanelContent/logo/logo/logo-IVS.jpg" class="user-img" alt="user avatar">
-                                @*</form>*@
-                                @*<img src="/PanelContent/logo/logo/logo-IVS.jpg" class="user-img" alt="user profile">*@
                                 <div class="user-info ps-3">
                                     <p class="user-name mb-0">
                                         @Html.Raw(userFirstName != null ? userFirstName.Value : "") <text>&nbsp;</text> @Html.Raw(userLastName != null ? userLastName.Value : "")
