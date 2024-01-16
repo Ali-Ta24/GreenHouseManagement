@@ -951,54 +951,6 @@ async function getAreaGeneralDocuments(facilityid, hasPermessionAddDoc, hasPerme
 }
 
 ///get general doc
-async function getUpdloadFileGeneralDoc(facilityid, hasPermessionEditDoc) {
-
-    var dataGeneralDoc = await fetch("/api/Facility/GetFacilityRequestDocumentsByGroup?facilityRequestID=" + facilityid)
-        .then((response) => response.json())
-        .then(data => {
-
-            return data;
-        })
-        .catch(error => {
-            ivsAlert('اشکال در برقراری ارتباط با سرور - در دریافت فایل های اسناد عمومی', 'خطا', 'error');
-            //console.log(error);
-        });
-
-    //console.log({ dataGeneralDoc });
-    var cardDownload = "";
-
-    if (dataGeneralDoc.length == 0) {
-        return `<span>سند عمومی ثبت نشده است</span> `;
-    }
-
-    //$("#listGeneralDoc").html("");
-    for (var i = 0; i < dataGeneralDoc.length; i++) {
-
-        var type = getNameTypeFile(dataGeneralDoc[i].latestFileName);
-
-        let strDoc = `
-              <div class=" d-flex align-items-center border border-dark mb-3  p-2 rounded">
-					<div class="" style="overflow: hidden;">
-						`+ getTypeFile(dataGeneralDoc[i].latestFileName) + `
-					</div>
-					<div class="ms-2">
-						<h4 title="${dataGeneralDoc[i].title}" class="mb-1 title-file font-14">${dataGeneralDoc[i].title}</h4>
-                        <p title="${dataGeneralDoc[i].description}" class="mb-1 des-file font-14">${dataGeneralDoc[i].description}</p>
-
-					</div>
-					<div class="list-inline d-flex customers-contacts ms-auto">
-                          <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="دانلود فایل" href="/api/DMS/download/${dataGeneralDoc[i].latestFileID}" download class="list-inline-item cursor-pointer  btn-outline-success"><i class='bx bx-download'></i></a>
-                          <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="نمایش فایل" onclick="showFileToWeb('/api/DMS/download/${dataGeneralDoc[i].latestFileID}', '${type}' )" class="list-inline-item cursor-pointer btn-outline-info"><i class="bx bx-show-alt"></i></a>
-                          ${hasPermessionEditDoc != -1 ? `<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="حذف فایل"  onclick="removeDoc(${facilityid} , '${dataGeneralDoc[i].documentID}' , '${dataGeneralDoc[i].latestFileName}')" class="list-inline-item cursor-pointer btn-outline-danger"><i class='bx bx-trash-alt'></i></a>` : ""}
-					</div>
-               </div>               
-				`;
-        cardDownload += strDoc;
-    }
-    return cardDownload;
-
-}
-
 async function loadProgranAndFacility(data) {
     await showDetailsProgram(data, 'infoProgramAction');
     await showDetailsFacility(data, 'infoFacilityAction');
@@ -1983,81 +1935,6 @@ async function addDocServer() {
     });
 }
 
-function getFileUploaded(data, facilityRequestID, indexEditDocuments) {
-
-    var cardDownload = "";
-    if (data.length == 0) {
-        return "مدرک ثبت نشده است.";
-    }
-    for (var i = 0; i < data.length; i++) {
-        var typefile = getNameTypeFile(data[i].latestFileName);
-
-        let strDoc = `
-              <div class="customers-list-item d-flex align-items-center  p-2 rounded">
-					<div class="" style="overflow: hidden;">
-						`+ getTypeFile(data[i].latestFileName) + `
-					</div>
-					<div class="ms-2">
-						<h4 title="${data[i].title}" class="mb-1 title-file font-14">${data[i].title}</h4>
-                        <p title="${data[i].description}" class="mb-1 des-file font-14">${data[i].description}</p>
-
-					</div>
-					<div class="list-inline d-flex customers-contacts ms-auto">
-                          <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="دانلود فایل" href="/api/DMS/download/${data[i].latestFileID}" download class="list-inline-item cursor-pointer  btn-outline-success"><i class='bx bx-download'></i></a>
-                          <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="نمایش فایل" onclick="showFileToWeb('/api/DMS/download/${data[i].latestFileID}', '${typefile}' )" class="list-inline-item cursor-pointer btn-outline-info"><i class="bx bx-show-alt" ></i></a>
-                          ${indexEditDocuments != -1 ? `<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="حذف فایل"  onclick="removeDoc(${facilityRequestID} , '${data[i].id}' , '${data[i].latestFileName}')" class="list-inline-item cursor-pointer btn-outline-danger"><i class='bx bx-trash-alt'></i></a>` : ""
-            }
-					</div>
-               </div>
-                
-				`;
-        cardDownload += strDoc;
-    }
-    return cardDownload;
-}
-
-function removeDoc(facilityRequestID, docId, fileName) {
-
-    $('#removeFacilityId').val(facilityRequestID);
-    $('#removeDocId').val(docId);
-    $('#massageConfirmDeleteDoc').html(`آیا از حذف ${fileName} مطمئن هستید؟`);
-    $('#removeDocumnetConfirm').modal('show');
-}
-
-function removeDocServer() {
-    var facilityRequestID = $('#removeFacilityId').val();
-    var docId = $('#removeDocId').val();
-    loading('removeBtnDoc', true, true);
-
-    $.ajax({
-        type: "delete",
-        url: "/api/Facility/RemoveDocumentFromFacilityRequest?facilityRequestID=" + facilityRequestID + '&documentID=' + docId,
-        success: function (result) {
-
-            //console.log(result);
-            $('#removeDocumnetConfirm').modal('hide');
-
-            getAreaGeneralDocuments(facilityRequestID, 1, 1);
-            getRequiredFiles(facilityRequestID, 1);
-
-            loading('removeBtnDoc', false, true);
-            ivsAlert2("success", "پیام موفقیت", "مدرک مورد نظر حذف شد");
-
-
-        },
-        error: function (ex, cc, bb) {
-
-            ivsAlert('اشکال در حذف فایل', 'خطا', 'error');
-            loading('removeBtnDoc', false, true);
-
-            //console.log(ex);
-            //console.log(bb);
-        },
-
-    });
-}
-
-///upload files end 
 function GetAlluserOfDepartment(directDepartmentExpertUserName) {
 
     var departmentCode = $("#departmentCodeID").val();

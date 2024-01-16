@@ -159,59 +159,6 @@ function ivsAlert2(status, title, msg, position = "top right", delay = 5, width 
 function resetForm(idForm) {
     document.getElementById(idForm).reset();
 }
-
-///fileName is string
-function getNameTypeFile(fileName) {
-     
-    let extension = fileName.split('.').pop();
-    extension = extension.toLowerCase();
-    return extension;
-}
-
-
-
-///fileName is string
-function getTypeFile(fileName) {
-    let extension = fileName.split('.').pop();
-    extension = extension.toLowerCase();
-    if (extension == "png") {
-        return `<img src="/iconsFile/png.png" style="width:46px"/>`
-
-    }
-    else if (extension == "jpg" || extension == "jpeg") {
-        return `<img src="/iconsFile/jpj.png" style="width:46px"/>`
-
-    }
-    else if (extension == "txt") {
-        return `<img src="/iconsFile/txt.png" style="width:46px"/>`
-
-    }
-    else if (extension == "doc" || extension == "docx") {
-        return `<img src="/iconsFile/doc.png" style="width:46px"/>`
-
-    }
-    else if (extension == "pdf") {
-        return `<img src="/iconsFile/pdf.png" style="width:46px"/>`
-
-    }
-    else if (extension == "xls") {
-        return `<img src="/iconsFile/xls.png" style="width:46px"/>`
-
-    }
-    else if (extension == "zip") {
-        return `<img src="/iconsFile/zip.png" style="width:46px"/>`
-
-    }
-    else if (extension == "ppt" || extension == "pptx") {
-        return `<img src="/iconsFile/ppt.png" style="width:46px"/>`
-
-    }
-    else {
-        return `<img src="/iconsFile/nan.png" style="width:46px"/>`
-
-    }
-};
-
 function getMoneyWithOutkama(value) {
     var ca = value.split(",");
     var temp = '';

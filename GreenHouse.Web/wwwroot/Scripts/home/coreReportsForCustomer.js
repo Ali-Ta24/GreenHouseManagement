@@ -8,9 +8,6 @@
         },
         error: function (ex, cc, bb) {
             ivsAlert2('error', 'خطا سیستم', 'خطا در فراخوانی GetLoginCount');
-
-            //console.log(ex);
-            //console.log(bb);
         }
     });
 } catch (e) {
@@ -35,8 +32,6 @@ try {
         error: function (ex, cc, bb) {
             ivsAlert2('error', 'خطا سیستم', 'خطا در فراخوانی GetCompanyLatestInProgressFacilityState');
             $("#companyLatestInProgressFacilityState").html("هیچ تسهیلات در جریانی یافت نشد");
-            //console.log(ex);
-            //console.log(bb);
         }
     });
 } catch (e) {
@@ -62,8 +57,6 @@ try {
             ivsAlert2('error', 'خطا سیستم', 'خطا در فراخوانی GetCompanyLatestInProgressFacilityProgressPercent');
 
             $("#companyLatestInProgressFacilityProgressPercent").html("هیچ تسهیلات در جریانی یافت نشد");
-            //console.log(ex);
-            //console.log(bb);
         }
     });
 } catch (e) {

@@ -166,150 +166,6 @@ else
             <ul class="metismenu" id="menu">
                 @if (User.Identity.IsAuthenticated)
                 {
-
-                    @if (userRoleName != null && userRoleName.Any(x => x.ToLower() == "admin"))
-                    {
-
-
-                        <li>
-                            <a class="has-arrow" href="javascript:;">
-                                <div class="parent-icon">
-                                    <i class='bx bx-cog'></i>
-                                </div>
-                                <div class="menu-title">مدیریت</div>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="/Workflow/">
-                                        <div class="parent-icon">
-                                            <i class="bx @(((string)ViewBag.lang=="fa")?"bx-left-arrow-alt":"bx-right-arrow-alt")  ">
-                                            </i>
-                                        </div>
-                                        <div class="menu-title">  مدیریت چرخه های کاری سازمان</div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/Administration/ControlPanel">
-                                        <div class="parent-icon">
-                                            <i class="bx @(((string)ViewBag.lang=="fa")?"bx-left-arrow-alt":"bx-right-arrow-alt")  "> </i>
-                                        </div>
-                                        <div class="menu-title"> پنل کنترل</div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/IdentityManagement/UserManagement">
-                                        <div class="parent-icon">
-                                            <i class="bx @(((string)ViewBag.lang=="fa")?"bx-left-arrow-alt":"bx-right-arrow-alt")  "> </i>
-                                        </div>
-                                        <div class="menu-title">مدیریت کاربرهای سازمانی</div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="/FacilityRegistration/Cartable">
-                                <div class="parent-icon">
-                                    <i class='lni lni-clipboard'></i>
-                                </div>
-                                <div class="menu-title">کارتابل تسهیلات</div>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="javascript:;">
-                                <div class="parent-icon">
-                                    <i class='bx bx-cog'></i>
-                                </div>
-                                <div class="menu-title">مالی</div>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="/FinancialCartable/Index">
-                                        <div class="parent-icon">
-                                            <i class="bx @(((string)ViewBag.lang=="fa")?"bx-left-arrow-alt":"bx-right-arrow-alt")  ">
-                                            </i>
-                                        </div>
-                                        <div class="menu-title">کارتابل</div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                    }
-                    else if (userRoleName != null && userRoleName.Any(x => x.ToLower() != "customer"))
-                    {
-                        <li>
-                            <a href="/FacilityRegistration/Cartable">
-                                <div class="parent-icon">
-                                    <i class='lni lni-clipboard'></i>
-                                </div>
-                                <div class="menu-title">کارتابل تسهیلات</div>
-                            </a>
-                        </li>
-                
-                        <li>
-                            <a class="has-arrow" href="javascript:;">
-                                <div class="parent-icon">
-                                    <i class='bx bx-cog'></i>
-                                </div>
-                                <div class="menu-title">مالی</div>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="/FinancialCartable/Index">
-                                        <div class="parent-icon">
-                                            <i class="bx @(((string)ViewBag.lang=="fa")?"bx-left-arrow-alt":"bx-right-arrow-alt")  ">
-                                            </i>
-                                        </div>
-                                        <div class="menu-title">کارتابل</div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    }
-                    else
-                    {
-                        @if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Any(a => a.ToLower() == "customer"))
-                        {
-                            <li>
-                                <a href="/CompanyRegistration/">
-                                    <div class="parent-icon">
-                                        <i class='bx bx-building'></i>
-                                    </div>
-                                    <div class="menu-title"> مشاهده و ویرایش اطلاعات شرکت</div>
-                                </a>
-                            </li>
-                        }
-
-                        <li>
-                            <a href="/FacilityRegistration/Cartable">
-                                <div class="parent-icon">
-                                    <i class='lni lni-clipboard'></i>
-                                </div>
-                                <div class="menu-title">کارتابل تسهیلات</div>
-                            </a>
-                        </li>
-                        @if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Any(a => a.ToLower() == "customer"))
-                        {
-                            <li>
-                                <a href="/FacilityRegistration/">
-                                    <div class="parent-icon">
-                                        <i class='lni lni-clipboard'></i>
-                                    </div>
-                                    <div class="menu-title"> درخواست تسهیلات روی طرح جدید</div>
-                                </a>
-                            </li>
-                        }
-
-                    }
-
-                    <li>
-                        <a href="/home/RolesOfOrganization">
-                            <div class="parent-icon">
-                                <i class="lni lni-book"></i>
-                            </div>
-                            <div class="menu-title">شرایط و ضوابط استفاده از تسهیلات وجوه اداره شده</div>
-                        </a>
-                    </li>
                     <li>
                         <a href="/SensoreManagement/TemperatureSensor">
                             <div class="parent-icon">
@@ -318,21 +174,33 @@ else
                             <div class="menu-title">مدیریت سنسور دما</div>
                         </a>
                     </li>
-                    @if (User.Identity.IsAuthenticated && userRoleName != null && (userRoleName.Any(a => a.ToLower() == "admin")
-                   || userRoleName.Any(a => a.ToLower() == "committee_user")
-                   || userRoleName.Any(a => a.ToLower() == "committee_admin")
-                   || userRoleName.Any(a => a.ToLower() == "committee_financialoffice_user")
-                   || userRoleName.Any(a => a.ToLower() == "committee_financialoffice_admin")))
-                    {
-                        <li>
-                            <a href="/OldFacilityRegistration/Archive">
-                                <div class="parent-icon">
-                                    <i class='bx bx-archive'></i>
-                                </div>
-                                <div class="menu-title">مدیریت سنسور دما</div>
-                            </a>
-                        </li>
-                    }
+
+                    <li>
+                        <a href="/SensoreManagement/TemperatureSensor">
+                            <div class="parent-icon">
+                                <i class="lni lni-book"></i>
+                            </div>
+                            <div class="menu-title">مدیریت سنسور دما</div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/SensoreManagement/TemperatureSensor">
+                            <div class="parent-icon">
+                                <i class="lni lni-book"></i>
+                            </div>
+                            <div class="menu-title">مدیریت سنسور دما</div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/SensoreManagement/TemperatureSensor">
+                            <div class="parent-icon">
+                                <i class="lni lni-book"></i>
+                            </div>
+                            <div class="menu-title">مدیریت سنسور دما</div>
+                        </a>
+                    </li>
                 }
             </ul>
             <!--end navigation-->
