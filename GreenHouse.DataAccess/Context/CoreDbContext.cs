@@ -19,6 +19,8 @@ namespace GreenHouse.DataAccess.Context
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<TemperatureSensorViewEntity>().ToView("Vw_TemperatureSensor");
+            modelBuilder.Entity<HumiditySensorViewEntity>().ToView("Vw_HumiditySensor");
+
         }
 
         public DbSet<UserGreenhouseHallEntity> UserGreenhouseHall { get; set; }
