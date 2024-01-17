@@ -31,8 +31,11 @@ namespace GreenHouse.DataAccess.Context
         public DbSet<LightIntensitySensorEntity> LightIntensitySensor { get; set; }
         public DbSet<LightIntensitySensorDetailEntity> LightIntensitySensorDetail { get; set; }
 
-
+        #region Views
         public DbSet<TemperatureSensorViewEntity> TemperatureSensorView { get; set; }
+        public DbSet<HumiditySensorViewEntity> HumiditySensorView { get; set; }
+        public DbSet<LightIntensitySensorViewEntity> LightIntensitySensorView { get; set; }
+        #endregion
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

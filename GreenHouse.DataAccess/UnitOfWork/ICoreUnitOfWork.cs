@@ -6,7 +6,11 @@ namespace GreenHouse.DataAccess.UnitOfWork
     public interface ICoreUnitOfWork : IDynamicTestableUnitOfWorkAsync
     {
         IUserGreenhouseHallRepository UserGreenhouseHalls { get; }
+
         ITemperatureSensorRepository TemperatureSensors { get; }
+        ILightIntensitySensorRepository LightIntensitySensors { get; }
+        IHumiditySensorRepository HumiditySensors { get; }
+
         ITemperatureSensorDetailRepository TemperatureSensorDetails { get; }
     }
 }
