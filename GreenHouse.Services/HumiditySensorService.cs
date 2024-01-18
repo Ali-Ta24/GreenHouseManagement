@@ -1,33 +1,28 @@
 ﻿using GreenHouse.DataAccess.UnitOfWork;
 using GreenHouse.DomainEntity;
+using GreenHouse.DomainEntity.Views;
 using GreenHouse.Model;
 using Microsoft.Extensions.Logging;
-using MZBase.Infrastructure.Service.Exceptions;
-using MZBase.Infrastructure.Service;
 using MZBase.Infrastructure;
+using MZBase.Infrastructure.Service;
+using MZBase.Infrastructure.Service.Exceptions;
 using MZSimpleDynamicLinq.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GreenHouse.DomainEntity.Views;
 
 namespace GreenHouse.Services
 {
-    public class LightIntensitySensorService : StorageBusinessService<LightIntensitySensor, int>
+    public class HumiditySensorService : StorageBusinessService<HumiditySensor, int>
     {
         private readonly ICoreUnitOfWork _unitOfWork;
-        private readonly ILDRCompatibleRepositoryAsync<LightIntensitySensor, int> _baseRepo;
+        private readonly ILDRCompatibleRepositoryAsync<HumiditySensor, int> _baseRepo;
 
-        public LightIntensitySensorService(ICoreUnitOfWork coreUnitOfWork, ILogger<LightIntensitySensor> logger, IDateTimeProviderService dateTimeProvider)
-            : base(logger, dateTimeProvider, 300)
+        public HumiditySensorService(ICoreUnitOfWork coreUnitOfWork, ILogger<HumiditySensor> logger, IDateTimeProviderService dateTimeProvider)
+            : base(logger, dateTimeProvider, 400)
         {
             _unitOfWork = coreUnitOfWork;
-            _baseRepo = _unitOfWork.GetRepo<LightIntensitySensor, int>();
+            _baseRepo = _unitOfWork.GetRepo<HumiditySensor, int>();
         }
 
-        public async override Task<int> AddAsync(LightIntensitySensor item)
+        public async override Task<int> AddAsync(HumiditySensor item)
         {
             if (item == null)
             {
@@ -39,52 +34,52 @@ namespace GreenHouse.Services
             if (UserGreenhouseHall == null)
             {
                 var ex = new ServiceObjectNotFoundException(nameof(UserGreenhouseHall) + " Not Found");
-                LogAdd(item, "UserGreenhouseHall Releted By this LightIntensitySensor Not Found", ex);
+                LogAdd(item, "UserGreenhouseHall Releted By this HumiditySensor Not Found", ex);
                 throw ex;
             }
             await ValidateOnAddAsync(item);
-            var g = await _baseRepo.InsertAsync(new LightIntensitySensorEntity(item));
+            var g = await _baseRepo.InsertAsync(new HumiditySensorEntity(item));
             try
             {
                 await _unitOfWork.CommitAsync();
                 LogAdd(item, "Successfully add item with ,ID:" +
                   g.ID.ToString() +
-                  " ,LightIntensitySensorName:" + item.LightIntensitySensorName
+                  " ,HumiditySensorName:" + item.HumiditySensorName
                  );
                 return g.ID;
             }
             catch (Exception ex)
             {
-                LogAdd(item, "LightIntensitySensorName :" + item.LightIntensitySensorName, ex);
-                throw new ServiceStorageException("Error adding LightIntensitySensorName", ex);
+                LogAdd(item, "HumiditySensorName :" + item.HumiditySensorName, ex);
+                throw new ServiceStorageException("Error adding HumiditySensorName", ex);
             }
         }
 
-        public async Task<LinqDataResult<LightIntensitySensorViewEntity>> ItemsAsync(LinqDataRequest request, int GreenHouseID, string UserName)
+        public async Task<LinqDataResult<HumiditySensorViewEntity>> ItemsAsync(LinqDataRequest request, int GreenHouseID, string UserName)
         {
             var req = await _unitOfWork.UserGreenhouseHalls.FirstOrDefaultAsync(uu => uu.ID == GreenHouseID);
 
             if (req == null)
             {
-                Log(301, "GetLightIntensitySensors failed: request with the given id not found", GreenHouseID.ToString(), LogTypeEnum.ErrorLog);
+                Log(301, "GetHumiditySensors failed: request with the given id not found", GreenHouseID.ToString(), LogTypeEnum.ErrorLog);
                 throw new ServiceObjectNotFoundException(nameof(UserGreenhouseHall));
             }
-            //LinqDataResult<LightIntensitySensorViewEntity> item = new LinqDataResult<LightIntensitySensorViewEntity>();
+            //LinqDataResult<HumiditySensorViewEntity> item = new LinqDataResult<HumiditySensorViewEntity>();
             try
             {
-                return await _unitOfWork.LightIntensitySensors.GetLightIntensitySensorsByGreenhouseHall(request, GreenHouseID, UserName);
+                return await _unitOfWork.HumiditySensors.GetHumiditySensorsByGreenhouseHall(request, GreenHouseID, UserName);
             }
             catch (Exception ex)
             {
-                throw new ServiceStorageException("Error loading LightIntensitySensor", ex);
+                throw new ServiceStorageException("Error loading HumiditySensor", ex);
             }
         }
 
-        public async override Task ModifyAsync(LightIntensitySensor item)
+        public async override Task ModifyAsync(HumiditySensor item)
         {
             if (item == null)
             {
-                var exception = new ServiceArgumentNullException(typeof(LightIntensitySensor).Name);
+                var exception = new ServiceArgumentNullException(typeof(HumiditySensor).Name);
                 LogModify(item, null, exception);
                 throw exception;
             }
@@ -93,16 +88,16 @@ namespace GreenHouse.Services
             if (UserGreenhouseHall == null)
             {
                 var ex = new ServiceObjectNotFoundException(nameof(UserGreenhouseHall) + " Not Found");
-                LogAdd(item, "UserGreenhouseHall Releted By this LightIntensitySensor Not Found", ex);
+                LogAdd(item, "UserGreenhouseHall Releted By this HumiditySensor Not Found", ex);
                 throw ex;
             }
 
-            var repo = _unitOfWork.GetRepo<LightIntensitySensor, int>();
+            var repo = _unitOfWork.GetRepo<HumiditySensor, int>();
             var currentItem = await repo.GetByIdAsync(item.ID);
 
             if (currentItem == null)
             {
-                var noObj = new ServiceObjectNotFoundException(typeof(LightIntensitySensor).Name + " Not Found");
+                var noObj = new ServiceObjectNotFoundException(typeof(HumiditySensor).Name + " Not Found");
                 LogModify(item, null, noObj);
                 throw noObj;
             }
@@ -112,21 +107,21 @@ namespace GreenHouse.Services
             currentItem.LastModifiedBy = item.LastModifiedBy;
             currentItem.LastModificationTime = item.LastModificationTime;
 
-            currentItem.LightIntensitySensorName = item.LightIntensitySensorName;
+            currentItem.HumiditySensorName = item.HumiditySensorName;
             currentItem.GreenhouseHallID = item.GreenhouseHallID;
             try
             {
                 await _unitOfWork.CommitAsync();
                 LogModify(item, "Successfully modified item with ,ID:" +
                    item.ID.ToString() +
-                   " ,LightIntensitySensorName:" + item.LightIntensitySensorName
+                   " ,HumiditySensorName:" + item.HumiditySensorName
                  );
             }
 
             catch (Exception ex)
             {
-                LogModify(item, "LightIntensitySensorName :" + currentItem.LightIntensitySensorName, ex);
-                throw new ServiceStorageException("Error modifying LightIntensitySensor", ex);
+                LogModify(item, "HumiditySensorName :" + currentItem.HumiditySensorName, ex);
+                throw new ServiceStorageException("Error modifying HumiditySensor", ex);
             }
         }
 
@@ -136,7 +131,7 @@ namespace GreenHouse.Services
 
             if (itemToDelete == null)
             {
-                var f = new ServiceObjectNotFoundException(nameof(LightIntensitySensor) + " not found");
+                var f = new ServiceObjectNotFoundException(nameof(HumiditySensor) + " not found");
                 LogRemove(ID, "Item With This Id Not Found", f);
                 throw f;
             }
@@ -156,9 +151,9 @@ namespace GreenHouse.Services
             }
         }
 
-        public async override Task<LightIntensitySensor> RetrieveByIdAsync(int ID)
+        public async override Task<HumiditySensor> RetrieveByIdAsync(int ID)
         {
-            LightIntensitySensor? item;
+            HumiditySensor? item;
             try
             {
                 item = await _baseRepo.FirstOrDefaultAsync(ss => ss.ID == ID);
@@ -166,11 +161,11 @@ namespace GreenHouse.Services
             catch (Exception ex)
             {
                 LogRetrieveSingle(ID, ex);
-                throw new ServiceStorageException("Error loading LightIntensitySensor", ex);
+                throw new ServiceStorageException("Error loading HumiditySensor", ex);
             }
             if (item == null)
             {
-                var f = new ServiceObjectNotFoundException(nameof(LightIntensitySensor) + " not found by id");
+                var f = new ServiceObjectNotFoundException(nameof(HumiditySensor) + " not found by id");
                 LogRetrieveSingle(ID, f);
                 throw f;
             }
@@ -178,23 +173,23 @@ namespace GreenHouse.Services
             return item;
         }
 
-        public async Task<LinqDataResult<LightIntensitySensorViewEntity>> GetLightIntensitySensors(LinqDataRequest request, int greenhouseId)
+        public async Task<LinqDataResult<HumiditySensorViewEntity>> GetHumiditySensors(LinqDataRequest request, int greenhouseId)
         {
-            LinqDataResult<LightIntensitySensorViewEntity> item = new LinqDataResult<LightIntensitySensorViewEntity>();
+            LinqDataResult<HumiditySensorViewEntity> item = new LinqDataResult<HumiditySensorViewEntity>();
             try
             {
-                //item.Data = await _unitOfWork.LightIntensitySensors.GetLightIntensitySensorsByGreenhouseHall(greenhouseId);
+                //item.Data = await _unitOfWork.HumiditySensors.GetHumiditySensorsByGreenhouseHall(greenhouseId);
             }
             catch (Exception ex)
             {
-                throw new ServiceStorageException("Error loading LightIntensitySensor", ex);
+                throw new ServiceStorageException("Error loading HumiditySensor", ex);
             }
 
             return item;
         }
 
         #region Validation
-        protected async override Task ValidateOnAddAsync(LightIntensitySensor item)
+        protected async override Task ValidateOnAddAsync(HumiditySensor item)
         {
             List<ModelFieldValidationResult> _validationErrors = new List<ModelFieldValidationResult>();
 
@@ -209,7 +204,7 @@ namespace GreenHouse.Services
             }
         }
 
-        protected async override Task ValidateOnModifyAsync(LightIntensitySensor recievedItem, LightIntensitySensor storageItem)
+        protected async override Task ValidateOnModifyAsync(HumiditySensor recievedItem, HumiditySensor storageItem)
         {
             List<ModelFieldValidationResult> _validationErrors = new List<ModelFieldValidationResult>();
 
@@ -223,21 +218,21 @@ namespace GreenHouse.Services
                 throw exp;
             }
         }
-        private async Task CommonValidateAsync(List<ModelFieldValidationResult> validationErrors, LightIntensitySensor item)
+        private async Task CommonValidateAsync(List<ModelFieldValidationResult> validationErrors, HumiditySensor item)
         {
-            if (string.IsNullOrEmpty(item.LightIntensitySensorName))
+            if (string.IsNullOrEmpty(item.HumiditySensorName))
             {
                 validationErrors.Add(new ModelFieldValidationResult()
                 {
                     Code = _logBaseID + 1,
-                    FieldName = nameof(item.LightIntensitySensorName),
+                    FieldName = nameof(item.HumiditySensorName),
                     ValidationMessage = "The Field Can Not Be Empty"
                 });
             }
         }
         #endregion
 
-        public override Task<LinqDataResult<LightIntensitySensor>> ItemsAsync(LinqDataRequest request)
+        public override Task<LinqDataResult<HumiditySensor>> ItemsAsync(LinqDataRequest request)
         {
             throw new NotImplementedException();
         }
