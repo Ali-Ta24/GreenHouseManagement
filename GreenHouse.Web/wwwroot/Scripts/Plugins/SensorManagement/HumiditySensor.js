@@ -96,7 +96,7 @@
         area.find("[data-role-operation ='add']").click(function () {
             bootbox.dialog({
                 message: addtemplate,
-                title: "افزودن سنسور دما",
+                title: "افزودن سنسور رطوبت",
             }).bind('shown.bs.modal', function () {
                 $('.modal-dialog').css('max-width', '25%');
                 $('.bootbox-close-button').css("display", "inline");
@@ -135,7 +135,7 @@
                     var template = putTemplateOldFacility(result);
                     bootbox.dialog({
                         message: template,
-                        title: "ویرایش سنسور دما",
+                        title: "ویرایش سنسور رطوبت",
                     }).bind('shown.bs.modal', function () {
                         $('.modal-dialog').css('max-width', '25%');
                         $('.bootbox-close-button').css("display", "inline");
@@ -147,7 +147,7 @@
                     });
                 },
                 error: function () {
-                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور دما');
+                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور رطوبت');
                 }
             });
         });
@@ -159,11 +159,11 @@
                 url: settings.deleteHumiditySensorApiAddress + "?id=" + idRowSelect,
                 contentType: 'application/json',
                 success: function () {
-                    ivsAlert2('success', ' پیام موفقیت', 'سنسور دما با موفقیت حذف شد.');
+                    ivsAlert2('success', ' پیام موفقیت', 'سنسور رطوبت با موفقیت حذف شد.');
                     HumiditySensorTableCartable.rows().ajax.reload();
                 },
                 error: function () {
-                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور دما');
+                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور رطوبت');
                 },
                 complete: function () {
                     $("[data-role-operation='edit']").addClass("d-none");
@@ -194,12 +194,12 @@
                 data: JSON.stringify(editModal),
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
-                    ivsAlert2('success', ' پیام موفقیت', 'سنسور دما با موفقیت تغییر یافت.');
+                    ivsAlert2('success', ' پیام موفقیت', 'سنسور رطوبت با موفقیت تغییر یافت.');
                     HumiditySensorTableCartable.rows().ajax.reload();
                     $("[aria-label='Close']").trigger('click');
                 },
                 error: function (ex, cc, bb) {
-                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور دما');
+                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور رطوبت');
                 },
                 complete: function () {
                     $("[data-role-operation='edit']").addClass("d-none");
@@ -259,12 +259,12 @@
                 contentType: "application/json; charset=utf-8",
 
                 success: function (result) {
-                    ivsAlert2('success', ' پیام موفقیت', 'سنسور دما با موفقیت ثبت شد.');
+                    ivsAlert2('success', ' پیام موفقیت', 'سنسور رطوبت با موفقیت ثبت شد.');
                     HumiditySensorTableCartable.rows().ajax.reload();
                     $("[aria-label='Close']").trigger('click');
                 },
                 error: function (ex, cc, bb) {
-                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور دما');
+                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور رطوبت');
                 },
                 complete: function () {
                     $("[data-role-operation='edit']").addClass("d-none");
@@ -306,13 +306,13 @@
         function getTemplate() {
             var ss = `<div class="card">
                             <div class="card-body" id="humiditySensorTab">
-                                <h4 class="mb-0">کنترل سنسور دما</h4>
+                                <h4 class="mb-0">کنترل سنسور رطوبت</h4>
                                 <hr>
                                 <nav class="navbar navbar-expand-lg navbar-dark bg-info rounded p-2 mb-2">
                                     <div class="sticky">
-                                        <button type="button" class="btn btn-success text-dark" data-role-operation="add" alt="افزودن سنسور دما"><i class="bx bx-message-square-add"></i>افزودن سنسور دما</button>
-                                        <button type="button" class="btn btn-warning d-none ms-2" data-role-operation="edit"><i class="bx bx-message-square-edit"></i>ویرایش سنسور دما</button>
-                                        <button type="button" class="btn btn-danger text-dark d-none ms-2" data-role-remove><i class="bx bx-comment-minus"></i>حذف سنسور دما</button>
+                                        <button type="button" class="btn btn-success text-dark" data-role-operation="add" alt="افزودن سنسور رطوبت"><i class="bx bx-message-square-add"></i>افزودن سنسور رطوبت</button>
+                                        <button type="button" class="btn btn-warning d-none ms-2" data-role-operation="edit"><i class="bx bx-message-square-edit"></i>ویرایش سنسور رطوبت</button>
+                                        <button type="button" class="btn btn-danger text-dark d-none ms-2" data-role-remove><i class="bx bx-comment-minus"></i>حذف سنسور رطوبت</button>
                                         <button class="btn btn-light ms-2" href="#headerfilters" data-bs-toggle="collapse" data-toggle="collapse" title="جستجو"><i class='bx bx-search'></i>جستجو</button>
                                         <span class="text-dark ms-3" style="font-size:17px">سالن</span>
                                         <button type="button" class="btn mb-2 mt-0 py-0" id="GreenhouseNav"></button>
