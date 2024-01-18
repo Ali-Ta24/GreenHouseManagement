@@ -38,18 +38,20 @@ namespace GreenHouse.DataAccess.UnitOfWork
             {
                 ff = UserGreenhouseHalls as ILDRCompatibleRepositoryAsync<T, PrimKey>;
             }
+
             else if (typeof(T) == typeof(TemperatureSensor))
             {
                 ff = TemperatureSensors as ILDRCompatibleRepositoryAsync<T, PrimKey>;
             }
-            else if (typeof(T) == typeof(TemperatureSensor))
+            else if (typeof(T) == typeof(LightIntensitySensor))
             {
                 ff = LightIntensitySensors as ILDRCompatibleRepositoryAsync<T, PrimKey>;
             }
-            else if (typeof(T) == typeof(LightIntensitySensor))
+            else if (typeof(T) == typeof(HumiditySensor))
             {
                 ff = HumiditySensors as ILDRCompatibleRepositoryAsync<T, PrimKey>;
             }
+
             else if (typeof(T) == typeof(HumiditySensorDetail))
             {
                 ff = TemperatureSensorDetails as ILDRCompatibleRepositoryAsync<T, PrimKey>;
