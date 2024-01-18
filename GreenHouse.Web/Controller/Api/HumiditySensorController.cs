@@ -3,6 +3,7 @@ using GreenHouse.Model;
 using GreenHouse.Services;
 using GreenHouse.Web.Controller.Api.Base;
 using GreenHouse.Web.Controller.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MZBase.Infrastructure;
 using MZBase.Infrastructure.Service.Exceptions;
@@ -11,6 +12,9 @@ using MZSimpleDynamicLinq.HttpRequestExtensions;
 
 namespace GreenHouse.Web.Controller.Api
 {
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
     public class HumiditySensorController : BaseApiController
     {
         private readonly HumiditySensorService _service;
@@ -123,6 +127,24 @@ namespace GreenHouse.Web.Controller.Api
             try
             {
                 var res = await _service.RetrieveByIdAsync(Id);
+                return Ok(res);
+            }
+            catch (ServiceException ex)
+            {
+                return StatusCode(500, ex.ToServiceExceptionString());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("GetCountAllHumiditySensorByUserName")]
+        public async Task<ActionResult> GetCountAllHumiditySensorByUserName()
+        {
+            try
+            {
+                var res = _service.GetCountAllHumiditySensorByUserName(UserIdName);
                 return Ok(res);
             }
             catch (ServiceException ex)

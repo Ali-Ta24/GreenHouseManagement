@@ -2,6 +2,7 @@
 using GreenHouse.Services;
 using GreenHouse.Web.Controller.Api.Base;
 using GreenHouse.Web.Controller.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MZBase.Infrastructure;
 using MZBase.Infrastructure.Service.Exceptions;
@@ -10,6 +11,7 @@ namespace GreenHouse.Web.Controller.Api
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserGreenhouseHallController : BaseApiController
     {
         private readonly UserGreenhouseHallService _service;
@@ -79,6 +81,24 @@ namespace GreenHouse.Web.Controller.Api
             {
                 var rtn = await _service.GetAllGreenHouseByUser(UserId);
                 return Ok(rtn);
+            }
+            catch (ServiceException ex)
+            {
+                return StatusCode(500, ex.ToServiceExceptionString());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("GetCountAllGreenhouseHallByUserName")]
+        public async Task<ActionResult> GetCountAllGreenhouseHallByUserName()
+        {
+            try
+            {
+                var res = await _service.GetCountAllGreenhouseHallByUserName(UserId);
+                return Ok(res);
             }
             catch (ServiceException ex)
             {

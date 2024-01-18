@@ -138,5 +138,23 @@ namespace GreenHouse.Web.Controller.Api
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet("GetCountAllLightIntensitySensorByUserName")]
+        public async Task<ActionResult> GetCountAllLightIntensitySensorByUserName()
+        {
+            try
+            {
+                var res = _service.GetCountAllLightIntensitySensorByUserName(UserIdName);
+                return Ok(res);
+            }
+            catch (ServiceException ex)
+            {
+                return StatusCode(500, ex.ToServiceExceptionString());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

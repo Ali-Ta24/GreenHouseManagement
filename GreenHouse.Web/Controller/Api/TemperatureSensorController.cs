@@ -138,5 +138,23 @@ namespace GreenHouse.Web.Controller.Api
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet("GetCountAllTemperatureSensorByUserName")]
+        public async Task<ActionResult> GetCountAllTemperatureSensorByUserName()
+        {
+            try
+            {
+                var res = _service.GetCountAllTemperatureSensorByUserName(UserIdName);
+                return Ok(res);
+            }
+            catch (ServiceException ex)
+            {
+                return StatusCode(500, ex.ToServiceExceptionString());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }
