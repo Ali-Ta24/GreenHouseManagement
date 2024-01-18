@@ -21,5 +21,9 @@ namespace GreenHouse.DataAccess.Repository
             => await _dbContext.LightIntensitySensorView
             .Where(ss => ss.GreenhouseHallID == greenhouseId && ss.UserName == userName)
             .ToLinqDataResultAsync(request.Take, request.Skip, request.Sort, request.Filter);
+
+        public int GetCountAllLightIntensitySensorByUserName(string UserName)
+            => _dbContext.LightIntensitySensorView.Where(ss => ss.UserName == UserName).Count();
+
     }
 }

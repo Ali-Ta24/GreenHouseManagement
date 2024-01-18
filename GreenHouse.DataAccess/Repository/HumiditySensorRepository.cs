@@ -6,6 +6,7 @@ using GreenHouse.Model;
 using MZBase.EntityFrameworkCore;
 using MZSimpleDynamicLinq.Core;
 using MZSimpleDynamicLinq.EFCoreExtensions;
+using System.Linq.Dynamic.Core;
 
 namespace GreenHouse.DataAccess.Repository
 {
@@ -16,6 +17,9 @@ namespace GreenHouse.DataAccess.Repository
         {
             _dbContext = context;
         }
+
+        public int GetCountAllHumiditySensorByUserName(string UserName)
+            => _dbContext.HumiditySensorView.Where(ss => ss.UserName == UserName).Count();
 
         public async Task<LinqDataResult<HumiditySensorViewEntity>> GetHumiditySensorsByGreenhouseHall(LinqDataRequest request, int greenhouseId, string userName)
             => await _dbContext.HumiditySensorView

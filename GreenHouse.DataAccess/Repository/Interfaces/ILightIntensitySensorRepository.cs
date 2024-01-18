@@ -7,6 +7,7 @@ namespace GreenHouse.DataAccess.Repository.Interfaces
 {
     public interface ILightIntensitySensorRepository : ILDRCompatibleRepositoryAsync<LightIntensitySensor, int>
     {
+        int GetCountAllLightIntensitySensorByUserName(string userName);
         Task<LinqDataResult<LightIntensitySensorViewEntity>> GetLightIntensitySensorsByGreenhouseHall(LinqDataRequest request, int greenhouseId, string userName);
     }
 }
