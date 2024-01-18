@@ -203,7 +203,6 @@ namespace GreenHouse.Services
                 throw exp;
             }
         }
-
         protected async override Task ValidateOnModifyAsync(HumiditySensor recievedItem, HumiditySensor storageItem)
         {
             List<ModelFieldValidationResult> _validationErrors = new List<ModelFieldValidationResult>();
@@ -218,6 +217,7 @@ namespace GreenHouse.Services
                 throw exp;
             }
         }
+
         private async Task CommonValidateAsync(List<ModelFieldValidationResult> validationErrors, HumiditySensor item)
         {
             if (string.IsNullOrEmpty(item.HumiditySensorName))
@@ -235,6 +235,18 @@ namespace GreenHouse.Services
         public override Task<LinqDataResult<HumiditySensor>> ItemsAsync(LinqDataRequest request)
         {
             throw new NotImplementedException();
+        }
+
+        public int GetCountAllHumiditySensorByUserName(string userName)
+        {
+            try
+            {
+                return _unitOfWork.HumiditySensors.GetCountAllHumiditySensorByUserName(userName);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

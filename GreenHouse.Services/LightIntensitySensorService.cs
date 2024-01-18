@@ -1,17 +1,12 @@
 ﻿using GreenHouse.DataAccess.UnitOfWork;
 using GreenHouse.DomainEntity;
+using GreenHouse.DomainEntity.Views;
 using GreenHouse.Model;
 using Microsoft.Extensions.Logging;
-using MZBase.Infrastructure.Service.Exceptions;
-using MZBase.Infrastructure.Service;
 using MZBase.Infrastructure;
+using MZBase.Infrastructure.Service;
+using MZBase.Infrastructure.Service.Exceptions;
 using MZSimpleDynamicLinq.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GreenHouse.DomainEntity.Views;
 
 namespace GreenHouse.Services
 {
@@ -240,6 +235,18 @@ namespace GreenHouse.Services
         public override Task<LinqDataResult<LightIntensitySensor>> ItemsAsync(LinqDataRequest request)
         {
             throw new NotImplementedException();
+        }
+
+        public int GetCountAllLightIntensitySensorByUserName(string userName)
+        {
+            try
+            {
+                return _unitOfWork.LightIntensitySensors.GetCountAllLightIntensitySensorByUserName(userName);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

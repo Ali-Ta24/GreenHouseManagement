@@ -52,6 +52,18 @@ namespace GreenHouse.Services
             return (await _unitOfWork.UserGreenhouseHalls.AllItemsAsync()).Where(ss => ss.UserID == userId);
         }
 
+        public async Task<int> GetCountAllGreenhouseHallByUserName(string userId)
+        {
+            try
+            {
+                return (await _unitOfWork.UserGreenhouseHalls.AllItemsAsync()).Where(ss =>ss.UserID == userId).Count();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public override Task<LinqDataResult<UserGreenhouseHall>> ItemsAsync(LinqDataRequest request)
         {
             throw new NotImplementedException();

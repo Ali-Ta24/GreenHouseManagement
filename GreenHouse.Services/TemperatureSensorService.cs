@@ -236,5 +236,17 @@ namespace GreenHouse.Services
         {
             throw new NotImplementedException();
         }
+
+        public int GetCountAllTemperatureSensorByUserName(string userName)
+        {
+            try
+            {
+                return _unitOfWork.TemperatureSensors.GetCountAllTemperatureSensorByUserName(userName);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
