@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "مدیریت سنسور دما";
+    ViewData["Title"] = "مدیریت سنسور نور";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -24,13 +24,13 @@
     }
 </style>
 
-<div id="TemperatureSensor">
+<div id="LightIntensitySensor">
 </div>
 
 
 @section scripts {
-    <script src="~/Scripts/Plugins/SensorManagement/TemperatureSensor.js"></script>
+    <script src="~/Scripts/Plugins/SensorManagement/LightIntensitySensor.js"></script>
     <script>
-        $("#TemperatureSensor").TemperatureSensor();
+        $("#LightIntensitySensor").LightIntensitySensor();
     </script>
 }
