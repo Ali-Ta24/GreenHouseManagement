@@ -1,64 +1,67 @@
 ﻿try {
     $.ajax({
         type: "get",
-        url: "/api/IdentityLog/GetLoginCount",
-        contentType: "application/json; charset=utf-8",
+        url: "/api/UserGreenhouseHall/GetCountAllGreenhouseHallByUserName",
+        contentType: 'application/json',
         success: async function (result) {
-            $("#loginCount").text(result);
+            $("#GreenhouseHallCount").text(result);
         },
         error: function (ex, cc, bb) {
-            ivsAlert2('error', 'خطا سیستم', 'خطا در فراخوانی GetLoginCount');
+            ivsAlert2('error', 'خطا سیستم', 'خطا در فراخوانی تعداد سالن ها');
+            $("#GreenhouseHallCount").html("هیچ سالنی  یافت نشد");
         }
     });
 } catch (e) {
-    $("#loginCount").text(0);
+    $("#GreenhouseHallCount").text(0);
 }
 
 try {
     $.ajax({
         type: "get",
-        url: "/api/CoreReports/GetCompanyLatestInProgressFacilityState",
-        contentType: "application/json; charset=utf-8",
+        url: "/api/TemperatureSensor/GetCountAllTemperatureSensorByUserName",
+        contentType: 'application/json',
         success: async function (result) {
-            if (result == null) {
-                $("#companyLatestInProgressFacilityState").text("هیچ تسهیلات در جریانی یافت نشد");
-
-            }
-            else {
-
-                $("#companyLatestInProgressFacilityState").text(result);
-            }
+            $("#TemperatureSensorCount").text(result);
         },
         error: function (ex, cc, bb) {
-            ivsAlert2('error', 'خطا سیستم', 'خطا در فراخوانی GetCompanyLatestInProgressFacilityState');
-            $("#companyLatestInProgressFacilityState").html("هیچ تسهیلات در جریانی یافت نشد");
+            ivsAlert2('error', 'خطا سیستم', 'خطا در فراخوانی تعداد سنسورهای دما');
+            $("#TemperatureSensorCount").html("هیچ سنسور دمایی  یافت نشد");
         }
     });
 } catch (e) {
-    $("#companyLatestInProgressFacilityState").text("هیچ تسهیلات در جریانی یافت نشد");
+    $("#TemperatureSensorCount").text(0);
 }
 
 try {
     $.ajax({
         type: "get",
-        url: "/api/CoreReports/GetCompanyLatestInProgressFacilityProgressPercent",
-        contentType: "application/json; charset=utf-8",
+        url: "/api/HumiditySensor/GetCountAllHumiditySensorByUserName",
+        contentType: 'application/json',
         success: async function (result) {
-            if (result == null) {
-                $("#companyLatestInProgressFacilityProgressPercent").text("هیچ تسهیلات در جریانی یافت نشد");
-
-            }
-            else {
-
-                $("#companyLatestInProgressFacilityProgressPercent").html(`<h4 class="my-1 text-dark">${result} %</h4>`);
-            }
+            $("#HumiditySensorCount").text(result);
         },
         error: function (ex, cc, bb) {
-            ivsAlert2('error', 'خطا سیستم', 'خطا در فراخوانی GetCompanyLatestInProgressFacilityProgressPercent');
-
-            $("#companyLatestInProgressFacilityProgressPercent").html("هیچ تسهیلات در جریانی یافت نشد");
+            ivsAlert2('error', 'خطا سیستم', 'خطا در فراخوانی تعداد سنسورهای رطوبت');
+            $("#HumiditySensorCount").html("هیچ سنسور رطوبتی  یافت نشد");
         }
     });
 } catch (e) {
-    $("#companyLatestInProgressFacilityProgressPercent").html("هیچ تسهیلات در جریانی یافت نشد");
+    $("#HumiditySensorCount").text(0);
+}
+
+try {
+    $.ajax({
+        type: "get",
+        url: "/api/LightIntensitySensor/GetCountAllLightIntensitySensorByUserName",
+        contentType: 'application/json',
+        success: async function (result) {
+            $("#LightIntensitySensorCount").text(result);
+        },
+        error: function (ex, cc, bb) {
+            ivsAlert2('error', 'خطا سیستم', 'خطا در فراخوانی تعداد سنسورهای نور');
+            $("#LightIntensitySensorCount").html("هیچ سنسور نوری یافت نشد");
+        }
+    });
+} catch (e) {
+    $("#LightIntensitySensorCount").text(0);
 }
