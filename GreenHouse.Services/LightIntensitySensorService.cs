@@ -15,19 +15,19 @@ using GreenHouse.DomainEntity.Views;
 
 namespace GreenHouse.Services
 {
-    public class LightIntensitySensorService : StorageBusinessService<TemperatureSensor, int>
+    public class LightIntensitySensorService : StorageBusinessService<LightIntensitySensor, int>
     {
         private readonly ICoreUnitOfWork _unitOfWork;
-        private readonly ILDRCompatibleRepositoryAsync<TemperatureSensor, int> _baseRepo;
+        private readonly ILDRCompatibleRepositoryAsync<LightIntensitySensor, int> _baseRepo;
 
-        public TemperatureSensorService(ICoreUnitOfWork coreUnitOfWork, ILogger<TemperatureSensor> logger, IDateTimeProviderService dateTimeProvider)
+        public LightIntensitySensorService(ICoreUnitOfWork coreUnitOfWork, ILogger<LightIntensitySensor> logger, IDateTimeProviderService dateTimeProvider)
             : base(logger, dateTimeProvider, 200)
         {
             _unitOfWork = coreUnitOfWork;
-            _baseRepo = _unitOfWork.GetRepo<TemperatureSensor, int>();
+            _baseRepo = _unitOfWork.GetRepo<LightIntensitySensor, int>();
         }
 
-        public async override Task<int> AddAsync(TemperatureSensor item)
+        public async override Task<int> AddAsync(LightIntensitySensor item)
         {
             if (item == null)
             {
@@ -39,52 +39,52 @@ namespace GreenHouse.Services
             if (UserGreenhouseHall == null)
             {
                 var ex = new ServiceObjectNotFoundException(nameof(UserGreenhouseHall) + " Not Found");
-                LogAdd(item, "UserGreenhouseHall Releted By this TemperatureSensor Not Found", ex);
+                LogAdd(item, "UserGreenhouseHall Releted By this LightIntensitySensor Not Found", ex);
                 throw ex;
             }
             await ValidateOnAddAsync(item);
-            var g = await _baseRepo.InsertAsync(new TemperatureSensorEntity(item));
+            var g = await _baseRepo.InsertAsync(new LightIntensitySensorEntity(item));
             try
             {
                 await _unitOfWork.CommitAsync();
                 LogAdd(item, "Successfully add item with ,ID:" +
                   g.ID.ToString() +
-                  " ,TemperatureSensorName:" + item.TemperatureSensorName
+                  " ,LightIntensitySensorName:" + item.LightIntensitySensorName
                  );
                 return g.ID;
             }
             catch (Exception ex)
             {
-                LogAdd(item, "TemperatureSensorName :" + item.TemperatureSensorName, ex);
-                throw new ServiceStorageException("Error adding TemperatureSensorName", ex);
+                LogAdd(item, "LightIntensitySensorName :" + item.LightIntensitySensorName, ex);
+                throw new ServiceStorageException("Error adding LightIntensitySensorName", ex);
             }
         }
 
-        public async Task<LinqDataResult<TemperatureSensorViewEntity>> ItemsAsync(LinqDataRequest request, int GreenHouseID, string UserName)
+        public async Task<LinqDataResult<LightIntensitySensorViewEntity>> ItemsAsync(LinqDataRequest request, int GreenHouseID, string UserName)
         {
             var req = await _unitOfWork.UserGreenhouseHalls.FirstOrDefaultAsync(uu => uu.ID == GreenHouseID);
 
             if (req == null)
             {
-                Log(301, "GetTemperatureSensors failed: request with the given id not found", GreenHouseID.ToString(), LogTypeEnum.ErrorLog);
+                Log(301, "GetLightIntensitySensors failed: request with the given id not found", GreenHouseID.ToString(), LogTypeEnum.ErrorLog);
                 throw new ServiceObjectNotFoundException(nameof(UserGreenhouseHall));
             }
-            //LinqDataResult<TemperatureSensorViewEntity> item = new LinqDataResult<TemperatureSensorViewEntity>();
+            //LinqDataResult<LightIntensitySensorViewEntity> item = new LinqDataResult<LightIntensitySensorViewEntity>();
             try
             {
-                return await _unitOfWork.TemperatureSensors.GetTemperatureSensorsByGreenhouseHall(request, GreenHouseID, UserName);
+                return await _unitOfWork.LightIntensitySensors.GetLightIntensitySensorsByGreenhouseHall(request, GreenHouseID, UserName);
             }
             catch (Exception ex)
             {
-                throw new ServiceStorageException("Error loading TemperatureSensor", ex);
+                throw new ServiceStorageException("Error loading LightIntensitySensor", ex);
             }
         }
 
-        public async override Task ModifyAsync(TemperatureSensor item)
+        public async override Task ModifyAsync(LightIntensitySensor item)
         {
             if (item == null)
             {
-                var exception = new ServiceArgumentNullException(typeof(TemperatureSensor).Name);
+                var exception = new ServiceArgumentNullException(typeof(LightIntensitySensor).Name);
                 LogModify(item, null, exception);
                 throw exception;
             }
@@ -93,16 +93,16 @@ namespace GreenHouse.Services
             if (UserGreenhouseHall == null)
             {
                 var ex = new ServiceObjectNotFoundException(nameof(UserGreenhouseHall) + " Not Found");
-                LogAdd(item, "UserGreenhouseHall Releted By this TemperatureSensor Not Found", ex);
+                LogAdd(item, "UserGreenhouseHall Releted By this LightIntensitySensor Not Found", ex);
                 throw ex;
             }
 
-            var repo = _unitOfWork.GetRepo<TemperatureSensor, int>();
+            var repo = _unitOfWork.GetRepo<LightIntensitySensor, int>();
             var currentItem = await repo.GetByIdAsync(item.ID);
 
             if (currentItem == null)
             {
-                var noObj = new ServiceObjectNotFoundException(typeof(TemperatureSensor).Name + " Not Found");
+                var noObj = new ServiceObjectNotFoundException(typeof(LightIntensitySensor).Name + " Not Found");
                 LogModify(item, null, noObj);
                 throw noObj;
             }
@@ -112,21 +112,21 @@ namespace GreenHouse.Services
             currentItem.LastModifiedBy = item.LastModifiedBy;
             currentItem.LastModificationTime = item.LastModificationTime;
 
-            currentItem.TemperatureSensorName = item.TemperatureSensorName;
+            currentItem.LightIntensitySensorName = item.LightIntensitySensorName;
             currentItem.GreenhouseHallID = item.GreenhouseHallID;
             try
             {
                 await _unitOfWork.CommitAsync();
                 LogModify(item, "Successfully modified item with ,ID:" +
                    item.ID.ToString() +
-                   " ,TemperatureSensorName:" + item.TemperatureSensorName
+                   " ,LightIntensitySensorName:" + item.LightIntensitySensorName
                  );
             }
 
             catch (Exception ex)
             {
-                LogModify(item, "TemperatureSensorName :" + currentItem.TemperatureSensorName, ex);
-                throw new ServiceStorageException("Error modifying TemperatureSensor", ex);
+                LogModify(item, "LightIntensitySensorName :" + currentItem.LightIntensitySensorName, ex);
+                throw new ServiceStorageException("Error modifying LightIntensitySensor", ex);
             }
         }
 
@@ -136,7 +136,7 @@ namespace GreenHouse.Services
 
             if (itemToDelete == null)
             {
-                var f = new ServiceObjectNotFoundException(nameof(TemperatureSensor) + " not found");
+                var f = new ServiceObjectNotFoundException(nameof(LightIntensitySensor) + " not found");
                 LogRemove(ID, "Item With This Id Not Found", f);
                 throw f;
             }
@@ -156,9 +156,9 @@ namespace GreenHouse.Services
             }
         }
 
-        public async override Task<TemperatureSensor> RetrieveByIdAsync(int ID)
+        public async override Task<LightIntensitySensor> RetrieveByIdAsync(int ID)
         {
-            TemperatureSensor? item;
+            LightIntensitySensor? item;
             try
             {
                 item = await _baseRepo.FirstOrDefaultAsync(ss => ss.ID == ID);
@@ -166,11 +166,11 @@ namespace GreenHouse.Services
             catch (Exception ex)
             {
                 LogRetrieveSingle(ID, ex);
-                throw new ServiceStorageException("Error loading TemperatureSensor", ex);
+                throw new ServiceStorageException("Error loading LightIntensitySensor", ex);
             }
             if (item == null)
             {
-                var f = new ServiceObjectNotFoundException(nameof(TemperatureSensor) + " not found by id");
+                var f = new ServiceObjectNotFoundException(nameof(LightIntensitySensor) + " not found by id");
                 LogRetrieveSingle(ID, f);
                 throw f;
             }
@@ -178,23 +178,23 @@ namespace GreenHouse.Services
             return item;
         }
 
-        public async Task<LinqDataResult<TemperatureSensorViewEntity>> GetTemperatureSensors(LinqDataRequest request, int greenhouseId)
+        public async Task<LinqDataResult<LightIntensitySensorViewEntity>> GetLightIntensitySensors(LinqDataRequest request, int greenhouseId)
         {
-            LinqDataResult<TemperatureSensorViewEntity> item = new LinqDataResult<TemperatureSensorViewEntity>();
+            LinqDataResult<LightIntensitySensorViewEntity> item = new LinqDataResult<LightIntensitySensorViewEntity>();
             try
             {
-                //item.Data = await _unitOfWork.TemperatureSensors.GetTemperatureSensorsByGreenhouseHall(greenhouseId);
+                //item.Data = await _unitOfWork.LightIntensitySensors.GetLightIntensitySensorsByGreenhouseHall(greenhouseId);
             }
             catch (Exception ex)
             {
-                throw new ServiceStorageException("Error loading TemperatureSensor", ex);
+                throw new ServiceStorageException("Error loading LightIntensitySensor", ex);
             }
 
             return item;
         }
 
         #region Validation
-        protected async override Task ValidateOnAddAsync(TemperatureSensor item)
+        protected async override Task ValidateOnAddAsync(LightIntensitySensor item)
         {
             List<ModelFieldValidationResult> _validationErrors = new List<ModelFieldValidationResult>();
 
@@ -209,7 +209,7 @@ namespace GreenHouse.Services
             }
         }
 
-        protected async override Task ValidateOnModifyAsync(TemperatureSensor recievedItem, TemperatureSensor storageItem)
+        protected async override Task ValidateOnModifyAsync(LightIntensitySensor recievedItem, LightIntensitySensor storageItem)
         {
             List<ModelFieldValidationResult> _validationErrors = new List<ModelFieldValidationResult>();
 
@@ -223,21 +223,21 @@ namespace GreenHouse.Services
                 throw exp;
             }
         }
-        private async Task CommonValidateAsync(List<ModelFieldValidationResult> validationErrors, TemperatureSensor item)
+        private async Task CommonValidateAsync(List<ModelFieldValidationResult> validationErrors, LightIntensitySensor item)
         {
-            if (string.IsNullOrEmpty(item.TemperatureSensorName))
+            if (string.IsNullOrEmpty(item.LightIntensitySensorName))
             {
                 validationErrors.Add(new ModelFieldValidationResult()
                 {
                     Code = _logBaseID + 1,
-                    FieldName = nameof(item.TemperatureSensorName),
+                    FieldName = nameof(item.LightIntensitySensorName),
                     ValidationMessage = "The Field Can Not Be Empty"
                 });
             }
         }
         #endregion
 
-        public override Task<LinqDataResult<TemperatureSensor>> ItemsAsync(LinqDataRequest request)
+        public override Task<LinqDataResult<LightIntensitySensor>> ItemsAsync(LinqDataRequest request)
         {
             throw new NotImplementedException();
         }
