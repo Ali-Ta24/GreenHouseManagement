@@ -1,4 +1,3 @@
-using GreenHouse.DataAccess;
 using GreenHouse.DataAccess.Context;
 using GreenHouse.DataAccess.UnitOfWork;
 using GreenHouse.DomainEntity.Identity;
@@ -6,17 +5,12 @@ using GreenHouse.Services;
 using GreenHouse.Web.Initializer;
 using GreenHouse.Web.Library;
 using IdentityModel;
-using IdentityModel.Client;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MZBase.Infrastructure;
-using System.Globalization;
-using System.Security.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 var mvcBuilder = builder.Services.AddRazorPages();
@@ -24,7 +18,6 @@ int cookieLifeTimeMinutes = 120;
 
 if (builder.Environment.IsDevelopment())
 {
-    //mvcBuilder.AddRazorRuntimeCompilation();
 }
 
 builder.Services.AddEndpointsApiExplorer();
@@ -34,37 +27,7 @@ builder.Services.AddSwaggerGen(
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "FacilityMan.API.Web", Version = "v1" });
     }
     );
-//var b = builder.Services.Configure<IdentityOptions>(options =>
-//{
-//    options.Password.RequireDigit = true;
-//    options.Password.RequireUppercase = true;
-//    options.Password.RequireLowercase = true; ;
-//    options.Password.RequireNonAlphanumeric = true;
-//    options.Password.RequiredUniqueChars = 1;
-//    options.Password.RequiredLength = 8;
 
-//    options.SignIn.RequireConfirmedPhoneNumber = false;
-//    options.SignIn.RequireConfirmedEmail = false;
-
-
-
-//    options.User.RequireUniqueEmail = true;
-
-//})
-//    .AddIdentityServer(options =>
-//    {
-//        options.Events.RaiseErrorEvents = true;
-//        options.Events.RaiseInformationEvents = true;
-//        options.Events.RaiseFailureEvents = true;
-//        options.Events.RaiseSuccessEvents = true;
-//        options.EmitStaticAudienceClaim = true;
-
-
-//    });
-//.AddInMemoryIdentityResources(SD.IdentityResources)
-//.AddInMemoryApiScopes(SD.ApiScopes)
-//.AddInMemoryClients(SDToBeChangeble)
-//.AddAspNetIdentity<ApplicationUser>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddHttpClient();
@@ -102,83 +65,6 @@ builder.Services
        options.LoginPath = "/Account/Login"; // Set the login path
                                              // Other options you might want to configure
    });
-//.AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
-//{
-//    //options.Authority = builder.Configuration["ServiceUrls:IdentityAPI"];
-//    options.MetadataAddress = "https://localhost:7091/.well-known/openid-configuration";
-//    options.GetClaimsFromUserInfoEndpoint = true;
-//    options.ClientId = "facilityman";
-//    options.ClientSecret = "74588342E9F149A3A2E887F0F09D86A9";
-//    options.ResponseType = "code";
-//    options.ClaimActions.MapJsonKey("role", "role", "role");
-//    options.ClaimActions.MapJsonKey("sub", "sub", "sub");
-//    options.ClaimActions.MapUniqueJsonKey("name", "name");
-//    options.ClaimActions.MapUniqueJsonKey("given_name", "given_name");
-//    options.ClaimActions.MapUniqueJsonKey("family_name", "family_name");
-//    options.TokenValidationParameters.NameClaimType = "name";
-//    options.TokenValidationParameters.RoleClaimType = "role";
-//    options.Scope.Add("facilityman");
-//    options.Scope.Add("IdentityServerApi");
-//    options.SaveTokens = true;
-//    //options.UseTokenLifetime = true;
-
-
-//    if (builder.Configuration.GetValue<bool>("ServerCertificateCustomValidationCallback"))
-//    {
-//        options.BackchannelHttpHandler = new HttpClientHandler
-//        {
-//            SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Tls13,
-//            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-//        };
-//    }
-
-//    options.Events = new Microsoft.AspNetCore.Authentication.OpenIdConnect.OpenIdConnectEvents
-//    {
-//        OnAuthorizationCodeReceived = (context) =>
-//        {
-//            return System.Threading.Tasks.Task.CompletedTask;
-//        },
-//        OnTokenResponseReceived = (context) =>
-//        {
-//            return System.Threading.Tasks.Task.CompletedTask;
-//        },
-
-//        OnUserInformationReceived = (context) =>
-//        {
-//            return System.Threading.Tasks.Task.CompletedTask;
-//        },
-//        OnRemoteFailure = context =>
-//        {
-//            context.Response.Redirect("/");
-//            context.HandleResponse();
-
-//            return Task.FromResult(0);
-//        },
-//        OnRedirectToIdentityProvider = n => //token expired!
-//        {
-//            if (n.Request.Path.StartsWithSegments("/api"))
-//            {
-//                n.Response.StatusCode = 401;//for web api only!
-//                n.Response.Headers.Remove("Set-Cookie");
-//                n.Response.Headers.Add("login-address", n.Options.Authority + "/Account/Login");
-//                n.HandleResponse();
-//            }
-//            return Task.CompletedTask;
-//        },
-//        OnAuthenticationFailed = n =>
-//        {
-//            return System.Threading.Tasks.Task.CompletedTask;
-//        },
-//        OnAccessDenied = n =>
-//        {
-//            return System.Threading.Tasks.Task.CompletedTask;
-//        },
-
-
-//    };
-
-//});
-
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -193,7 +79,6 @@ builder.Services.AddCors(options =>
     {
         policy.AllowAnyHeader();
         policy.AllowAnyMethod();
-        //policy.WithOrigins("*");
         policy.AllowCredentials();
     });
 });
@@ -206,25 +91,31 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddDbContext<CoreDbContext>();
 builder.Services.AddDbContext<ApplicationDbContext>();
+
 builder.Services.AddScoped<IDateTimeProviderService, DateTimeProviderService>();
 builder.Services.AddScoped<ICoreUnitOfWork, CoreUnitOfWork>();
+
 builder.Services.AddScoped<UserGreenhouseHallService, UserGreenhouseHallService>();
+
 builder.Services.AddScoped<TemperatureSensorService, TemperatureSensorService>();
+builder.Services.AddScoped<HumiditySensorService, HumiditySensorService>();
+builder.Services.AddScoped<LightIntensitySensorService, LightIntensitySensorService>();
+
 builder.Services.AddScoped<TemperatureSensorDetailService, TemperatureSensorDetailService>();
+
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
-//.AddErrorDescriber<PersianIdentityErrorDescriber>();
-//b.AddDeveloperSigningCredential();
+
 try
 {
     var app = builder.Build();
 
     app.UseMiddleware<ErrorHandlerMiddleware>();
-  
+
     using (var scope = app.Services.CreateScope())
     {
         var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
