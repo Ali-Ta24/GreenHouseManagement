@@ -149,38 +149,38 @@ else
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li>
-                        <a href="/SensoreManagement/TemperatureSensor">
+                        <a href="/SensorManagement/TemperatureSensor">
                             <div class="parent-icon">
-                                <i class="lni lni-book"></i>
+                                <iconify-icon icon="icon-park-outline:green-house"></iconify-icon>
+                            </div>
+                            <div class="menu-title">مدیریت سالن ها</div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/SensorManagement/TemperatureSensor">
+                            <div class="parent-icon">
+                                <iconify-icon icon="mingcute:low-temperature-fill"></iconify-icon>
                             </div>
                             <div class="menu-title">مدیریت سنسور دما</div>
                         </a>
                     </li>
 
                     <li>
-                        <a href="/SensoreManagement/TemperatureSensor">
+                        <a href="/SensorManagement/HumiditySensor">
                             <div class="parent-icon">
-                                <i class="lni lni-book"></i>
+                                <iconify-icon icon="material-symbols:humidity-percentage-rounded"></iconify-icon>
                             </div>
-                            <div class="menu-title">مدیریت سنسور دما</div>
+                            <div class="menu-title">مدیریت سنسور رطوبت</div>
                         </a>
                     </li>
 
                     <li>
-                        <a href="/SensoreManagement/TemperatureSensor">
+                        <a href="/SensorManagement/LightIntensitySensor">
                             <div class="parent-icon">
-                                <i class="lni lni-book"></i>
+                                <iconify-icon icon="entypo:light-up"></iconify-icon>
                             </div>
-                            <div class="menu-title">مدیریت سنسور دما</div>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/SensoreManagement/TemperatureSensor">
-                            <div class="parent-icon">
-                                <i class="lni lni-book"></i>
-                            </div>
-                            <div class="menu-title">مدیریت سنسور دما</div>
+                            <div class="menu-title">مدیریت سنسور نور</div>
                         </a>
                     </li>
                 }
@@ -210,13 +210,6 @@ else
                         </ul>
 
                     </div>
-                    @if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Any(a => a.ToLower() == "customer"))
-                    {
-                        @*   <div>
-                    <a class="btn btn-primary customerBtnNavbar" href="/CompanyRegistration">ثبت اطلاعات شرکت</a>
-                    <a class="btn btn-primary customerBtnNavbar" href="/FacilityRegistration">ثبت تسهیلات</a>
-                    </div> *@
-                    }
                     <div class="search-bar flex-grow-1">
                         <div class="position-relative search-bar-box">
                             <input type="text" class="form-control search-control" placeholder="جستجو ..."> <span class="position-absolute top-50 search-show translate-middle-y"><i class='bx bx-search'></i></span>

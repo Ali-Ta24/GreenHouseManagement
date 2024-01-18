@@ -40,7 +40,7 @@
                             <div>
                                 <p class="mb-0 text-white c-title-info-topDash">تعداد سالن های موجود</p>
                                 <br />
-                                <h4 class="my-1 text-white c-value-info-topDash">در حال بررسی</h4>
+                                <h4 class="my-1 text-white c-value-info-topDash" id="GreenhouseHallCount">در حال بررسی</h4>
                             </div>
                             <div class="widgets-icons bg-white text-success ms-auto">
                                 <iconify-icon icon="icon-park-outline:green-house"></iconify-icon>
@@ -56,7 +56,7 @@
                             <div>
                                 <p class="mb-0 text-dark c-title-info-topDash">تعداد سنسورهای دما</p>
                                 <br />
-                                <h4 class="my-1 text-dark c-value-info-topDash" id="loginCount">درحال دریافت</h4>
+                                <h4 class="my-1 text-dark c-value-info-topDash" id="TemperatureSensorCount">درحال دریافت</h4>
                             </div>
                             <div class="widgets-icons bg-white text-dark ms-auto">
                                 <iconify-icon icon="mingcute:low-temperature-fill"></iconify-icon>
@@ -72,7 +72,7 @@
                             <div>
                                 <p class="mb-0 text-white c-title-info-topDash">تعداد سنسورهای رطوبت</p>
                                 <br />
-                                <div id="companyLatestInProgressFacilityState" class="text-white c-value-info-topDash mw-100"><h4 class="text-white">درحال دریافت</h4></div>
+                                <div id="HumiditySensorCount" class="text-white c-value-info-topDash mw-100"><h4 class="text-white">درحال دریافت</h4></div>
                             </div>
                             <div class="widgets-icons bg-white text-danger ms-auto">
                                 <iconify-icon icon="material-symbols:humidity-percentage-rounded"></iconify-icon>
@@ -88,7 +88,7 @@
                             <div>
                                 <p class="mb-0 text-dark c-title-info-topDash">تعداد سنسورهای نور</p>
                                 <br />
-                                <div id="companyLatestInProgressFacilityProgressPercent" class="c-value-info-topDash"><h4 class="my-1 text-dark ">درحال دریافت</h4></div>
+                                <div id="LightIntensitySensorCount" class="c-value-info-topDash"><h4 class="my-1 text-dark ">درحال دریافت</h4></div>
                             </div>
                             <div class="widgets-icons bg-white text-dark ms-auto">
                                 <iconify-icon icon="entypo:light-up"></iconify-icon>
@@ -139,9 +139,9 @@
         $(document).ready(function () {
             //GetAllFacilityRequests();
 
-            var moduleContainer = jQuery(".cpPanel").dashboardModuleContainer({
-                dashboardTabsType: 'maindash',
-            });
+            // var moduleContainer = jQuery(".cpPanel").dashboardModuleContainer({
+            //     dashboardTabsType: 'maindash',
+            // });
             //console.log(moduleContainer);
             moduleContainer.reBind('maindash');
         })
@@ -157,14 +157,6 @@
         })
 
     </script>
-
-
-
-    @if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Value.ToLower() != "customer" && userRoleName.Value.ToLower() != "thirdParty")
-    {
-        <script src="/Scripts/home/coreReportsForOrgUser.js"></script>
-        <script src="/Scripts/home/financialReportsForOrgUser.js"></script>
-    }
 
     @if (User.Identity.IsAuthenticated && userRoleName != null && userRoleName.Value.ToLower() == "customer")
     {
