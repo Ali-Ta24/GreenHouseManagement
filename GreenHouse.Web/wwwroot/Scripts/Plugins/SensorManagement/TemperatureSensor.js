@@ -162,6 +162,9 @@
                         $('.bootbox-close-button').addClass("btn-close");
                         $('.bootbox-close-button').text("");
                     });
+                    $('[data-model="up"]').click(function () {
+                       $("#GreenhouseHallModalID").val()
+                    });
                     $("#editsubmitBtn").click(function (e) {
                         putTemperatureSensor(e);
                     });
@@ -280,6 +283,12 @@
                                              });
                                     </script>
 
+                                   <div id="counter-app" class="d-flex align-items-center">
+                                       <label class="form-label" style="margin: 12px;">دما سنسور</label>
+                                       <iconify-icon icon="icon-park-solid:right-c" style="color: green; cursor:pointer;" width="40" height="40" data-model="up"></iconify-icon>
+                                       <input type="text" class="form-control text-center mx-2" style="width: 70px !important;" id="TemperatureValue">
+                                       <iconify-icon icon="icon-park-solid:left-c" style="color: red; cursor:pointer;" width="40" height="40" data-model="down"></iconify-icon>
+                                   </div>
                                 </form>
                             </div>
 
@@ -410,8 +419,8 @@
                                             <th scope="col" name="lastModifiedBy"><b>آخرین ویرایش کننده</b></th>
                                             <th scope="col" name="creationTime"><b>زمان ایجاد</b></th>
                                             <th scope="col" name="lastModificationTime"><b>زمان ویرايش</b></th>
-                                            <th scope="col" name="temperatureValue"><b>آخرین دمای سنسور</b></th>
-                                            <th scope="col" name="lastState"><b>زمان آخرین دمای ثبت شده</b></th>
+                                            <th scope="col" name="temperatureValue"><b>دمای سنسور</b></th>
+                                            <th scope="col" name="lastState"><b>زمان آخرین وضعیت ثبت شده</b></th>
                                         </tr>
                                     </thead>
                                     </table>
