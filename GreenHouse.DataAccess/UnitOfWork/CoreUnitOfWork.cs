@@ -52,7 +52,7 @@ namespace GreenHouse.DataAccess.UnitOfWork
                 ff = HumiditySensors as ILDRCompatibleRepositoryAsync<T, PrimKey>;
             }
 
-            else if (typeof(T) == typeof(HumiditySensorDetail))
+            else if (typeof(T) == typeof(TemperatureSensorDetail))
             {
                 ff = TemperatureSensorDetails as ILDRCompatibleRepositoryAsync<T, PrimKey>;
             }
