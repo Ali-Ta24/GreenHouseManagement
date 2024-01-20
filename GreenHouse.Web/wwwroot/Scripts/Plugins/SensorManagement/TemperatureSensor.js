@@ -3,7 +3,7 @@
         var settings = $.extend({
 
             postTemperatureSensorApiAddress: "/api/TemperatureSensor/post",
-            putOldFaciltyApiAddress: "/api/TemperatureSensor/put",
+            putApiAddress: "/api/TemperatureSensor/put",
             deleteTemperatureSensorApiAddress: "/api/TemperatureSensor/Delete",
             AllItemsApiAddress: "/api/TemperatureSensor/GetTemperatureSensors",
             GetTemperatureSensorIDApiAddress: "/api/TemperatureSensor/GetTemperatureSensorByID",
@@ -13,7 +13,7 @@
 
         var viewModel = undefined;
         var area = this;
-
+        var HallID;
         var TemperatureSensorTableCartable;
         var cols = [
 
@@ -24,6 +24,15 @@
             { data: "lastModifiedBy", name: "LastModifiedBy", type: "html" },
             { data: "creationTime", render: function (data, type, row) { return moment(data, 'YYYY-M-D').locale('fa').format('YYYY/M/D'); } },
             { data: "lastModificationTime", render: function (data, type, row) { return moment(data, 'YYYY-M-D').locale('fa').format('YYYY/M/D'); } },
+            { data: "temperatureValue", name: "TemperatureValue", type: "html" },
+            {
+                data: "lastState", render: function (data, type, row) {
+                    if (data == null) {
+                        return "";
+                    }
+                    return moment(data, 'YYYY-M-D HH:mm:ss').locale('fa').format('YYYY/M/D-HH:mm:ss');
+                }
+            },
         ];
 
         var addtemplate = `<div class="row" id="addmodal">
@@ -65,6 +74,7 @@
                 area.html(getTemplate());
                 setTimeout(function () {
                     getAllItems();
+                    HallID = area.find("#GreenhouseHallNavID").val();
                 }, 1000);
             }
         }
@@ -93,6 +103,15 @@
             });
         }, 1000);
 
+        $('[role="textbox"]').on("mouseover", function () {
+            if (area.find("#GreenhouseHallNavID").val() != HallID) {
+                getAllItems();
+                HallID = area.find("#GreenhouseHallNavID").val();
+                TemperatureSensorTableCartable.rows().ajax.reload();
+
+            }
+        });
+
         area.find("[data-role-operation ='add']").click(function () {
             bootbox.dialog({
                 message: addtemplate,
@@ -111,20 +130,21 @@
                 valueOption: 'id',
                 textOption: 'hallName',
                 idTagName: 'GreenhouseHallNavID',
-                dropdownParent: 'formTemperatureSensor',
-                isRequire: true
-            });
-        });
-
-        area.find("[data-role-operation ='edit']").click(function () {
-            $("#GreenhouseNav").drapdownPlugin({
-                apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
-                valueOption: 'id',
-                textOption: 'hallName',
-                idTagName: 'GreenhouseHallNavID',
                 dropdownParent: 'temperatureSensorTab',
                 isRequire: true
             });
+
+            setTimeout(function () {
+                $('[role="textbox"]').on("mouseover", function () {
+                    if (area.find("#GreenhouseHallNavID").val() != HallID) {
+                        getAllItems();
+                        HallID = area.find("#GreenhouseHallNavID").val();
+                    }
+                });
+            }, 1000);
+        });
+
+        area.find("[data-role-operation ='edit']").click(function () {
             let idRowSelect = TemperatureSensorTableCartable.rows({ selected: true }).data()[0].id;
             $.ajax({
                 type: "get",
@@ -132,7 +152,7 @@
                 contentType: 'application/json',
                 success: function (result) {
 
-                    var template = putTemplateOldFacility(result);
+                    var template = putTemplate(result);
                     bootbox.dialog({
                         message: template,
                         title: "ویرایش سنسور دما",
@@ -150,6 +170,22 @@
                     ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور دما');
                 }
             });
+            $("#GreenhouseNav").drapdownPlugin({
+                apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
+                valueOption: 'id',
+                textOption: 'hallName',
+                idTagName: 'GreenhouseHallNavID',
+                dropdownParent: 'temperatureSensorTab',
+                isRequire: true
+            });
+            setTimeout(function () {
+                $('[role="textbox"]').on("mouseover", function () {
+                    if (area.find("#GreenhouseHallNavID").val() != HallID) {
+                        getAllItems();
+                        HallID = area.find("#GreenhouseHallNavID").val();
+                    }
+                });
+            }, 1000);
         });
 
         area.find("[data-role-remove]").click(function () {
@@ -179,6 +215,14 @@
                 dropdownParent: 'temperatureSensorTab',
                 isRequire: true
             });
+            setTimeout(function () {
+                $('[role="textbox"]').on("mouseover", function () {
+                    if (area.find("#GreenhouseHallNavID").val() != HallID) {
+                        getAllItems();
+                        HallID = area.find("#GreenhouseHallNavID").val();
+                    }
+                });
+            }, 1000);
         });
 
         function putTemperatureSensor(click) {
@@ -190,7 +234,7 @@
 
             $.ajax({
                 type: "put",
-                url: settings.putOldFaciltyApiAddress,
+                url: settings.putApiAddress,
                 data: JSON.stringify(editModal),
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
@@ -209,7 +253,7 @@
             });
         }
 
-        function putTemplateOldFacility(result) {
+        function putTemplate(result) {
             var editTemplateModal = `<div class="row" id="editmodal">
                                 <form id="formTemperatureSensorAdd" class="row g-3 needs-validation">
 
@@ -353,6 +397,10 @@
                                             </th>
                                             <th scope="col" class="cartablefilter">
                                             </th>
+                                            <th scope="col" class="cartablefilter">
+                                            </th>
+                                            <th scope="col" class="cartablefilter">
+                                            </th>
                                         </tr>
                                         <tr>
                                             <th scope="col" name="temperatureSensorName"><b>شناسه سنسور</b></th>
@@ -362,6 +410,8 @@
                                             <th scope="col" name="lastModifiedBy"><b>آخرین ویرایش کننده</b></th>
                                             <th scope="col" name="creationTime"><b>زمان ایجاد</b></th>
                                             <th scope="col" name="lastModificationTime"><b>زمان ویرايش</b></th>
+                                            <th scope="col" name="temperatureValue"><b>آخرین دمای سنسور</b></th>
+                                            <th scope="col" name="lastState"><b>زمان آخرین دمای ثبت شده</b></th>
                                         </tr>
                                     </thead>
                                     </table>

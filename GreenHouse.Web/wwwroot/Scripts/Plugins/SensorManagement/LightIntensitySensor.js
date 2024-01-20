@@ -3,7 +3,7 @@
         var settings = $.extend({
 
             postLightIntensitySensorApiAddress: "/api/LightIntensitySensor/post",
-            putOldFaciltyApiAddress: "/api/LightIntensitySensor/put",
+            putApiAddress: "/api/LightIntensitySensor/put",
             deleteLightIntensitySensorApiAddress: "/api/LightIntensitySensor/Delete",
             AllItemsApiAddress: "/api/LightIntensitySensor/GetLightIntensitySensors",
             GetLightIntensitySensorIDApiAddress: "/api/LightIntensitySensor/GetLightIntensitySensorByID",
@@ -13,7 +13,7 @@
 
         var viewModel = undefined;
         var area = this;
-
+        var HallID;
         var LightIntensitySensorTableCartable;
         var cols = [
 
@@ -65,6 +65,7 @@
                 area.html(getTemplate());
                 setTimeout(function () {
                     getAllItems();
+                    HallID = area.find("#GreenhouseHallNavID").val();
                 }, 1000);
             }
         }
@@ -93,6 +94,13 @@
             });
         }, 1000);
 
+        $('[role="textbox"]').on("mouseover", function () {
+            if (area.find("#GreenhouseHallNavID").val() != HallID) {
+                getAllItems();
+                HallID = area.find("#GreenhouseHallNavID").val();
+            }
+        });
+
         area.find("[data-role-operation ='add']").click(function () {
             bootbox.dialog({
                 message: addtemplate,
@@ -111,9 +119,18 @@
                 valueOption: 'id',
                 textOption: 'hallName',
                 idTagName: 'GreenhouseHallNavID',
-                dropdownParent: 'formLightIntensitySensor',
+                dropdownParent: 'temperatureSensorTab',
                 isRequire: true
             });
+
+            setTimeout(function () {
+                $('[role="textbox"]').on("mouseover", function () {
+                    if (area.find("#GreenhouseHallNavID").val() != HallID) {
+                        getAllItems();
+                        HallID = area.find("#GreenhouseHallNavID").val();
+                    }
+                });
+            }, 1000);
         });
 
         area.find("[data-role-operation ='edit']").click(function () {
@@ -132,7 +149,7 @@
                 contentType: 'application/json',
                 success: function (result) {
 
-                    var template = putTemplateOldFacility(result);
+                    var template = putTemplate(result);
                     bootbox.dialog({
                         message: template,
                         title: "ویرایش سنسور نور",
@@ -150,6 +167,22 @@
                     ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور نور');
                 }
             });
+            $("#GreenhouseNav").drapdownPlugin({
+                apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
+                valueOption: 'id',
+                textOption: 'hallName',
+                idTagName: 'GreenhouseHallNavID',
+                dropdownParent: 'lightIntensitySensorTab',
+                isRequire: true
+            });
+            setTimeout(function () {
+                $('[role="textbox"]').on("mouseover", function () {
+                    if (area.find("#GreenhouseHallNavID").val() != HallID) {
+                        getAllItems();
+                        HallID = area.find("#GreenhouseHallNavID").val();
+                    }
+                });
+            }, 1000);
         });
 
         area.find("[data-role-remove]").click(function () {
@@ -179,6 +212,14 @@
                 dropdownParent: 'lightIntensitySensorTab',
                 isRequire: true
             });
+            setTimeout(function () {
+                $('[role="textbox"]').on("mouseover", function () {
+                    if (area.find("#GreenhouseHallNavID").val() != HallID) {
+                        getAllItems();
+                        HallID = area.find("#GreenhouseHallNavID").val();
+                    }
+                });
+            }, 1000);
         });
 
         function putLightIntensitySensor(click) {
@@ -190,7 +231,7 @@
 
             $.ajax({
                 type: "put",
-                url: settings.putOldFaciltyApiAddress,
+                url: settings.putApiAddress,
                 data: JSON.stringify(editModal),
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
@@ -209,7 +250,7 @@
             });
         }
 
-        function putTemplateOldFacility(result) {
+        function putTemplate(result) {
             var editTemplateModal = `<div class="row" id="editmodal">
                                 <form id="formLightIntensitySensorAdd" class="row g-3 needs-validation">
 

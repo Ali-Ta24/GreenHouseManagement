@@ -15,7 +15,7 @@ namespace GreenHouse.Services
         private readonly ILDRCompatibleRepositoryAsync<TemperatureSensorDetail, long> _baseRepo;
 
         public TemperatureSensorDetailService(ICoreUnitOfWork coreUnitOfWork, ILogger<TemperatureSensorDetail> logger,
-            IDateTimeProviderService dateTimeProvider) : base(logger, dateTimeProvider, 300)
+            IDateTimeProviderService dateTimeProvider) : base(logger, dateTimeProvider, 500)
         {
             _unitOfWork = coreUnitOfWork;
             _baseRepo = _unitOfWork.GetRepo<TemperatureSensorDetail, long>();
@@ -36,7 +36,6 @@ namespace GreenHouse.Services
                 LogAdd(item, "TemperatureSensor Related By this TemperatureSensorDetail Not Found", ex);
                 throw ex;
             }
-            await ValidateOnAddAsync(item);
             var g = await _baseRepo.InsertAsync(new TemperatureSensorDetailEntity(item));
             try
             {
@@ -47,7 +46,7 @@ namespace GreenHouse.Services
             }
             catch (Exception ex)
             {
-                LogAdd(item, "TemperatureSensorID :" + item.TemperatureSensorID, ex);
+                LogAdd(item, "TemperatureSensorDetailID :" + item.TemperatureSensorID, ex);
                 throw new ServiceStorageException("Error adding TemperatureSensorDetail", ex);
             }
         }
@@ -87,7 +86,7 @@ namespace GreenHouse.Services
             if (TemperatureSensor == null)
             {
                 var ex = new ServiceObjectNotFoundException(nameof(TemperatureSensor) + " Not Found");
-                LogAdd(item, "TemperatureSensor Releted By this TemperatureSensorDetail Not Found", ex);
+                LogAdd(item, "TemperatureSensor Related By this TemperatureSensorDetail Not Found", ex);
                 throw ex;
             }
 

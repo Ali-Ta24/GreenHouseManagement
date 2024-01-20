@@ -48,7 +48,7 @@ namespace GreenHouse.Web.Controller.Api
             try
             {
                 item.LastModificationTime = _dateTimeProvider.GetNow();
-                item.LastModifiedBy = UserName ?? "manual";
+                item.LastModifiedBy = UserIdName;
 
                 await _service.AddAsync(item);
 
