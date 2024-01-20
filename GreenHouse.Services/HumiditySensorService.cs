@@ -34,7 +34,7 @@ namespace GreenHouse.Services
             if (UserGreenhouseHall == null)
             {
                 var ex = new ServiceObjectNotFoundException(nameof(UserGreenhouseHall) + " Not Found");
-                LogAdd(item, "UserGreenhouseHall Releted By this HumiditySensor Not Found", ex);
+                LogAdd(item, "UserGreenhouseHall Related By this HumiditySensor Not Found", ex);
                 throw ex;
             }
             await ValidateOnAddAsync(item);
@@ -88,7 +88,7 @@ namespace GreenHouse.Services
             if (UserGreenhouseHall == null)
             {
                 var ex = new ServiceObjectNotFoundException(nameof(UserGreenhouseHall) + " Not Found");
-                LogAdd(item, "UserGreenhouseHall Releted By this HumiditySensor Not Found", ex);
+                LogAdd(item, "UserGreenhouseHall Related By this HumiditySensor Not Found", ex);
                 throw ex;
             }
 

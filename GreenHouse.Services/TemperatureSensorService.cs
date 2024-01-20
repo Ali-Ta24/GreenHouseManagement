@@ -14,12 +14,13 @@ namespace GreenHouse.Services
     {
         private readonly ICoreUnitOfWork _unitOfWork;
         private readonly ILDRCompatibleRepositoryAsync<TemperatureSensor, int> _baseRepo;
-
-        public TemperatureSensorService(ICoreUnitOfWork coreUnitOfWork, ILogger<TemperatureSensor> logger, IDateTimeProviderService dateTimeProvider)
+        private readonly TemperatureSensorDetailService _temperatureSensorDetailService;
+        public TemperatureSensorService(ICoreUnitOfWork coreUnitOfWork, ILogger<TemperatureSensor> logger, IDateTimeProviderService dateTimeProvider, TemperatureSensorDetailService temperatureSensorDetailService)
             : base(logger, dateTimeProvider, 200)
         {
             _unitOfWork = coreUnitOfWork;
             _baseRepo = _unitOfWork.GetRepo<TemperatureSensor, int>();
+            _temperatureSensorDetailService = temperatureSensorDetailService;
         }
 
         public async override Task<int> AddAsync(TemperatureSensor item)
@@ -34,7 +35,7 @@ namespace GreenHouse.Services
             if (UserGreenhouseHall == null)
             {
                 var ex = new ServiceObjectNotFoundException(nameof(UserGreenhouseHall) + " Not Found");
-                LogAdd(item, "UserGreenhouseHall Releted By this TemperatureSensor Not Found", ex);
+                LogAdd(item, "UserGreenhouseHall Related By this TemperatureSensor Not Found", ex);
                 throw ex;
             }
             await ValidateOnAddAsync(item);
@@ -46,6 +47,13 @@ namespace GreenHouse.Services
                   g.ID.ToString() +
                   " ,TemperatureSensorName:" + item.TemperatureSensorName
                  );
+                await _temperatureSensorDetailService.AddAsync(new TemperatureSensorDetail
+                {
+                    TemperatureSensorID = g.ID,
+                    TemperatureValue = 0,
+                    LastModifiedBy = item.LastModifiedBy,
+                    LastModificationTime = item.LastModificationTime,
+                });
                 return g.ID;
             }
             catch (Exception ex)
@@ -64,7 +72,6 @@ namespace GreenHouse.Services
                 Log(301, "GetTemperatureSensors failed: request with the given id not found", GreenHouseID.ToString(), LogTypeEnum.ErrorLog);
                 throw new ServiceObjectNotFoundException(nameof(UserGreenhouseHall));
             }
-            //LinqDataResult<TemperatureSensorViewEntity> item = new LinqDataResult<TemperatureSensorViewEntity>();
             try
             {
                 return await _unitOfWork.TemperatureSensors.GetTemperatureSensorsByGreenhouseHall(request, GreenHouseID, UserName);
@@ -88,7 +95,7 @@ namespace GreenHouse.Services
             if (UserGreenhouseHall == null)
             {
                 var ex = new ServiceObjectNotFoundException(nameof(UserGreenhouseHall) + " Not Found");
-                LogAdd(item, "UserGreenhouseHall Releted By this TemperatureSensor Not Found", ex);
+                LogAdd(item, "UserGreenhouseHall Related By this TemperatureSensor Not Found", ex);
                 throw ex;
             }
 
