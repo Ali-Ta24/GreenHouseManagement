@@ -4,6 +4,7 @@ using GreenHouse.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenHouse.DataAccess.Migrations
 {
     [DbContext(typeof(CoreDbContext))]
-    partial class CoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240120085957_AddTemperatureValueAndLastStateToVw_TemperatureSensor")]
+    partial class AddTemperatureValueAndLastStateToVw_TemperatureSensor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -444,15 +447,15 @@ namespace GreenHouse.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("LastState")
+                    b.Property<DateTime>("LastState")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TemperatureSensorName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float?>("TemperatureValue")
-                        .HasColumnType("real");
+                    b.Property<double>("TemperatureValue")
+                        .HasColumnType("float");
 
                     b.Property<string>("UserName")
                         .IsRequired()
