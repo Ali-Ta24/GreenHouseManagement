@@ -338,6 +338,10 @@
         function getAllItems() {
             var areaCartable = area.find("#cartable");
             var GreenhouseHallID = area.find("#GreenhouseHallNavID").val();
+            if (GreenhouseHallID == undefined || GreenhouseHallID == null) {
+                ivsAlert2('warning', 'اخطار', 'ابتدا باید حداقل یک سالن اضافه کنید');
+                return;
+            }
             TemperatureSensorTableCartable = areaCartable.DataTable({
                 ajax:
                 {

@@ -1,0 +1,30 @@
+﻿@using GreenHouse.Web.Controller.Model
+@model LogoutViewModel
+
+<div class="col mx-auto" style="z-index:1">
+    <div class="card">
+        <div class="card-body">
+            <div class="p-4 rounded">
+                <div class="text-center">
+                    <h1>خروج</h1>
+                    <img class="logo_banader" src="~/PanelContent/logo/logo/newLogoGreenHouseWithBottomTitle.png" alt="logo_greenhouse" />
+                </div>
+                <br />
+
+                <div class="form-body">
+                    <h4 style="text-align:center">آیا از خروج خود مطمئن هستید؟</h4>
+
+                    <form asp-action="Logout" style="text-align:center">
+                        <input type="hidden" name="logoutId" value="@Model.LogoutId" />
+                        <div class="form-group">
+                            <button class="btn bg-primary px-5 text-white">بله</button>
+                            <button onclick="history.back()" class="btn bg-danger px-5 text-white">خیر</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

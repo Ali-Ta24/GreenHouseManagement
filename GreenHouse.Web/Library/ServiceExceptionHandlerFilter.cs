@@ -5,12 +5,6 @@ namespace GreenHouse.Web.Library
 {
     public class ServiceExceptionHandlerFilter : IActionFilter, IOrderedFilter
     {
-        //private readonly IOptions<ServiceUrls> _serviceUrls;
-
-        //public ServiceExceptionHandlerFilter(IOptions<ServiceUrls> serviceUrls)
-        //{
-        //    _serviceUrls = serviceUrls;
-        //}
         public int Order => int.MaxValue - 10;
 
         public void OnActionExecuting(ActionExecutingContext context) { }

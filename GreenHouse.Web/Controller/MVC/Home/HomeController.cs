@@ -10,5 +10,10 @@ namespace GreenHouse.Web.Controller.MVC.Home
         {
             return View();
         }
+
+        public IActionResult Logout()
+        {
+            return SignOut("Cookies");
+        }
     }
 }
