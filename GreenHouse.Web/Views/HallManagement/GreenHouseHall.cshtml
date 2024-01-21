@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "مدیریت سالن ها";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .table-border thead tr td {
+        text-align: center;
+    }
+
+    #cartable_length {
+    }
+
+    #cartable_filter {
+        width: 250px;
+        left: 25px;
+        position: absolute;
+        margin-top: -40px;
+    }
+
+    thead tr th {
+        border-width: 1px;
+        padding: 5px !important;
+    }
+</style>
+
+<div id="GreenHouseHall">
+</div>
+
+
+@section scripts {
+    <script src="~/Scripts/Plugins/HallManagement/GreenHouseHall.js"></script>
+    <script>
+        $("#GreenHouseHall").GreenHouseHall();
+    </script>
+}
