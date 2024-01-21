@@ -1,32 +1,38 @@
 ﻿using GreenHouse.Model;
+using GreenHouse.Model.Views;
 
 namespace GreenHouse.Web.Controller.Dto
 {
     public class TemperatureSensorDto
     {
-        public TemperatureSensorDto()
-        {
-
-        }
-        public TemperatureSensorDto(TemperatureSensor model)
-        {
-            if (model != null)
-            {
-                GreenhouseHallID = model.GreenhouseHallID;
-                TemperatureSensorName = model.TemperatureSensorName;
-            }
-        }
         public int? ID { get; set; }
-        public int GreenhouseHallID { get; set; }
+        public int? GreenhouseHallID { get; set; }
         public string TemperatureSensorName { get; set; }
-
-        public TemperatureSensor GetTemperatureSensor()
+        public float? TemperatureValue { get; set; }
+        public bool SensorChanged { get; set; }
+        public TemperatureSensor TemperatureSensorAddDto()
         {
             return new TemperatureSensor()
             {
-                ID = ID ?? 0,
-                GreenhouseHallID = GreenhouseHallID,
+                GreenhouseHallID = GreenhouseHallID.Value,
                 TemperatureSensorName = TemperatureSensorName
+            };
+        }
+        public TemperatureSensor TemperatureSensorModifyDto()
+        {
+            return new TemperatureSensor()
+            {
+                ID = ID.Value,
+                GreenhouseHallID = GreenhouseHallID.Value,
+                TemperatureSensorName = TemperatureSensorName
+            };
+        }
+        public TemperatureSensorDetail TemperatureSensorGetDto()
+        {
+            return new TemperatureSensorDetail()
+            {
+                TemperatureSensorID = ID.Value,
+                TemperatureValue = TemperatureValue.Value
             };
         }
     }

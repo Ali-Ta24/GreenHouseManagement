@@ -19,17 +19,18 @@ namespace GreenHouse.Web.Controller.Api
     {
         private readonly TemperatureSensorService _service;
         private readonly IDateTimeProviderService _dateTimeProvider;
-
-        public TemperatureSensorController(TemperatureSensorService service, IDateTimeProviderService dateTimeProvider)
+        private readonly TemperatureSensorDetailService _temperatureSensorDetailService;
+        public TemperatureSensorController(TemperatureSensorService service, TemperatureSensorDetailService temperatureSensorDetailService, IDateTimeProviderService dateTimeProvider)
         {
             _service = service;
             _dateTimeProvider = dateTimeProvider;
+            _temperatureSensorDetailService = temperatureSensorDetailService;
         }
 
         [HttpPost("Post")]
         public async Task<ActionResult> Post(TemperatureSensorDto dto)
         {
-            TemperatureSensor item = dto.GetTemperatureSensor();
+            TemperatureSensor item = dto.TemperatureSensorAddDto();
 
             try
             {
@@ -59,14 +60,19 @@ namespace GreenHouse.Web.Controller.Api
         [HttpPut("Put")]
         public async Task<ActionResult> Put(TemperatureSensorDto dto)
         {
-            TemperatureSensor item = dto.GetTemperatureSensor();
+            TemperatureSensor item = dto.TemperatureSensorModifyDto();
+            TemperatureSensorDetail sensorDetail = dto.TemperatureSensorGetDto();
             try
             {
-
                 item.LastModificationTime = _dateTimeProvider.GetNow();
                 item.LastModifiedBy = UserIdName;
-
                 await _service.ModifyAsync(item);
+                if (dto.SensorChanged)
+                {
+                    sensorDetail.LastModificationTime = item.LastModificationTime;
+                    sensorDetail.LastModifiedBy = item.LastModifiedBy;
+                    await _temperatureSensorDetailService.AddAsync(sensorDetail);
+                }
 
                 return Ok();
             }
@@ -126,7 +132,7 @@ namespace GreenHouse.Web.Controller.Api
         {
             try
             {
-                var res = await _service.RetrieveByIdAsync(Id);
+                var res = await _service.RetrieveSensorViewByIdAsync(Id);
                 return Ok(res);
             }
             catch (ServiceException ex)

@@ -3,6 +3,8 @@ using GreenHouse.DataAccess.Repository.Interfaces;
 using GreenHouse.DomainEntity;
 using GreenHouse.DomainEntity.Views;
 using GreenHouse.Model;
+using GreenHouse.Model.Views;
+using Microsoft.EntityFrameworkCore;
 using MZBase.EntityFrameworkCore;
 using MZSimpleDynamicLinq.Core;
 using MZSimpleDynamicLinq.EFCoreExtensions;
@@ -25,5 +27,8 @@ namespace GreenHouse.DataAccess.Repository
             => await _dbContext.TemperatureSensorView
             .Where(ss => ss.GreenhouseHallID == greenhouseId && ss.UserName == userName)
             .ToLinqDataResultAsync(request.Take, request.Skip, request.Sort, request.Filter);
+
+        public async Task<TemperatureSensorView> GetTemperatureSensorViewsByID(int TemperatureSensorID)
+            => await _dbContext.TemperatureSensorView.FirstOrDefaultAsync(ss => ss.ID == TemperatureSensorID);
     }
 }

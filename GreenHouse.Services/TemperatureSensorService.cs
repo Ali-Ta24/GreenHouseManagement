@@ -2,6 +2,7 @@
 using GreenHouse.DomainEntity;
 using GreenHouse.DomainEntity.Views;
 using GreenHouse.Model;
+using GreenHouse.Model.Views;
 using Microsoft.Extensions.Logging;
 using MZBase.Infrastructure;
 using MZBase.Infrastructure.Service;
@@ -179,7 +180,27 @@ namespace GreenHouse.Services
             LogRetrieveSingle(ID);
             return item;
         }
-
+        public async Task<TemperatureSensorView> RetrieveSensorViewByIdAsync(int ID)
+        {
+            TemperatureSensorView? item;
+            try
+            {
+                item = await _unitOfWork.TemperatureSensors.GetTemperatureSensorViewsByID(ID);
+            }
+            catch (Exception ex)
+            {
+                LogRetrieveSingle(ID, ex);
+                throw new ServiceStorageException("Error loading TemperatureSensor", ex);
+            }
+            if (item == null)
+            {
+                var f = new ServiceObjectNotFoundException(nameof(TemperatureSensor) + " not found by id");
+                LogRetrieveSingle(ID, f);
+                throw f;
+            }
+            LogRetrieveSingle(ID);
+            return item;
+        }
         public async Task<LinqDataResult<TemperatureSensorViewEntity>> GetTemperatureSensors(LinqDataRequest request, int greenhouseId)
         {
             LinqDataResult<TemperatureSensorViewEntity> item = new LinqDataResult<TemperatureSensorViewEntity>();

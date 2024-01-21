@@ -1,5 +1,6 @@
 ﻿using GreenHouse.DomainEntity.Views;
 using GreenHouse.Model;
+using GreenHouse.Model.Views;
 using MZBase.Infrastructure;
 using MZSimpleDynamicLinq.Core;
 
@@ -9,5 +10,6 @@ namespace GreenHouse.DataAccess.Repository.Interfaces
     {
         int GetCountAllTemperatureSensorByUserName(string UserName);
         Task<LinqDataResult<TemperatureSensorViewEntity>> GetTemperatureSensorsByGreenhouseHall(LinqDataRequest request,int greenhouseId, string userName);
+        Task<TemperatureSensorView> GetTemperatureSensorViewsByID(int TemperatureSensorID);
     }
 }

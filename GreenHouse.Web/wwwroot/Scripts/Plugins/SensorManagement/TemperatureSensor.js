@@ -15,6 +15,7 @@
         var area = this;
         var HallID;
         var TemperatureSensorTableCartable;
+        var SensorChanged;
         var cols = [
 
             { data: "temperatureSensorName", name: "TemperatureSensorName", type: "html" },
@@ -163,7 +164,12 @@
                         $('.bootbox-close-button').text("");
                     });
                     $('[data-model="up"]').click(function () {
-                       $("#GreenhouseHallModalID").val()
+                        $("#TemperatureValue").val((parseFloat($("#TemperatureValue").val()) + 1).toFixed(2));
+                        SensorChanged = true;
+                    });
+                    $('[data-model="down"]').click(function () {
+                        $("#TemperatureValue").val((parseFloat($("#TemperatureValue").val()) - 1).toFixed(2));
+                        SensorChanged = true;
                     });
                     $("#editsubmitBtn").click(function (e) {
                         putTemperatureSensor(e);
@@ -233,6 +239,8 @@
                 ID: TemperatureSensorTableCartable.rows({ selected: true }).data()[0].id,
                 TemperatureSensorName: $("#TemperatureSensorName").val(),
                 GreenhouseHallID: $("#GreenhouseHallModalID").val(),
+                TemperatureValue: $("#TemperatureValue").val(),
+                SensorChanged: SensorChanged,
             }
 
             $.ajax({
@@ -285,9 +293,9 @@
 
                                    <div id="counter-app" class="d-flex align-items-center">
                                        <label class="form-label" style="margin: 12px;">دما سنسور</label>
-                                       <iconify-icon icon="icon-park-solid:right-c" style="color: green; cursor:pointer;" width="40" height="40" data-model="up"></iconify-icon>
-                                       <input type="text" class="form-control text-center mx-2" style="width: 70px !important;" id="TemperatureValue">
-                                       <iconify-icon icon="icon-park-solid:left-c" style="color: red; cursor:pointer;" width="40" height="40" data-model="down"></iconify-icon>
+                                       <iconify-icon icon="octicon:feed-plus-16" style="color: green; cursor:pointer;" width="35" height="35" data-model="up"></iconify-icon>
+                                       <input type="text" class="form-control text-center mx-2" style="width: 70px !important;" id="TemperatureValue" value="${result.temperatureValue == null ? "" : result.temperatureValue}">
+                                       <iconify-icon icon="mingcute:minus-circle-fill" style="color: red; cursor:pointer;" width="40" height="40" data-model="down"></iconify-icon>
                                    </div>
                                 </form>
                             </div>
