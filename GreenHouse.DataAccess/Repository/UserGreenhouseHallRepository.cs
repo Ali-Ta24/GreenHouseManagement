@@ -1,8 +1,11 @@
 ﻿using GreenHouse.DataAccess.Context;
 using GreenHouse.DataAccess.Repository.Interfaces;
 using GreenHouse.DomainEntity;
+using GreenHouse.DomainEntity.Views;
 using GreenHouse.Model;
 using MZBase.EntityFrameworkCore;
+using MZSimpleDynamicLinq.Core;
+using MZSimpleDynamicLinq.EFCoreExtensions;
 
 namespace GreenHouse.DataAccess.Repository
 {
@@ -13,5 +16,10 @@ namespace GreenHouse.DataAccess.Repository
         {
             _dbContext = context;
         }
+
+        public async Task<LinqDataResult<GreenhouseHallViewEntity>> GetAllGreenHouseByUser(LinqDataRequest request, string userName)
+            => await _dbContext.GreenhouseHallView
+            .Where(ss => ss.UserID == userName)
+            .ToLinqDataResultAsync(request.Take, request.Skip, request.Sort, request.Filter);
     }
 }

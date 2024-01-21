@@ -21,6 +21,7 @@ namespace GreenHouse.DataAccess.Context
             modelBuilder.Entity<TemperatureSensorViewEntity>().ToView("Vw_TemperatureSensor");
             modelBuilder.Entity<HumiditySensorViewEntity>().ToView("Vw_HumiditySensor");
             modelBuilder.Entity<LightIntensitySensorViewEntity>().ToView("Vw_LightIntensitySensor");
+            modelBuilder.Entity<GreenhouseHallViewEntity>().ToView("Vw_GreenhouseHall");
         }
 
         public DbSet<UserGreenhouseHallEntity> UserGreenhouseHall { get; set; }
@@ -35,6 +36,7 @@ namespace GreenHouse.DataAccess.Context
         public DbSet<TemperatureSensorViewEntity> TemperatureSensorView { get; set; }
         public DbSet<HumiditySensorViewEntity> HumiditySensorView { get; set; }
         public DbSet<LightIntensitySensorViewEntity> LightIntensitySensorView { get; set; }
+        public DbSet<GreenhouseHallViewEntity> GreenhouseHallView { get; set; }
         #endregion
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
