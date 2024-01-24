@@ -11,5 +11,8 @@
         public string HallName { get; set; }
         public int GreenhouseHallID { get; set; }
         public string UserName { get; set; }
+        public float? HumiditySensorValue { get; set; }
+        public DateTime? LastState { get; set; }
+        public string FullName { get; set; }
     }
 }
