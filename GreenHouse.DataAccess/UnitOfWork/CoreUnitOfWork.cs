@@ -19,6 +19,8 @@ namespace GreenHouse.DataAccess.UnitOfWork
             HumiditySensors = new HumiditySensorRepository(_dbContext);
 
             TemperatureSensorDetails = new TemperatureSensorDetailRepository(_dbContext);
+            LightIntensitySensorDetails = new LightIntensitySensorDetailRepository(_dbContext);
+            HumiditySensorDetails = new HumiditySensorDetailRepository(_dbContext);
         }
         public IUserGreenhouseHallRepository UserGreenhouseHalls { get; private set; }
         
@@ -27,6 +29,8 @@ namespace GreenHouse.DataAccess.UnitOfWork
         public IHumiditySensorRepository HumiditySensors { get; private set; }
 
         public ITemperatureSensorDetailRepository TemperatureSensorDetails { get; private set; }
+        public ILightIntensitySensorDetailRepository LightIntensitySensorDetails { get; private set; }
+        public IHumiditySensorDetailRepository HumiditySensorDetails { get; private set; }
 
         public ILDRCompatibleRepositoryAsync<T, PrimKey> GetRepo<T, PrimKey>()
            where T : Model<PrimKey>
@@ -55,6 +59,14 @@ namespace GreenHouse.DataAccess.UnitOfWork
             else if (typeof(T) == typeof(TemperatureSensorDetail))
             {
                 ff = TemperatureSensorDetails as ILDRCompatibleRepositoryAsync<T, PrimKey>;
+            }
+            else if (typeof(T) == typeof(LightIntensitySensorDetail))
+            {
+                ff = LightIntensitySensorDetails as ILDRCompatibleRepositoryAsync<T, PrimKey>;
+            }
+            else if (typeof(T) == typeof(HumiditySensorDetail))
+            {
+                ff = HumiditySensorDetails as ILDRCompatibleRepositoryAsync<T, PrimKey>;
             }
             return ff;
         }

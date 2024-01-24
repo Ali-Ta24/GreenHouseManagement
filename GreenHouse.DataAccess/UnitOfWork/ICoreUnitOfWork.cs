@@ -12,5 +12,8 @@ namespace GreenHouse.DataAccess.UnitOfWork
         IHumiditySensorRepository HumiditySensors { get; }
 
         ITemperatureSensorDetailRepository TemperatureSensorDetails { get; }
+        ILightIntensitySensorDetailRepository LightIntensitySensorDetails { get; }
+        IHumiditySensorDetailRepository HumiditySensorDetails { get; }
+
     }
 }
