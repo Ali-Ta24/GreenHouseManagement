@@ -109,12 +109,12 @@ namespace GreenHouse.Web.Controller.Api
         }
 
         [HttpGet("GetTemperatureSensors")]
-        public async Task<ActionResult<LinqDataResult<TemperatureSensorViewEntity>>> GetTemperatureSensors(int GreenHouseID)
+        public async Task<ActionResult<LinqDataResult<TemperatureSensorViewEntity>>> GetTemperatureSensors()
         {
             var request = Request.ToLinqDataRequest();
             try
             {
-                var rtn = await _service.ItemsAsync(request, GreenHouseID, UserIdName);
+                var rtn = await _service.ItemsAsync(request, UserIdName);
                 return Ok(rtn);
             }
             catch (ServiceException ex)

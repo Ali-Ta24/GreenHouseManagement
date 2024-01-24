@@ -9,7 +9,7 @@ namespace GreenHouse.DataAccess.Repository.Interfaces
     public interface ITemperatureSensorRepository : ILDRCompatibleRepositoryAsync<TemperatureSensor, int>
     {
         int GetCountAllTemperatureSensorByUserName(string UserName);
-        Task<LinqDataResult<TemperatureSensorViewEntity>> GetTemperatureSensorsByGreenhouseHall(LinqDataRequest request,int greenhouseId, string userName);
+        Task<LinqDataResult<TemperatureSensorViewEntity>> GetTemperatureSensorsByGreenhouseHall(LinqDataRequest request, string userName);
         Task<TemperatureSensorView> GetTemperatureSensorViewsByID(int TemperatureSensorID);
     }
 }

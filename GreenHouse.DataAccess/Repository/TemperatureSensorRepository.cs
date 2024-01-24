@@ -23,9 +23,9 @@ namespace GreenHouse.DataAccess.Repository
             => _dbContext.TemperatureSensorView.Where(ss => ss.UserName == UserName).Count();
 
 
-        public async Task<LinqDataResult<TemperatureSensorViewEntity>> GetTemperatureSensorsByGreenhouseHall(LinqDataRequest request, int greenhouseId, string userName)
+        public async Task<LinqDataResult<TemperatureSensorViewEntity>> GetTemperatureSensorsByGreenhouseHall(LinqDataRequest request, string userName)
             => await _dbContext.TemperatureSensorView
-            .Where(ss => ss.GreenhouseHallID == greenhouseId && ss.UserName == userName)
+            .Where(ss => ss.UserName == userName)
             .ToLinqDataResultAsync(request.Take, request.Skip, request.Sort, request.Filter);
 
         public async Task<TemperatureSensorView> GetTemperatureSensorViewsByID(int TemperatureSensorID)

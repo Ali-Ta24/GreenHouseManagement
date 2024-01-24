@@ -13,5 +13,6 @@
         public string UserName { get; set; }
         public float? TemperatureValue { get; set; }
         public DateTime? LastState { get; set; }
+        public string FullName { get; set; }
     }
 }

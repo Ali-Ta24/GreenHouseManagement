@@ -8,18 +8,18 @@
             AllItemsApiAddress: "/api/TemperatureSensor/GetTemperatureSensors",
             GetTemperatureSensorIDApiAddress: "/api/TemperatureSensor/GetTemperatureSensorByID",
 
+            GetAllGreenhouseHallByUserApiAddress: "/api/UserGreenhouseHall/GetAllGreenhouseHallByUser",
             hasTemplate: true
         }, options);
 
         var viewModel = undefined;
         var area = this;
-        var HallID;
         var TemperatureSensorTableCartable;
         var SensorChanged;
         var cols = [
 
             { data: "temperatureSensorName", name: "TemperatureSensorName", type: "html" },
-            { data: "userName", name: "UserName", type: "html" },
+            { data: "fullName", name: "FullName", type: "html" },
             { data: "hallName", name: "HallName", type: "html" },
             { data: "createdBy", name: "CreatedBy", type: "html" },
             { data: "lastModifiedBy", name: "LastModifiedBy", type: "html" },
@@ -73,10 +73,7 @@
         function buildInterface() {
             if (settings.hasTemplate) {
                 area.html(getTemplate());
-                setTimeout(function () {
-                    getAllItems();
-                    HallID = area.find("#GreenhouseHallNavID").val();
-                }, 1000);
+                getAllItems();
             }
         }
         $('.inputSearch').change(function () {
@@ -104,15 +101,6 @@
             });
         }, 1000);
 
-        $('[role="textbox"]').on("mouseover", function () {
-            if (area.find("#GreenhouseHallNavID").val() != HallID) {
-                getAllItems();
-                HallID = area.find("#GreenhouseHallNavID").val();
-                TemperatureSensorTableCartable.rows().ajax.reload();
-
-            }
-        });
-
         area.find("[data-role-operation ='add']").click(function () {
             bootbox.dialog({
                 message: addtemplate,
@@ -134,15 +122,6 @@
                 dropdownParent: 'temperatureSensorTab',
                 isRequire: true
             });
-
-            setTimeout(function () {
-                $('[role="textbox"]').on("mouseover", function () {
-                    if (area.find("#GreenhouseHallNavID").val() != HallID) {
-                        getAllItems();
-                        HallID = area.find("#GreenhouseHallNavID").val();
-                    }
-                });
-            }, 1000);
         });
 
         area.find("[data-role-operation ='edit']").click(function () {
@@ -187,14 +166,6 @@
                 dropdownParent: 'temperatureSensorTab',
                 isRequire: true
             });
-            setTimeout(function () {
-                $('[role="textbox"]').on("mouseover", function () {
-                    if (area.find("#GreenhouseHallNavID").val() != HallID) {
-                        getAllItems();
-                        HallID = area.find("#GreenhouseHallNavID").val();
-                    }
-                });
-            }, 1000);
         });
 
         area.find("[data-role-remove]").click(function () {
@@ -224,14 +195,6 @@
                 dropdownParent: 'temperatureSensorTab',
                 isRequire: true
             });
-            setTimeout(function () {
-                $('[role="textbox"]').on("mouseover", function () {
-                    if (area.find("#GreenhouseHallNavID").val() != HallID) {
-                        getAllItems();
-                        HallID = area.find("#GreenhouseHallNavID").val();
-                    }
-                });
-            }, 1000);
         });
 
         function putTemperatureSensor(click) {
@@ -337,16 +300,25 @@
 
         function getAllItems() {
             var areaCartable = area.find("#cartable");
-            var GreenhouseHallID = area.find("#GreenhouseHallNavID").val();
-            if (GreenhouseHallID == undefined || GreenhouseHallID == null) {
-                ivsAlert2('warning', 'اخطار', 'ابتدا باید حداقل یک سالن اضافه کنید');
-                return;
-            }
+            $.ajax({
+                type: "get",
+                url: settings.GetAllGreenhouseHallByUserApiAddress,
+                contentType: 'application/json',
+                success: function (result) {
+                    console.log(result);
+                    if (result == null || result == undefined || result.length == 0) {
+                        ivsAlert2('warning', 'اخطار', 'ابتدا باید حداقل یک سالن اضافه کنید');
+                    }
+                },
+                error: function () {
+                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور دما');
+                }
+            });
             TemperatureSensorTableCartable = areaCartable.DataTable({
                 ajax:
                 {
                     contentType: 'application/json',
-                    url: settings.AllItemsApiAddress + "?GreenHouseID=" + GreenhouseHallID,
+                    url: settings.AllItemsApiAddress,
                     type: 'get',
                     dataType: "json",
                 },
@@ -379,19 +351,6 @@
                                         <button type="button" class="btn btn-warning d-none ms-2" data-role-operation="edit"><i class="bx bx-message-square-edit"></i>ویرایش سنسور دما</button>
                                         <button type="button" class="btn btn-danger text-dark d-none ms-2" data-role-remove><i class="bx bx-comment-minus"></i>حذف سنسور دما</button>
                                         <button class="btn btn-light ms-2" href="#headerfilters" data-bs-toggle="collapse" data-toggle="collapse" title="جستجو"><i class='bx bx-search'></i>جستجو</button>
-                                        <span class="text-dark ms-3" style="font-size:17px">سالن</span>
-                                        <button type="button" class="btn mb-2 mt-0 py-0" id="GreenhouseNav"></button>
-
-                                    <script>
-                                             $("#GreenhouseNav").drapdownPlugin({
-                                                 apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
-                                                 valueOption: 'id',
-                                                 textOption: 'hallName',
-                                                 idTagName: 'GreenhouseHallNavID',
-                                                 dropdownParent: 'temperatureSensorTab',
-                                                 isRequire: true
-                                             });
-                                    </script>
                                     </div>
                                     <hr>
                                 </nav>
@@ -403,7 +362,7 @@
                                                 <input type="text" placeholder="شناسه سنسور" class="inputSearch form-control" data-name="temperatureSensorName" />
                                             </th>
                                             <th scope="col" class="cartablefilter">
-                                                <input type="text" class="inputSearch form-control" placeholder="گلخانه دار" data-name="userName" />
+                                                <input type="text" class="inputSearch form-control" placeholder="گلخانه دار" data-name="fullName" />
                                             </th>
                                             <th scope="col" class="cartablefilter"> 
                                                 <input type="text" class="inputSearch form-control" placeholder="نام سالن" data-name="hallName" />
@@ -425,7 +384,7 @@
                                         </tr>
                                         <tr>
                                             <th scope="col" name="temperatureSensorName"><b>شناسه سنسور</b></th>
-                                            <th scope="col" name="userName"><b>گلخانه دار</b></th>
+                                            <th scope="col" name="fullName"><b>گلخانه دار</b></th>
                                             <th scope="col" name="hallName"><b>نام سالن</b></th>
                                             <th scope="col" name="createdBy"><b>ایجاد کننده</b></th>
                                             <th scope="col" name="lastModifiedBy"><b>آخرین ویرایش کننده</b></th>

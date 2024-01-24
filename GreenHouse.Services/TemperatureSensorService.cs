@@ -64,18 +64,11 @@ namespace GreenHouse.Services
             }
         }
 
-        public async Task<LinqDataResult<TemperatureSensorViewEntity>> ItemsAsync(LinqDataRequest request, int GreenHouseID, string UserName)
+        public async Task<LinqDataResult<TemperatureSensorViewEntity>> ItemsAsync(LinqDataRequest request, string UserName)
         {
-            var req = await _unitOfWork.UserGreenhouseHalls.FirstOrDefaultAsync(uu => uu.ID == GreenHouseID);
-
-            if (req == null)
-            {
-                Log(301, "GetTemperatureSensors failed: request with the given id not found", GreenHouseID.ToString(), LogTypeEnum.ErrorLog);
-                throw new ServiceObjectNotFoundException(nameof(UserGreenhouseHall));
-            }
             try
             {
-                return await _unitOfWork.TemperatureSensors.GetTemperatureSensorsByGreenhouseHall(request, GreenHouseID, UserName);
+                return await _unitOfWork.TemperatureSensors.GetTemperatureSensorsByGreenhouseHall(request, UserName);
             }
             catch (Exception ex)
             {
