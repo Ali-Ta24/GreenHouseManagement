@@ -63,7 +63,6 @@ builder.Services
        options.Cookie.HttpOnly = true;
        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Set your desired expiration time
        options.LoginPath = "/Account/Login"; // Set the login path
-                                             // Other options you might want to configure
    });
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -102,7 +101,8 @@ builder.Services.AddScoped<HumiditySensorService, HumiditySensorService>();
 builder.Services.AddScoped<LightIntensitySensorService, LightIntensitySensorService>();
 
 builder.Services.AddScoped<TemperatureSensorDetailService, TemperatureSensorDetailService>();
-
+builder.Services.AddScoped<LightIntensitySensorDetailService, LightIntensitySensorDetailService>();
+builder.Services.AddScoped<HumiditySensorDetailService, HumiditySensorDetailService>();
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
@@ -124,7 +124,6 @@ try
         var f = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
         f.Initialize();
     }
-    // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
         app.UseDeveloperExceptionPage();
@@ -134,7 +133,6 @@ try
     else
     {
         app.UseExceptionHandler("/Error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
 
@@ -142,12 +140,6 @@ try
     app.UseStaticFiles();
     app.UseRouting();
     app.UseCors();
-    //app.UseEndpoints(endpoints =>
-    //        {
-    //            endpoints.MapFallbackToPage("/_Host");
-    //            endpoints.MapRazorPages();
-    //        });
-    //app.UseIdentityServer();
     app.UseAuthentication();
 
     app.Use(async (httpContext, next) =>
@@ -159,10 +151,6 @@ try
             userName = httpContext.User.Identity.IsAuthenticated ? httpContext.User.Identity.Name : "anonymous"; //Gets user Name from user Identity  
             client = httpContext.Connection.RemoteIpAddress.ToString() ?? "unknown";
         }
-        //LogContext.PushProperty("UserName", userName); //Push user in LogContext;  
-        //LogContext.PushProperty("IP", client); //Push user in LogContext;  
-
-        //await next.Invoke();
         try
         {
 
@@ -175,28 +163,15 @@ try
 
         }
 
-    }
-           );
+    });
     app.UseAuthorization();
-
-    //app.MapControllerRoute(name: "workflow",
-    //            pattern: "workflow/{*workflow-definitions}",
-    //            defaults: new { controller = "workflow", action = "index" });
-
-    //app.UseStaticFiles();
 
     app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
-    //app.UseSerilogRequestLogging();
 
     app.Run();
 }
 catch (Exception exception)
 {
-    //Log.Fatal(exception, "Failed to initialize HostBuilder");
 }
-
-
-
-

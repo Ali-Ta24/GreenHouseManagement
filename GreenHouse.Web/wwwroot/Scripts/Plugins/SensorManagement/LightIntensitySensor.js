@@ -8,22 +8,32 @@
             AllItemsApiAddress: "/api/LightIntensitySensor/GetLightIntensitySensors",
             GetLightIntensitySensorIDApiAddress: "/api/LightIntensitySensor/GetLightIntensitySensorByID",
 
+            GetAllGreenhouseHallByUserApiAddress: "/api/UserGreenhouseHall/GetAllGreenhouseHallByUser",
             hasTemplate: true
         }, options);
 
         var viewModel = undefined;
         var area = this;
-        var HallID;
         var LightIntensitySensorTableCartable;
+        var SensorChanged;
         var cols = [
 
             { data: "lightIntensitySensorName", name: "LightIntensitySensorName", type: "html" },
-            { data: "userName", name: "UserName", type: "html" },
+            { data: "fullName", name: "FullName", type: "html" },
             { data: "hallName", name: "HallName", type: "html" },
             { data: "createdBy", name: "CreatedBy", type: "html" },
             { data: "lastModifiedBy", name: "LastModifiedBy", type: "html" },
             { data: "creationTime", render: function (data, type, row) { return moment(data, 'YYYY-M-D').locale('fa').format('YYYY/M/D'); } },
             { data: "lastModificationTime", render: function (data, type, row) { return moment(data, 'YYYY-M-D').locale('fa').format('YYYY/M/D'); } },
+            { data: "lightIntensitySensorValue", name: "LightIntensitySensorValue", type: "html" },
+            {
+                data: "lastState", render: function (data, type, row) {
+                    if (data == null) {
+                        return "";
+                    }
+                    return moment(data, 'YYYY-M-D HH:mm:ss').locale('fa').format('YYYY/M/D-HH:mm:ss');
+                }
+            },
         ];
 
         var addtemplate = `<div class="row" id="addmodal">
@@ -63,10 +73,7 @@
         function buildInterface() {
             if (settings.hasTemplate) {
                 area.html(getTemplate());
-                setTimeout(function () {
-                    getAllItems();
-                    HallID = area.find("#GreenhouseHallNavID").val();
-                }, 1000);
+                getAllItems();
             }
         }
         $('.inputSearch').change(function () {
@@ -94,13 +101,6 @@
             });
         }, 1000);
 
-        $('[role="textbox"]').on("mouseover", function () {
-            if (area.find("#GreenhouseHallNavID").val() != HallID) {
-                getAllItems();
-                HallID = area.find("#GreenhouseHallNavID").val();
-            }
-        });
-
         area.find("[data-role-operation ='add']").click(function () {
             bootbox.dialog({
                 message: addtemplate,
@@ -114,34 +114,9 @@
             $("#submitBtn").click(function (e) {
                 postLightIntensitySensor(e);
             });
-            $("#GreenhouseNav").drapdownPlugin({
-                apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
-                valueOption: 'id',
-                textOption: 'hallName',
-                idTagName: 'GreenhouseHallNavID',
-                dropdownParent: 'temperatureSensorTab',
-                isRequire: true
-            });
-
-            setTimeout(function () {
-                $('[role="textbox"]').on("mouseover", function () {
-                    if (area.find("#GreenhouseHallNavID").val() != HallID) {
-                        getAllItems();
-                        HallID = area.find("#GreenhouseHallNavID").val();
-                    }
-                });
-            }, 1000);
         });
 
         area.find("[data-role-operation ='edit']").click(function () {
-            $("#GreenhouseNav").drapdownPlugin({
-                apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
-                valueOption: 'id',
-                textOption: 'hallName',
-                idTagName: 'GreenhouseHallNavID',
-                dropdownParent: 'lightIntensitySensorTab',
-                isRequire: true
-            });
             let idRowSelect = LightIntensitySensorTableCartable.rows({ selected: true }).data()[0].id;
             $.ajax({
                 type: "get",
@@ -159,6 +134,14 @@
                         $('.bootbox-close-button').addClass("btn-close");
                         $('.bootbox-close-button').text("");
                     });
+                    $('[data-model="up"]').click(function () {
+                        $("#LightIntensitySensorValue").val((parseFloat($("#LightIntensitySensorValue").val()) + 1).toFixed(2));
+                        SensorChanged = true;
+                    });
+                    $('[data-model="down"]').click(function () {
+                        $("#LightIntensitySensorValue").val((parseFloat($("#LightIntensitySensorValue").val()) - 1).toFixed(2));
+                        SensorChanged = true;
+                    });
                     $("#editsubmitBtn").click(function (e) {
                         putLightIntensitySensor(e);
                     });
@@ -167,22 +150,6 @@
                     ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور نور');
                 }
             });
-            $("#GreenhouseNav").drapdownPlugin({
-                apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
-                valueOption: 'id',
-                textOption: 'hallName',
-                idTagName: 'GreenhouseHallNavID',
-                dropdownParent: 'lightIntensitySensorTab',
-                isRequire: true
-            });
-            setTimeout(function () {
-                $('[role="textbox"]').on("mouseover", function () {
-                    if (area.find("#GreenhouseHallNavID").val() != HallID) {
-                        getAllItems();
-                        HallID = area.find("#GreenhouseHallNavID").val();
-                    }
-                });
-            }, 1000);
         });
 
         area.find("[data-role-remove]").click(function () {
@@ -204,22 +171,6 @@
                     LightIntensitySensorTableCartable.rows('.important').deselect();
                 }
             });
-            $("#GreenhouseNav").drapdownPlugin({
-                apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
-                valueOption: 'id',
-                textOption: 'hallName',
-                idTagName: 'GreenhouseHallNavID',
-                dropdownParent: 'lightIntensitySensorTab',
-                isRequire: true
-            });
-            setTimeout(function () {
-                $('[role="textbox"]').on("mouseover", function () {
-                    if (area.find("#GreenhouseHallNavID").val() != HallID) {
-                        getAllItems();
-                        HallID = area.find("#GreenhouseHallNavID").val();
-                    }
-                });
-            }, 1000);
         });
 
         function putLightIntensitySensor(click) {
@@ -227,6 +178,8 @@
                 ID: LightIntensitySensorTableCartable.rows({ selected: true }).data()[0].id,
                 LightIntensitySensorName: $("#LightIntensitySensorName").val(),
                 GreenhouseHallID: $("#GreenhouseHallModalID").val(),
+                LightIntensitySensorValue: $("#LightIntensitySensorValue").val(),
+                SensorChanged: SensorChanged,
             }
 
             $.ajax({
@@ -277,6 +230,12 @@
                                              });
                                     </script>
 
+                                  <div id="counter-app" class="d-flex align-items-center">
+                                       <label class="form-label" style="margin: 12px;">رطوبت سنسور</label>
+                                       <iconify-icon icon="octicon:feed-plus-16" style="color: green; cursor:pointer;" width="35" height="35" data-model="up"></iconify-icon>
+                                       <input type="text" class="form-control text-center mx-2" style="width: 70px !important;" id="LightIntensitySensorValue" value="${result.lightIntensitySensorValue == null ? 0 : result.lightIntensitySensorValue}">
+                                       <iconify-icon icon="mingcute:minus-circle-fill" style="color: red; cursor:pointer;" width="40" height="40" data-model="down"></iconify-icon>
+                                   </div>
                                 </form>
                             </div>
 
@@ -317,12 +276,25 @@
 
         function getAllItems() {
             var areaCartable = area.find("#cartable");
-            var GreenhouseHallID = area.find("#GreenhouseHallNavID").val();
+            $.ajax({
+                type: "get",
+                url: settings.GetAllGreenhouseHallByUserApiAddress,
+                contentType: 'application/json',
+                success: function (result) {
+                    console.log(result);
+                    if (result == null || result == undefined || result.length == 0) {
+                        ivsAlert2('warning', 'اخطار', 'ابتدا باید حداقل یک سالن اضافه کنید');
+                    }
+                },
+                error: function () {
+                    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور رطوبت');
+                }
+            });
             LightIntensitySensorTableCartable = areaCartable.DataTable({
                 ajax:
                 {
                     contentType: 'application/json',
-                    url: settings.AllItemsApiAddress + "?GreenHouseID=" + GreenhouseHallID,
+                    url: settings.AllItemsApiAddress,
                     type: 'get',
                     dataType: "json",
                 },
@@ -349,25 +321,12 @@
                             <div class="card-body" id="lightIntensitySensorTab">
                                 <h4 class="mb-0">کنترل سنسور نور</h4>
                                 <hr>
-                                <nav class="navbar navbar-expand-lg navbar-dark bg-info rounded p-2 mb-2">
+                                <nav class="navbar navbar-expand-lg navbar-dark rounded p-2 mb-2" style="background-color: rgb(255, 209, 26);">
                                     <div class="sticky">
                                         <button type="button" class="btn btn-success text-dark" data-role-operation="add" alt="افزودن سنسور نور"><i class="bx bx-message-square-add"></i>افزودن سنسور نور</button>
-                                        <button type="button" class="btn btn-warning d-none ms-2" data-role-operation="edit"><i class="bx bx-message-square-edit"></i>ویرایش سنسور نور</button>
+                                        <button type="button" class="btn btn-info d-none ms-2" data-role-operation="edit"><i class="bx bx-message-square-edit"></i>ویرایش سنسور نور</button>
                                         <button type="button" class="btn btn-danger text-dark d-none ms-2" data-role-remove><i class="bx bx-comment-minus"></i>حذف سنسور نور</button>
                                         <button class="btn btn-light ms-2" href="#headerfilters" data-bs-toggle="collapse" data-toggle="collapse" title="جستجو"><i class='bx bx-search'></i>جستجو</button>
-                                        <span class="text-dark ms-3" style="font-size:17px">سالن</span>
-                                        <button type="button" class="btn mb-2 mt-0 py-0" id="GreenhouseNav"></button>
-
-                                    <script>
-                                             $("#GreenhouseNav").drapdownPlugin({
-                                                 apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
-                                                 valueOption: 'id',
-                                                 textOption: 'hallName',
-                                                 idTagName: 'GreenhouseHallNavID',
-                                                 dropdownParent: 'lightIntensitySensorTab',
-                                                 isRequire: true
-                                             });
-                                    </script>
                                     </div>
                                     <hr>
                                 </nav>
@@ -379,7 +338,7 @@
                                                 <input type="text" placeholder="شناسه سنسور" class="inputSearch form-control" data-name="lightIntensitySensorName" />
                                             </th>
                                             <th scope="col" class="cartablefilter">
-                                                <input type="text" class="inputSearch form-control" placeholder="گلخانه دار" data-name="userName" />
+                                                <input type="text" class="inputSearch form-control" placeholder="گلخانه دار" data-name="fullName" />
                                             </th>
                                             <th scope="col" class="cartablefilter"> 
                                                 <input type="text" class="inputSearch form-control" placeholder="نام سالن" data-name="hallName" />
@@ -394,15 +353,21 @@
                                             </th>
                                             <th scope="col" class="cartablefilter">
                                             </th>
+                                            <th scope="col" class="cartablefilter">
+                                            </th>
+                                            <th scope="col" class="cartablefilter">
+                                            </th>
                                         </tr>
                                         <tr>
                                             <th scope="col" name="lightIntensitySensorName"><b>شناسه سنسور</b></th>
-                                            <th scope="col" name="userName"><b>گلخانه دار</b></th>
+                                            <th scope="col" name="fullName"><b>گلخانه دار</b></th>
                                             <th scope="col" name="hallName"><b>نام سالن</b></th>
                                             <th scope="col" name="createdBy"><b>ایجاد کننده</b></th>
                                             <th scope="col" name="lastModifiedBy"><b>آخرین ویرایش کننده</b></th>
                                             <th scope="col" name="creationTime"><b>زمان ایجاد</b></th>
                                             <th scope="col" name="lastModificationTime"><b>زمان ویرايش</b></th>
+                                            <th scope="col" name="lightIntensitySensorValue"><b>رطوبت سنسور</b></th>
+                                            <th scope="col" name="lastState"><b>زمان آخرین وضعیت ثبت شده</b></th>
                                         </tr>
                                     </thead>
                                     </table>

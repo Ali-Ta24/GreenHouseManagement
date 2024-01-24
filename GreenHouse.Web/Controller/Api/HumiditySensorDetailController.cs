@@ -1,35 +1,35 @@
 ﻿using GreenHouse.Model;
 using GreenHouse.Services;
-using GreenHouse.Web.Controller.Api.Base;
 using GreenHouse.Web.Controller.Dto;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MZBase.Infrastructure;
 using MZBase.Infrastructure.Service.Exceptions;
+using MZBase.Infrastructure;
 using MZSimpleDynamicLinq.Core;
+using Microsoft.AspNetCore.Authorization;
+using GreenHouse.Web.Controller.Api.Base;
 
 namespace GreenHouse.Web.Controller.Api
 {
     [Route("[controller]")]
     [ApiController]
     [Authorize]
-    public class TemperatureSensorDetailController : BaseApiController
+    public class HumiditySensorDetailController : BaseApiController
     {
-        private readonly TemperatureSensorDetailService _service;
+        private readonly HumiditySensorDetailService _service;
         private readonly IDateTimeProviderService _dateTimeProvider;
 
-        public TemperatureSensorDetailController(TemperatureSensorDetailService service, IDateTimeProviderService dateTimeProvider)
+        public HumiditySensorDetailController(HumiditySensorDetailService service, IDateTimeProviderService dateTimeProvider)
         {
             _service = service;
             _dateTimeProvider = dateTimeProvider;
         }
 
-        [HttpPost("GetTemperatureSensors")]
-        public async Task<ActionResult<LinqDataResult<TemperatureSensorDetailDto>>> GetTemperatureSensors(LinqDataRequest request, int TemperatureSensorID)
+        [HttpPost("GetHumiditySensors")]
+        public async Task<ActionResult<LinqDataResult<HumiditySensorDetailDto>>> GetHumiditySensors(LinqDataRequest request, int HumiditySensorID)
         {
             try
             {
-                var rtn = await _service.ItemsAsync(request, TemperatureSensorID);
+                var rtn = await _service.ItemsAsync(request, HumiditySensorID);
                 return Ok(rtn);
             }
             catch (ServiceException ex)
@@ -42,10 +42,10 @@ namespace GreenHouse.Web.Controller.Api
             }
         }
 
-        [HttpPost("UpTemperatureSensors")]
-        public async Task<ActionResult> UpTemperatureSensors(TemperatureSensorDetailDto dto)
+        [HttpPost("UpHumiditySensors")]
+        public async Task<ActionResult> UpHumiditySensors(HumiditySensorDetailDto dto)
         {
-            TemperatureSensorDetail item = dto.GetTemperatureSensorDetail();
+            HumiditySensorDetail item = dto.GetHumiditySensorDetail();
             try
             {
                 item.LastModificationTime = _dateTimeProvider.GetNow();

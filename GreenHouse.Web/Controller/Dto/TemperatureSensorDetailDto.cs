@@ -2,13 +2,13 @@
 
 namespace GreenHouse.Web.Controller.Dto
 {
-    public class TemperatureSensorDateilDto
+    public class TemperatureSensorDetailDto
     {
-        public TemperatureSensorDateilDto()
+        public TemperatureSensorDetailDto()
         {
 
         }
-        public TemperatureSensorDateilDto(TemperatureSensorDetail model)
+        public TemperatureSensorDetailDto(TemperatureSensorDetail model)
         {
             if (model != null)
             {

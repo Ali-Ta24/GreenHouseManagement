@@ -15,7 +15,7 @@ namespace GreenHouse.Services
         private readonly ILDRCompatibleRepositoryAsync<HumiditySensorDetail, long> _baseRepo;
 
         public HumiditySensorDetailService(ICoreUnitOfWork coreUnitOfWork, ILogger<HumiditySensorDetail> logger,
-            IDateTimeProviderService dateTimeProvider) : base(logger, dateTimeProvider, 500)
+            IDateTimeProviderService dateTimeProvider) : base(logger, dateTimeProvider, 700)
         {
             _unitOfWork = coreUnitOfWork;
             _baseRepo = _unitOfWork.GetRepo<HumiditySensorDetail, long>();

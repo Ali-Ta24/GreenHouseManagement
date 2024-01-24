@@ -19,17 +19,19 @@ namespace GreenHouse.Web.Controller.Api
     {
         private readonly LightIntensitySensorService _service;
         private readonly IDateTimeProviderService _dateTimeProvider;
+        private readonly LightIntensitySensorDetailService lLightIntensitySensorDetailService;
 
-        public LightIntensitySensorController(LightIntensitySensorService service, IDateTimeProviderService dateTimeProvider)
+        public LightIntensitySensorController(LightIntensitySensorService service, LightIntensitySensorDetailService lightIntensitySensorDetailService, IDateTimeProviderService dateTimeProvider)
         {
             _service = service;
             _dateTimeProvider = dateTimeProvider;
+            lLightIntensitySensorDetailService = lightIntensitySensorDetailService;
         }
 
         [HttpPost("Post")]
         public async Task<ActionResult> Post(LightIntensitySensorDto dto)
         {
-            LightIntensitySensor item = dto.GetLightIntensitySensor();
+            LightIntensitySensor item = dto.LightIntensitySensorAddDto();
 
             try
             {
@@ -59,7 +61,9 @@ namespace GreenHouse.Web.Controller.Api
         [HttpPut("Put")]
         public async Task<ActionResult> Put(LightIntensitySensorDto dto)
         {
-            LightIntensitySensor item = dto.GetLightIntensitySensor();
+            LightIntensitySensor item = dto.LightIntensitySensorModifyDto();
+            LightIntensitySensorDetail sensorDetail = dto.LightIntensitySensorGetDto();
+
             try
             {
 
@@ -67,7 +71,12 @@ namespace GreenHouse.Web.Controller.Api
                 item.LastModifiedBy = UserIdName;
 
                 await _service.ModifyAsync(item);
-
+                if (dto.SensorChanged)
+                {
+                    sensorDetail.LastModificationTime = item.LastModificationTime;
+                    sensorDetail.LastModifiedBy = item.LastModifiedBy;
+                    await lLightIntensitySensorDetailService.AddAsync(sensorDetail);
+                }
                 return Ok();
             }
             catch (ServiceException ex)
@@ -103,12 +112,12 @@ namespace GreenHouse.Web.Controller.Api
         }
 
         [HttpGet("GetLightIntensitySensors")]
-        public async Task<ActionResult<LinqDataResult<LightIntensitySensorViewEntity>>> GetLightIntensitySensors(int GreenHouseID)
+        public async Task<ActionResult<LinqDataResult<LightIntensitySensorViewEntity>>> GetLightIntensitySensors()
         {
             var request = Request.ToLinqDataRequest();
             try
             {
-                var rtn = await _service.ItemsAsync(request, GreenHouseID, UserIdName);
+                var rtn = await _service.ItemsAsync(request, UserIdName);
                 return Ok(rtn);
             }
             catch (ServiceException ex)
@@ -126,7 +135,7 @@ namespace GreenHouse.Web.Controller.Api
         {
             try
             {
-                var res = await _service.RetrieveByIdAsync(Id);
+                var res = await _service.RetrieveSensorViewByIdAsync(Id);
                 return Ok(res);
             }
             catch (ServiceException ex)

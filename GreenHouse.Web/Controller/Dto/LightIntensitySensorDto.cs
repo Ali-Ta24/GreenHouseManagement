@@ -4,29 +4,34 @@ namespace GreenHouse.Web.Controller.Dto
 {
     public class LightIntensitySensorDto
     {
-        public LightIntensitySensorDto()
-        {
-
-        }
-        public LightIntensitySensorDto(LightIntensitySensor model)
-        {
-            if (model != null)
-            {
-                GreenhouseHallID = model.GreenhouseHallID;
-                LightIntensitySensorName = model.LightIntensitySensorName;
-            }
-        }
         public int? ID { get; set; }
-        public int GreenhouseHallID { get; set; }
+        public int? GreenhouseHallID { get; set; }
         public string LightIntensitySensorName { get; set; }
-
-        public LightIntensitySensor GetLightIntensitySensor()
+        public float? LightIntensitySensorValue { get; set; }
+        public bool SensorChanged { get; set; }
+        public LightIntensitySensor LightIntensitySensorAddDto()
         {
             return new LightIntensitySensor()
             {
-                ID = ID ?? 0,
-                GreenhouseHallID = GreenhouseHallID,
+                GreenhouseHallID = GreenhouseHallID.Value,
                 LightIntensitySensorName = LightIntensitySensorName
+            };
+        }
+        public LightIntensitySensor LightIntensitySensorModifyDto()
+        {
+            return new LightIntensitySensor()
+            {
+                ID = ID.Value,
+                GreenhouseHallID = GreenhouseHallID.Value,
+                LightIntensitySensorName = LightIntensitySensorName
+            };
+        }
+        public LightIntensitySensorDetail LightIntensitySensorGetDto()
+        {
+            return new LightIntensitySensorDetail()
+            {
+                LightIntensitySensorID = ID.Value,
+                LightIntensitySensorValue = LightIntensitySensorValue.Value
             };
         }
     }

@@ -114,14 +114,6 @@
             $("#submitBtn").click(function (e) {
                 postTemperatureSensor(e);
             });
-            $("#GreenhouseNav").drapdownPlugin({
-                apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
-                valueOption: 'id',
-                textOption: 'hallName',
-                idTagName: 'GreenhouseHallNavID',
-                dropdownParent: 'temperatureSensorTab',
-                isRequire: true
-            });
         });
 
         area.find("[data-role-operation ='edit']").click(function () {
@@ -158,14 +150,6 @@
                     ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش سنسور دما');
                 }
             });
-            $("#GreenhouseNav").drapdownPlugin({
-                apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
-                valueOption: 'id',
-                textOption: 'hallName',
-                idTagName: 'GreenhouseHallNavID',
-                dropdownParent: 'temperatureSensorTab',
-                isRequire: true
-            });
         });
 
         area.find("[data-role-remove]").click(function () {
@@ -186,14 +170,6 @@
                     $('[data-role-remove]').addClass("d-none");
                     TemperatureSensorTableCartable.rows('.important').deselect();
                 }
-            });
-            $("#GreenhouseNav").drapdownPlugin({
-                apiAddress: '/api/UserGreenhouseHall/GetAllGreenhouseHallByUser',
-                valueOption: 'id',
-                textOption: 'hallName',
-                idTagName: 'GreenhouseHallNavID',
-                dropdownParent: 'temperatureSensorTab',
-                isRequire: true
             });
         });
 
@@ -257,7 +233,7 @@
                                    <div id="counter-app" class="d-flex align-items-center">
                                        <label class="form-label" style="margin: 12px;">دما سنسور</label>
                                        <iconify-icon icon="octicon:feed-plus-16" style="color: green; cursor:pointer;" width="35" height="35" data-model="up"></iconify-icon>
-                                       <input type="text" class="form-control text-center mx-2" style="width: 70px !important;" id="TemperatureValue" value="${result.temperatureValue == null ? "" : result.temperatureValue}">
+                                       <input type="text" class="form-control text-center mx-2" style="width: 70px !important;" id="TemperatureValue" value="${result.temperatureValue == null ? 0 : result.temperatureValue}">
                                        <iconify-icon icon="mingcute:minus-circle-fill" style="color: red; cursor:pointer;" width="40" height="40" data-model="down"></iconify-icon>
                                    </div>
                                 </form>

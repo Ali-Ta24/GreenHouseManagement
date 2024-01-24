@@ -19,17 +19,19 @@ namespace GreenHouse.Web.Controller.Api
     {
         private readonly HumiditySensorService _service;
         private readonly IDateTimeProviderService _dateTimeProvider;
+        private readonly HumiditySensorDetailService _humiditySensorDetailService;
 
-        public HumiditySensorController(HumiditySensorService service, IDateTimeProviderService dateTimeProvider)
+        public HumiditySensorController(HumiditySensorService service, HumiditySensorDetailService humiditySensorDetailService, IDateTimeProviderService dateTimeProvider)
         {
             _service = service;
             _dateTimeProvider = dateTimeProvider;
+            _humiditySensorDetailService = humiditySensorDetailService;
         }
 
         [HttpPost("Post")]
         public async Task<ActionResult> Post(HumiditySensorDto dto)
         {
-            HumiditySensor item = dto.GetHumiditySensor();
+            HumiditySensor item = dto.HumiditySensorAddDto();
 
             try
             {
@@ -59,12 +61,19 @@ namespace GreenHouse.Web.Controller.Api
         [HttpPut("Put")]
         public async Task<ActionResult> Put(HumiditySensorDto dto)
         {
-            HumiditySensor item = dto.GetHumiditySensor();
+            HumiditySensor item = dto.HumiditySensorModifyDto();
+            HumiditySensorDetail sensorDetail = dto.HumiditySensorGetDto();
             try
             {
 
                 item.LastModificationTime = _dateTimeProvider.GetNow();
                 item.LastModifiedBy = UserIdName;
+                if (dto.SensorChanged)
+                {
+                    sensorDetail.LastModificationTime = item.LastModificationTime;
+                    sensorDetail.LastModifiedBy = item.LastModifiedBy;
+                    await _humiditySensorDetailService.AddAsync(sensorDetail);
+                }
 
                 await _service.ModifyAsync(item);
 
@@ -103,12 +112,12 @@ namespace GreenHouse.Web.Controller.Api
         }
 
         [HttpGet("GetHumiditySensors")]
-        public async Task<ActionResult<LinqDataResult<HumiditySensorViewEntity>>> GetHumiditySensors(int GreenHouseID)
+        public async Task<ActionResult<LinqDataResult<HumiditySensorViewEntity>>> GetHumiditySensors()
         {
             var request = Request.ToLinqDataRequest();
             try
             {
-                var rtn = await _service.ItemsAsync(request, GreenHouseID, UserIdName);
+                var rtn = await _service.ItemsAsync(request, UserIdName);
                 return Ok(rtn);
             }
             catch (ServiceException ex)
@@ -126,7 +135,7 @@ namespace GreenHouse.Web.Controller.Api
         {
             try
             {
-                var res = await _service.RetrieveByIdAsync(Id);
+                var res = await _service.RetrieveSensorViewByIdAsync(Id);
                 return Ok(res);
             }
             catch (ServiceException ex)

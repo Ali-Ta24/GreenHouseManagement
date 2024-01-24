@@ -118,7 +118,6 @@ namespace GreenHouse.Services
                    " ,TemperatureSensorName:" + item.TemperatureSensorName
                  );
             }
-
             catch (Exception ex)
             {
                 LogModify(item, "TemperatureSensorName :" + currentItem.TemperatureSensorName, ex);

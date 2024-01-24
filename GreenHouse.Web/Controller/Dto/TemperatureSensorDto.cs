@@ -1,5 +1,4 @@
 ﻿using GreenHouse.Model;
-using GreenHouse.Model.Views;
 
 namespace GreenHouse.Web.Controller.Dto
 {

@@ -2,6 +2,7 @@
 using GreenHouse.DomainEntity;
 using GreenHouse.DomainEntity.Views;
 using GreenHouse.Model;
+using GreenHouse.Model.Views;
 using Microsoft.Extensions.Logging;
 using MZBase.Infrastructure;
 using MZBase.Infrastructure.Service;
@@ -14,12 +15,14 @@ namespace GreenHouse.Services
     {
         private readonly ICoreUnitOfWork _unitOfWork;
         private readonly ILDRCompatibleRepositoryAsync<LightIntensitySensor, int> _baseRepo;
+        private readonly LightIntensitySensorDetailService _lightIntensitySensorService;
 
-        public LightIntensitySensorService(ICoreUnitOfWork coreUnitOfWork, ILogger<LightIntensitySensor> logger, IDateTimeProviderService dateTimeProvider)
+        public LightIntensitySensorService(ICoreUnitOfWork coreUnitOfWork, ILogger<LightIntensitySensor> logger, IDateTimeProviderService dateTimeProvider, LightIntensitySensorDetailService LlghtIntensitySensorService)
             : base(logger, dateTimeProvider, 300)
         {
             _unitOfWork = coreUnitOfWork;
             _baseRepo = _unitOfWork.GetRepo<LightIntensitySensor, int>();
+            _lightIntensitySensorService = LlghtIntensitySensorService;
         }
 
         public async override Task<int> AddAsync(LightIntensitySensor item)
@@ -46,6 +49,13 @@ namespace GreenHouse.Services
                   g.ID.ToString() +
                   " ,LightIntensitySensorName:" + item.LightIntensitySensorName
                  );
+                await _lightIntensitySensorService.AddAsync(new LightIntensitySensorDetail
+                {
+                    LightIntensitySensorID = g.ID,
+                    LightIntensitySensorValue = 0,
+                    LastModifiedBy = item.LastModifiedBy,
+                    LastModificationTime = item.LastModificationTime,
+                });
                 return g.ID;
             }
             catch (Exception ex)
@@ -55,19 +65,11 @@ namespace GreenHouse.Services
             }
         }
 
-        public async Task<LinqDataResult<LightIntensitySensorViewEntity>> ItemsAsync(LinqDataRequest request, int GreenHouseID, string UserName)
+        public async Task<LinqDataResult<LightIntensitySensorViewEntity>> ItemsAsync(LinqDataRequest request, string UserName)
         {
-            var req = await _unitOfWork.UserGreenhouseHalls.FirstOrDefaultAsync(uu => uu.ID == GreenHouseID);
-
-            if (req == null)
-            {
-                Log(301, "GetLightIntensitySensors failed: request with the given id not found", GreenHouseID.ToString(), LogTypeEnum.ErrorLog);
-                throw new ServiceObjectNotFoundException(nameof(UserGreenhouseHall));
-            }
-            //LinqDataResult<LightIntensitySensorViewEntity> item = new LinqDataResult<LightIntensitySensorViewEntity>();
             try
             {
-                return await _unitOfWork.LightIntensitySensors.GetLightIntensitySensorsByGreenhouseHall(request, GreenHouseID, UserName);
+                return await _unitOfWork.LightIntensitySensors.GetLightIntensitySensorsByGreenhouseHall(request, UserName);
             }
             catch (Exception ex)
             {
@@ -157,6 +159,28 @@ namespace GreenHouse.Services
             try
             {
                 item = await _baseRepo.FirstOrDefaultAsync(ss => ss.ID == ID);
+            }
+            catch (Exception ex)
+            {
+                LogRetrieveSingle(ID, ex);
+                throw new ServiceStorageException("Error loading LightIntensitySensor", ex);
+            }
+            if (item == null)
+            {
+                var f = new ServiceObjectNotFoundException(nameof(LightIntensitySensor) + " not found by id");
+                LogRetrieveSingle(ID, f);
+                throw f;
+            }
+            LogRetrieveSingle(ID);
+            return item;
+        }
+
+        public async Task<LightIntensitySensorView> RetrieveSensorViewByIdAsync(int ID)
+        {
+            LightIntensitySensorView? item;
+            try
+            {
+                item = await _unitOfWork.LightIntensitySensors.GetLightIntensitySensorViewsByID(ID);
             }
             catch (Exception ex)
             {

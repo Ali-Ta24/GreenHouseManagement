@@ -4,29 +4,34 @@ namespace GreenHouse.Web.Controller.Dto
 {
     public class HumiditySensorDto
     {
-        public HumiditySensorDto()
-        {
-
-        }
-        public HumiditySensorDto(HumiditySensor model)
-        {
-            if (model != null)
-            {
-                GreenhouseHallID = model.GreenhouseHallID;
-                HumiditySensorName = model.HumiditySensorName;
-            }
-        }
         public int? ID { get; set; }
-        public int GreenhouseHallID { get; set; }
+        public int? GreenhouseHallID { get; set; }
         public string HumiditySensorName { get; set; }
-
-        public HumiditySensor GetHumiditySensor()
+        public float? HumiditySensorValue { get; set; }
+        public bool SensorChanged { get; set; }
+        public HumiditySensor HumiditySensorAddDto()
         {
             return new HumiditySensor()
             {
-                ID = ID ?? 0,
-                GreenhouseHallID = GreenhouseHallID,
+                GreenhouseHallID = GreenhouseHallID.Value,
                 HumiditySensorName = HumiditySensorName
+            };
+        }
+        public HumiditySensor HumiditySensorModifyDto()
+        {
+            return new HumiditySensor()
+            {
+                ID = ID.Value,
+                GreenhouseHallID = GreenhouseHallID.Value,
+                HumiditySensorName = HumiditySensorName
+            };
+        }
+        public HumiditySensorDetail HumiditySensorGetDto()
+        {
+            return new HumiditySensorDetail()
+            {
+                HumiditySensorID = ID.Value,
+                HumiditySensorValue = HumiditySensorValue.Value
             };
         }
     }

@@ -2,6 +2,7 @@
 using GreenHouse.DomainEntity;
 using GreenHouse.DomainEntity.Views;
 using GreenHouse.Model;
+using GreenHouse.Model.Views;
 using Microsoft.Extensions.Logging;
 using MZBase.Infrastructure;
 using MZBase.Infrastructure.Service;
@@ -14,12 +15,14 @@ namespace GreenHouse.Services
     {
         private readonly ICoreUnitOfWork _unitOfWork;
         private readonly ILDRCompatibleRepositoryAsync<HumiditySensor, int> _baseRepo;
+        private readonly HumiditySensorDetailService _humiditySensorDetailService;
 
-        public HumiditySensorService(ICoreUnitOfWork coreUnitOfWork, ILogger<HumiditySensor> logger, IDateTimeProviderService dateTimeProvider)
+        public HumiditySensorService(ICoreUnitOfWork coreUnitOfWork, ILogger<HumiditySensor> logger, IDateTimeProviderService dateTimeProvider, HumiditySensorDetailService humiditySensorDetailService)
             : base(logger, dateTimeProvider, 400)
         {
             _unitOfWork = coreUnitOfWork;
             _baseRepo = _unitOfWork.GetRepo<HumiditySensor, int>();
+            _humiditySensorDetailService = humiditySensorDetailService;
         }
 
         public async override Task<int> AddAsync(HumiditySensor item)
@@ -46,6 +49,13 @@ namespace GreenHouse.Services
                   g.ID.ToString() +
                   " ,HumiditySensorName:" + item.HumiditySensorName
                  );
+                await _humiditySensorDetailService.AddAsync(new HumiditySensorDetail
+                {
+                    HumiditySensorID = g.ID,
+                    HumiditySensorValue = 0,
+                    LastModifiedBy = item.LastModifiedBy,
+                    LastModificationTime = item.LastModificationTime,
+                });
                 return g.ID;
             }
             catch (Exception ex)
@@ -55,19 +65,11 @@ namespace GreenHouse.Services
             }
         }
 
-        public async Task<LinqDataResult<HumiditySensorViewEntity>> ItemsAsync(LinqDataRequest request, int GreenHouseID, string UserName)
+        public async Task<LinqDataResult<HumiditySensorViewEntity>> ItemsAsync(LinqDataRequest request, string UserName)
         {
-            var req = await _unitOfWork.UserGreenhouseHalls.FirstOrDefaultAsync(uu => uu.ID == GreenHouseID);
-
-            if (req == null)
-            {
-                Log(301, "GetHumiditySensors failed: request with the given id not found", GreenHouseID.ToString(), LogTypeEnum.ErrorLog);
-                throw new ServiceObjectNotFoundException(nameof(UserGreenhouseHall));
-            }
-            //LinqDataResult<HumiditySensorViewEntity> item = new LinqDataResult<HumiditySensorViewEntity>();
             try
             {
-                return await _unitOfWork.HumiditySensors.GetHumiditySensorsByGreenhouseHall(request, GreenHouseID, UserName);
+                return await _unitOfWork.HumiditySensors.GetHumiditySensorsByGreenhouseHall(request, UserName);
             }
             catch (Exception ex)
             {
@@ -117,7 +119,6 @@ namespace GreenHouse.Services
                    " ,HumiditySensorName:" + item.HumiditySensorName
                  );
             }
-
             catch (Exception ex)
             {
                 LogModify(item, "HumiditySensorName :" + currentItem.HumiditySensorName, ex);
@@ -157,6 +158,28 @@ namespace GreenHouse.Services
             try
             {
                 item = await _baseRepo.FirstOrDefaultAsync(ss => ss.ID == ID);
+            }
+            catch (Exception ex)
+            {
+                LogRetrieveSingle(ID, ex);
+                throw new ServiceStorageException("Error loading HumiditySensor", ex);
+            }
+            if (item == null)
+            {
+                var f = new ServiceObjectNotFoundException(nameof(HumiditySensor) + " not found by id");
+                LogRetrieveSingle(ID, f);
+                throw f;
+            }
+            LogRetrieveSingle(ID);
+            return item;
+        }
+
+        public async Task<HumiditySensorView> RetrieveSensorViewByIdAsync(int ID)
+        {
+            HumiditySensorView? item;
+            try
+            {
+                item = await _unitOfWork.HumiditySensors.GetHumiditySensorViewsByID(ID);
             }
             catch (Exception ex)
             {
