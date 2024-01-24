@@ -29,80 +29,106 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    @if (userRoleName != null && userRoleName.Value.ToLower() == "customer")
-    {
-        <div class="row ">
+    <div class="row">
 
-            <div class="col-xl-6 col-lg-6">
-                <div class="card radius-10 bg-success heightWidgetCustomer">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-white c-title-info-topDash">تعداد سالن های موجود</p>
-                                <br />
-                                <h4 class="my-1 text-white c-value-info-topDash" id="GreenhouseHallCount">در حال بررسی</h4>
-                            </div>
-                            <div class="widgets-icons bg-white text-success ms-auto">
-                                <iconify-icon icon="icon-park-outline:green-house"></iconify-icon>
-                            </div>
+        <div class="col-xl-6 col-lg-6">
+            <div class="card radius-10 bg-success heightWidgetCustomer">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-white c-title-info-topDash">تعداد سالن های موجود</p>
+                            <br />
+                            <h4 class="my-1 text-white c-value-info-topDash" id="GreenhouseHallCount">در حال بررسی</h4>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-6">
-                <div class="card radius-10 bg-info heightWidgetCustomer">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-dark c-title-info-topDash">تعداد سنسورهای دما</p>
-                                <br />
-                                <h4 class="my-1 text-dark c-value-info-topDash" id="TemperatureSensorCount">درحال دریافت</h4>
-                            </div>
-                            <div class="widgets-icons bg-white text-dark ms-auto">
-                                <iconify-icon icon="mingcute:low-temperature-fill"></iconify-icon>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-6">
-                <div class="card radius-10 bg-danger heightWidgetCustomer">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-white c-title-info-topDash">تعداد سنسورهای رطوبت</p>
-                                <br />
-                                <div id="HumiditySensorCount" class="text-white c-value-info-topDash mw-100"><h4 class="text-white">درحال دریافت</h4></div>
-                            </div>
-                            <div class="widgets-icons bg-white text-danger ms-auto">
-                                <iconify-icon icon="material-symbols:humidity-percentage-rounded"></iconify-icon>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-6">
-                <div class="card radius-10 bg-warning heightWidgetCustomer">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-dark c-title-info-topDash">تعداد سنسورهای نور</p>
-                                <br />
-                                <div id="LightIntensitySensorCount" class="c-value-info-topDash"><h4 class="my-1 text-dark ">درحال دریافت</h4></div>
-                            </div>
-                            <div class="widgets-icons bg-white text-dark ms-auto">
-                                <iconify-icon icon="entypo:light-up"></iconify-icon>
-                            </div>
+                        <div class="widgets-icons bg-white text-success ms-auto">
+                            <iconify-icon icon="icon-park-outline:green-house"></iconify-icon>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    }
+        <div class="col-xl-6 col-lg-6">
+            <div class="card radius-10 bg-info heightWidgetCustomer">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-dark c-title-info-topDash">تعداد سنسورهای دما</p>
+                            <br />
+                            <h4 class="my-1 text-dark c-value-info-topDash" id="TemperatureSensorCount">درحال دریافت</h4>
+                        </div>
+                        <div class="widgets-icons bg-white text-dark ms-auto">
+                            <iconify-icon icon="mingcute:low-temperature-fill"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6">
+            <div class="card radius-10 bg-danger heightWidgetCustomer">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-white c-title-info-topDash">تعداد سنسورهای رطوبت</p>
+                            <br />
+                            <div id="HumiditySensorCount" class="text-white c-value-info-topDash mw-100"><h4 class="text-white">درحال دریافت</h4></div>
+                        </div>
+                        <div class="widgets-icons bg-white text-danger ms-auto">
+                            <iconify-icon icon="material-symbols:humidity-percentage-rounded"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6">
+            <div class="card radius-10 bg-warning heightWidgetCustomer">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-dark c-title-info-topDash">تعداد سنسورهای نور</p>
+                            <br />
+                            <div id="LightIntensitySensorCount" class="c-value-info-topDash"><h4 class="my-1 text-dark ">درحال دریافت</h4></div>
+                        </div>
+                        <div class="widgets-icons bg-white text-dark ms-auto">
+                            <iconify-icon icon="entypo:light-up"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-xl-6 col-lg-6">
+                <h6 class="mb-0 text-uppercase">نمودار خطی</h6>
+                <hr />
+                <div class="card">
+                    <div class="card-body">
+                        <div id="chart1"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6">
+                <h6 class="mb-0 text-uppercase">نمودار خطی</h6>
+                <hr />
+                <div class="card">
+                    <div class="card-body">
+                        <div id="chart2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6">
+                <h6 class="mb-0 text-uppercase">نمودار خطی</h6>
+                <hr />
+                <div class="card">
+                    <div class="card-body">
+                        <div id="chart3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col">
-
         </div>
     </div>
 
@@ -137,12 +163,220 @@
     <script>
 
         $(document).ready(function () {
-            //GetAllFacilityRequests();
+            "use strict";
+            // chart 1
+            var options1 = {
+                series: [{
+                    name: 'دما',
+                    data: [14, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5]
+                }],
+                chart: {
+                    foreColor: '#9ba7b2',
+                    height: 360,
+                    type: 'line',
+                    zoom: {
+                        enabled: true
+                    },
+                    toolbar: {
+                        show: true
+                    },
+                    dropShadow: {
+                        enabled: true,
+                        top: 3,
+                        left: 14,
+                        blur: 4,
+                        opacity: 0.10,
+                    }
+                },
+                stroke: {
+                    width: 5,
+                    curve: 'smooth'
+                },
+                xaxis: {
+                    type: 'datetime',
+                    categories: ['1400/11/1', '1400/11/2', '1400/11/3', '1400/11/4', '1400/11/5', '1400/11/6', '1400/11/7', '1400/11/8', '1400/11/9', '1400/11/10', '1400/11/11', '1400/11/12'],
+                },
+                title: {
+                    text: 'سنسور دما',
+                    align: 'right',
+                    style: {
+                        fontSize: "16px",
+                        color: '#666'
+                    }
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: 'light',
+                        gradientToColors: ['#204ff7'],
+                        shadeIntensity: 1,
+                        type: 'horizontal',
+                        opacityFrom: 1,
+                        opacityTo: 1,
+                        stops: [0, 100, 100, 100]
+                    },
+                },
+                markers: {
+                    size: 4,
+                    colors: ["#204ff7"],
+                    strokeColors: "#fff",
+                    strokeWidth: 2,
+                    hover: {
+                        size: 7,
+                    }
+                },
+                colors: ["#204ff7"],
+                yaxis: {
+                    title: {
+                        text: '',
+                    },
+                }
+            };
+            var chart1 = new ApexCharts(document.querySelector("#chart1"), options1);
+            chart1.render();
 
-            // var moduleContainer = jQuery(".cpPanel").dashboardModuleContainer({
-            //     dashboardTabsType: 'maindash',
-            // });
-            //console.log(moduleContainer);
+            //////
+            var options2 = {
+                series: [{
+                    name: 'پسند ها',
+                    data: [5, 13, 10, 20, 9, 19, 22, 9, 12, 7, 19, 6]
+                }],
+                chart: {
+                    foreColor: '#9ba7b2',
+                    height: 360,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    },
+                    toolbar: {
+                        show: true
+                    },
+                    dropShadow: {
+                        enabled: true,
+                        top: 3,
+                        left: 14,
+                        blur: 4,
+                        opacity: 0.10,
+                    }
+                },
+                stroke: {
+                    width: 5,
+                    curve: 'smooth'
+                },
+                xaxis: {
+                    type: 'datetime',
+                    categories: ['1400/11/1', '1400/11/2', '1400/11/3', '1400/11/4', '1400/11/5', '1400/11/6', '1400/11/7', '1400/11/8', '1400/11/9', '1400/11/10', '1400/11/11', '1400/11/12'],
+                },
+                title: {
+                    text: 'نمودار خطی',
+                    align: 'right',
+                    style: {
+                        fontSize: "16px",
+                        color: '#666'
+                    }
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: 'light',
+                        gradientToColors: ['#8833ff'],
+                        shadeIntensity: 1,
+                        type: 'horizontal',
+                        opacityFrom: 1,
+                        opacityTo: 1,
+                        stops: [0, 100, 100, 100]
+                    },
+                },
+                markers: {
+                    size: 4,
+                    colors: ["#8833ff"],
+                    strokeColors: "#fff",
+                    strokeWidth: 2,
+                    hover: {
+                        size: 7,
+                    }
+                },
+                colors: ["#8833ff"],
+                yaxis: {
+                    title: {
+                        text: 'نامزدی',
+                    },
+                }
+            };
+            var chart2 = new ApexCharts(document.querySelector("#chart2"), options2);
+            chart2.render();
+
+            //////
+            var options3 = {
+                series: [{
+                    name: 'پسند ها',
+                    data: [14, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5]
+                }],
+                chart: {
+                    foreColor: '#9ba7b2',
+                    height: 360,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    },
+                    toolbar: {
+                        show: true
+                    },
+                    dropShadow: {
+                        enabled: true,
+                        top: 3,
+                        left: 14,
+                        blur: 4,
+                        opacity: 0.10,
+                    }
+                },
+                stroke: {
+                    width: 5,
+                    curve: 'smooth'
+                },
+                xaxis: {
+                    type: 'datetime',
+                    categories: ['1400/11/1', '1400/11/2', '1400/11/3', '1400/11/4', '1400/11/5', '1400/11/6', '1400/11/7', '1400/11/8', '1400/11/9', '1400/11/10', '1400/11/11', '1400/11/12'],
+                },
+                title: {
+                    text: 'نمودار خطی',
+                    align: 'right',
+                    style: {
+                        fontSize: "16px",
+                        color: '#666'
+                    }
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: 'light',
+                        gradientToColors: ['#8833ff'],
+                        shadeIntensity: 1,
+                        type: 'horizontal',
+                        opacityFrom: 1,
+                        opacityTo: 1,
+                        stops: [0, 100, 100, 100]
+                    },
+                },
+                markers: {
+                    size: 4,
+                    colors: ["#8833ff"],
+                    strokeColors: "#fff",
+                    strokeWidth: 2,
+                    hover: {
+                        size: 7,
+                    }
+                },
+                colors: ["#8833ff"],
+                yaxis: {
+                    title: {
+                        text: 'نامزدی',
+                    },
+                }
+            };
+            var chart3 = new ApexCharts(document.querySelector("#chart3"), options3);
+            chart3.render();
+            //////
             moduleContainer.reBind('maindash');
         })
     </script>
