@@ -47,6 +47,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\css\Icon\" />
+    <Folder Include="wwwroot\Scripts\Plugins\Chart\" />
     <Folder Include="wwwroot\Scripts\Plugins\HallManagement\" />
   </ItemGroup>
 

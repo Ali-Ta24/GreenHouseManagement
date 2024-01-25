@@ -95,10 +95,10 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="chartPlugin">
 
             <div class="col-xl-6 col-lg-6">
-                <h6 class="mb-0 text-uppercase">نمودار خطی</h6>
+                <h6 class="mb-0 text-uppercase">سنسور دما</h6>
                 <hr />
                 <div class="card">
                     <div class="card-body">
@@ -124,41 +124,20 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
     <div class="row">
         <div class="col">
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col">
-
-            @Html.Partial("~/Views/shared/Dashboard/_dashboardSchema.cshtml")
-
         </div>
     </div>
 }
 
 
 @section scripts {
-    <script>
-        var dashboardWidgets = [];
-    </script>
     <script src="/lib/apexcharts-bundle/js/apexcharts.min.js"></script>
-    <script src="/Scripts/FacilityRegistration/WidgetFacility.js"> </script>
     <script src="/Scripts/jQueryUI/jquery-ui.min.js"></script>
-    <script src="/Scripts/MSDropdown/jquery.dd.min.js"></script>
-    <script src="/Scripts/print/jquery.printElementModified.js"></script>
-    <script src="/Scripts/Dashboard/dashboardStrs.js"> </script>
-    <script src="/Scripts/Dashboard/dashboardModuleContainer.js"> </script>
-    <script src="/Scripts/Dashboard/widgetInstantiator.js"> </script>
-
-    <script src="/scripts/dashboard/widgets/w_averagesteptimes.js"></script>
-    <script src="/scripts/dashboard/widgets/w_registeredAndAcceptedRequestAmountsByTimePeriod.js"></script>
-    <script src="/scripts/dashboard/widgets/w_registeredAndAcceptedRequestByTimePeriod.js"></script>
-    <script src="/scripts/dashboard/widgets/w_GetCountOfFacilityInSpecialStep.js"></script>
 
     <script>
 
@@ -386,8 +365,6 @@
         $(function () {
             $('[data-bs-toggle="popover"]').popover();
             $('[data-bs-toggle="tooltip"]').tooltip();
-
-
         })
 
     </script>
