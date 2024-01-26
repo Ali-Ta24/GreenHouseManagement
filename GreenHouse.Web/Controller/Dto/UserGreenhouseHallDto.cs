@@ -22,7 +22,7 @@ namespace GreenHouse.Web.Controller.Dto
         {
             return new UserGreenhouseHall()
             {
-                ID = ID.Value,
+                ID = ID ?? 0,
                 HallName = HallName
             };
         }

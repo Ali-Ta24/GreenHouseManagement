@@ -104,7 +104,7 @@ namespace GreenHouse.Web.Controller.Api
 
         [HttpGet("GetGreenhouseHalls")]
         public async Task<ActionResult<LinqDataResult<GreenhouseHallViewEntity>>> GetGreenhouseHalls()
-        {
+       {
             var request = Request.ToLinqDataRequest();
             try
             {
