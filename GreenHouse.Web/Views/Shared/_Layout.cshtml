@@ -347,8 +347,6 @@
     <!--start Bootstrap JS -->
     <script src="/PanelContent/rtl/assets/js/bootstrap.bundle.min.js"></script>
     <!--end Bootstrap JS -->
-    <!--start plugins-->
-    <!--start necessary plugins-->
     @await RenderSectionAsync("ScriptsJqueryOlder", required: false)
 
     <script src="/PanelContent/rtl/assets/js/jquery.min.js"></script>
@@ -371,7 +369,6 @@
         }
             $(function () {
                 $(document).ajaxSend(function (event, request, settings) {
-                    //console.log("Setting bearer token.");
                     if (request.headers) {
                         request.headers.Authorization = 'Bearer ' + '@accessToken';
                     } else {
@@ -380,8 +377,6 @@
                 });
             });
     </script>
-
-    <!--end necessary plugins-->
 
     <script src="/PanelContent/rtl/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
     <script src="/PanelContent/rtl/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>

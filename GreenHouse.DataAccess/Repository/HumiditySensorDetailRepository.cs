@@ -16,6 +16,6 @@ namespace GreenHouse.DataAccess.Repository
         }
 
         public async Task<IEnumerable<HumiditySensorDetail>> GetHumiditySensorDetailsByHumiditySensor(int HumiditySensorID)
-            => await _dbContext.HumiditySensorDetail.Where(ss => ss.ID == HumiditySensorID).ToListAsync();
+            => await _dbContext.HumiditySensorDetail.Where(ss => ss.HumiditySensorID == HumiditySensorID).ToListAsync();
     }
 }

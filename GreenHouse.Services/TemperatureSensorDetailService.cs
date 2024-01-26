@@ -73,6 +73,28 @@ namespace GreenHouse.Services
             return item;
         }
 
+        public async Task<IEnumerable<TemperatureSensorDetail>> AllItemsAsync(int TemperatureSensorID)
+        {
+            var req = await _unitOfWork.TemperatureSensors.FirstOrDefaultAsync(uu => uu.ID == TemperatureSensorID);
+
+            if (req == null)
+            {
+                Log(301, "GetTemperatureSensorDetails failed: request with the given id not found", TemperatureSensorID.ToString(), LogTypeEnum.ErrorLog);
+                throw new ServiceObjectNotFoundException(nameof(TemperatureSensor));
+            }
+            IEnumerable<TemperatureSensorDetail> item;
+            try
+            {
+                item = await _unitOfWork.TemperatureSensorDetails.GetTemperatureSensorDetailsByTemperatureSensor(TemperatureSensorID);
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceStorageException("Error loading TemperatureSensorDetail", ex);
+            }
+
+            return item;
+        }
+
         #region Validation
         protected async override Task ValidateOnAddAsync(TemperatureSensorDetail item)
         {

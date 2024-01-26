@@ -8,12 +8,12 @@
         buildInterface();
         function buildInterface() {
             area.html(getTemplate());
-             area.find('[data-message-role="main"]').sample2();
+            area.find('[data-message-role="main"]').sample2();
         }
         function getTemplate() {
             var template = `<div data-message-role="main"></div>`;
             return template;
         }
-    return this;
+        return this;
     }
 })(jQuery)

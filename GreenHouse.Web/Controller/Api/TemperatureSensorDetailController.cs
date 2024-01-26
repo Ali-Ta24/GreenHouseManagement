@@ -10,7 +10,7 @@ using MZSimpleDynamicLinq.Core;
 
 namespace GreenHouse.Web.Controller.Api
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class TemperatureSensorDetailController : BaseApiController
@@ -42,6 +42,23 @@ namespace GreenHouse.Web.Controller.Api
             }
         }
 
+        [HttpGet("GetTemperatureSensorsDetailForChart")]
+        public async Task<ActionResult<LinqDataResult<TemperatureSensorDetailDto>>> GetTemperatureSensorsDetailForChart(int TemperatureSensorID)
+        {
+            try
+            {
+                var rtn = await _service.AllItemsAsync(TemperatureSensorID);
+                return Ok(rtn);
+            }
+            catch (ServiceException ex)
+            {
+                return StatusCode(500, ex.ToServiceExceptionString());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         [HttpPost("UpTemperatureSensors")]
         public async Task<ActionResult> UpTemperatureSensors(TemperatureSensorDetailDto dto)
         {

@@ -73,6 +73,28 @@ namespace GreenHouse.Services
             return item;
         }
 
+        public async Task<IEnumerable<HumiditySensorDetail>> AllItemsAsync(int HumiditySensorID)
+        {
+            var req = await _unitOfWork.HumiditySensors.FirstOrDefaultAsync(uu => uu.ID == HumiditySensorID);
+
+            if (req == null)
+            {
+                Log(301, "GetHumiditySensorDetails failed: request with the given id not found", HumiditySensorID.ToString(), LogTypeEnum.ErrorLog);
+                throw new ServiceObjectNotFoundException(nameof(HumiditySensor));
+            }
+            IEnumerable<HumiditySensorDetail> item;
+            try
+            {
+                item = await _unitOfWork.HumiditySensorDetails.GetHumiditySensorDetailsByHumiditySensor(HumiditySensorID);
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceStorageException("Error loading HumiditySensorDetail", ex);
+            }
+
+            return item;
+        }
+
         #region Validation
         protected async override Task ValidateOnAddAsync(HumiditySensorDetail item)
         {

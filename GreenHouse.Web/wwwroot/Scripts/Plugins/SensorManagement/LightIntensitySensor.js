@@ -305,8 +305,12 @@
                 select: true,
                 serverSide: true,
                 paging: true,
-                dom: 'rt<"mt-2" l>p',
-                paginationType: "numbers",
+                dom: '<"mb-2 float-left" B>rt<"mt-2 float-right" l><"mt-2 float-left" p>',
+                buttons: [
+                    'excel',
+                    'print'
+                ],
+                paginationType: "full_numbers",
                 serverMethod: 'post',
                 columns: cols,
                 language: {

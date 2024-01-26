@@ -305,8 +305,12 @@
                 select: true,
                 serverSide: true,
                 paging: true,
-                dom: 'rt<"mt-2" l>p',
-                paginationType: "numbers",
+                dom: '<"mb-2 float-left" B>rt<"mt-2 float-right" l><"mt-2 float-left" p>',
+                buttons: [
+                    'excel',
+                    'print'
+                ],
+                paginationType: "full_numbers",
                 serverMethod: 'post',
                 columns: cols,
                 language: {
@@ -321,7 +325,7 @@
                             <div class="card-body" id="humiditySensorTab">
                                 <h4 class="mb-0">کنترل سنسور رطوبت</h4>
                                 <hr>
-                                <nav class="navbar navbar-expand-lg navbar-dark rounded p-2 mb-2" style="background-color: rgb(91, 192, 222);">
+                                <nav class="navbar navbar-expand-lg navbar-dark rounded p-2 mb-2" style="background-color: rgb(5, 125, 41);">
                                     <div class="sticky">
                                         <button type="button" class="btn btn-success text-dark" data-role-operation="add" alt="افزودن سنسور رطوبت"><i class="bx bx-message-square-add"></i>افزودن سنسور رطوبت</button>
                                         <button type="button" class="btn btn-warning d-none ms-2" data-role-operation="edit"><i class="bx bx-message-square-edit"></i>ویرایش سنسور رطوبت</button>

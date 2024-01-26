@@ -301,12 +301,16 @@
                 destroy: true,
                 colReorder: true,
                 searchPanes: true,
-                scrollX: true,
+                scrollX: false,
                 select: true,
                 serverSide: true,
                 paging: true,
-                dom: 'rt<"mt-2" l>p',
-                paginationType: "numbers",
+                dom: '<"mb-2 float-left" B>rt<"mt-2 float-right" l><"mt-2 float-left" p>',
+                buttons: [
+                    'excel',
+                    'print'
+                ],
+                paginationType: "full_numbers",
                 serverMethod: 'post',
                 columns: cols,
                 language: {
@@ -321,7 +325,7 @@
                             <div class="card-body" id="temperatureSensorTab">
                                 <h4 class="mb-0">کنترل سنسور دما</h4>
                                 <hr>
-                                <nav class="navbar navbar-expand-lg navbar-dark bg-info rounded p-2 mb-2">
+                                <nav class="navbar navbar-expand-lg navbar-dark rounded p-2 mb-2" style="background-color: rgb(189, 72, 80);">
                                     <div class="sticky">
                                         <button type="button" class="btn btn-success text-dark" data-role-operation="add" alt="افزودن سنسور دما"><i class="bx bx-message-square-add"></i>افزودن سنسور دما</button>
                                         <button type="button" class="btn btn-warning d-none ms-2" data-role-operation="edit"><i class="bx bx-message-square-edit"></i>ویرایش سنسور دما</button>

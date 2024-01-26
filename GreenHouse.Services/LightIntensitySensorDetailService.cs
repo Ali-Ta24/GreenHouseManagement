@@ -72,6 +72,27 @@ namespace GreenHouse.Services
 
             return item;
         }
+        public async Task<IEnumerable<LightIntensitySensorDetail>> AllItemsAsync(int LightIntensitySensorID)
+        {
+            var req = await _unitOfWork.LightIntensitySensors.FirstOrDefaultAsync(uu => uu.ID == LightIntensitySensorID);
+
+            if (req == null)
+            {
+                Log(301, "GetLightIntensitySensorDetails failed: request with the given id not found", LightIntensitySensorID.ToString(), LogTypeEnum.ErrorLog);
+                throw new ServiceObjectNotFoundException(nameof(LightIntensitySensor));
+            }
+            IEnumerable<LightIntensitySensorDetail> item;
+            try
+            {
+                item = await _unitOfWork.LightIntensitySensorDetails.GetLightIntensitySensorDetailsByLightIntensitySensor(LightIntensitySensorID);
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceStorageException("Error loading LightIntensitySensorDetail", ex);
+            }
+
+            return item;
+        }
 
         #region Validation
         protected async override Task ValidateOnAddAsync(LightIntensitySensorDetail item)

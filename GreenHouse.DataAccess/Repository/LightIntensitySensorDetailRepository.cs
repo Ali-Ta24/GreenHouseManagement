@@ -16,6 +16,6 @@ namespace GreenHouse.DataAccess.Repository
         }
 
         public async Task<IEnumerable<LightIntensitySensorDetail>> GetLightIntensitySensorDetailsByLightIntensitySensor(int LightIntensitySensorID)
-            => await _dbContext.LightIntensitySensorDetail.Where(ss => ss.ID == LightIntensitySensorID).ToListAsync();
+            => await _dbContext.LightIntensitySensorDetail.Where(ss => ss.LightIntensitySensorID == LightIntensitySensorID).ToListAsync();
     }
 }

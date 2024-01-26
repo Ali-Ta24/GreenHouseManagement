@@ -10,7 +10,7 @@ using GreenHouse.Web.Controller.Api.Base;
 
 namespace GreenHouse.Web.Controller.Api
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class HumiditySensorDetailController : BaseApiController
@@ -30,6 +30,24 @@ namespace GreenHouse.Web.Controller.Api
             try
             {
                 var rtn = await _service.ItemsAsync(request, HumiditySensorID);
+                return Ok(rtn);
+            }
+            catch (ServiceException ex)
+            {
+                return StatusCode(500, ex.ToServiceExceptionString());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("GetHumiditySensorsDetailForChart")]
+        public async Task<ActionResult<LinqDataResult<HumiditySensorDetailDto>>> GetHumiditySensorsDetailForChart(int HumiditySensorID)
+        {
+            try
+            {
+                var rtn = await _service.AllItemsAsync(HumiditySensorID);
                 return Ok(rtn);
             }
             catch (ServiceException ex)

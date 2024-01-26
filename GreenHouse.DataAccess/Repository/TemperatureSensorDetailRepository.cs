@@ -16,6 +16,6 @@ namespace GreenHouse.DataAccess.Repository
         }
 
         public async Task<IEnumerable<TemperatureSensorDetail>> GetTemperatureSensorDetailsByTemperatureSensor(int TemperatureSensorID)
-            => await _dbContext.TemperatureSensorDetail.Where(ss => ss.ID == TemperatureSensorID).ToListAsync();
+            => await _dbContext.TemperatureSensorDetail.Where(ss => ss.TemperatureSensorID == TemperatureSensorID).ToListAsync();
     }
 }
