@@ -124,7 +124,7 @@
                 contentType: 'application/json',
                 success: function (result) {
 
-                    var template = putTemplateOldFacility(result);
+                    var template = putTemplate(result);
                     bootbox.dialog({
                         message: template,
                         title: "ویرایش سنسور رطوبت",
@@ -203,7 +203,7 @@
             });
         }
 
-        function putTemplateOldFacility(result) {
+        function putTemplate(result) {
             var editTemplateModal = `<div class="row" id="editmodal">
                                 <form id="formHumiditySensorAdd" class="row g-3 needs-validation">
 

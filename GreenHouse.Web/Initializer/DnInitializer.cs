@@ -30,25 +30,7 @@ namespace GreenHouse.Web.Initializer
             }
             else
             {
-                //var adminClaim = _dbContext.UserClaims.Where(ss => ss.ClaimType == "role" && ss.ClaimValue == "Admin").FirstOrDefault();
-                //var doesHaveCompanyNationalIDClaim = _dbContext.UserClaims
-                //     .Where(ss => ss.ClaimType == "CompanyNationalID" && (ss.ClaimValue == "Admin" && ss.ClaimType == "role")).FirstOrDefault();
 
-                //if (adminClaim != null && doesHaveCompanyNationalIDClaim == null)
-                //{
-                //    var userIdOfAdminClaim = _dbContext.UserClaims
-                //                        .Where(ss => ss.ClaimType == "role" && ss.ClaimValue == "Admin")
-                //                        .Select(ss => ss.UserId).FirstOrDefault();
-
-                //    _dbContext.UserClaims.Add(new IdentityUserClaim<string>()
-                //    {
-                //        UserId = userIdOfAdminClaim,
-                //        ClaimType = "CompanyNationalID",
-                //        ClaimValue = ""
-                //    });
-                //    _dbContext.SaveChanges();
-                //}
-                //return;
             }
         
             if (_userManager.FindByNameAsync("1234567890")?.Result == null)

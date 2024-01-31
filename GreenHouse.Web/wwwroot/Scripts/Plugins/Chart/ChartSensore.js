@@ -20,11 +20,6 @@
             tmp += await getTemplateHumiditySensorChart();
             tmp += await getTemplateLightIntensitySensorChart();
             area.html(tmp)
-
-            var sse = area.html()
-            console.log(sse);
-            console.log(tmp);
-
         }
         async function getTemplateTemperatureSensorChart() {
             var allSensorId;

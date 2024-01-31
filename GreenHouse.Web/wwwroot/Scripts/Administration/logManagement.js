@@ -187,16 +187,10 @@ function operationLog(typeOperation) {
 
     $('#typeOperation').val(typeOperation);
 
-    // setTimeout(function () { $("#capacityTitle").focus(); }, 500)
 }
 
 $("[data-role-operation ='details']").click(function () {
     let idRowSelect = logTable.rows({ selected: true }).data()[0];
-    //$.ajax({
-    //    type: "get",
-    //    url: settings.GetOldFacilityByIDApiAddress + "?oldFacilityID=" + idRowSelect,
-    //    contentType: 'application/json',
-    //    success: function (result) {
     console.log(idRowSelect);
     var template = LogDetailManagement(idRowSelect);
     bootbox.dialog({
@@ -208,17 +202,6 @@ $("[data-role-operation ='details']").click(function () {
         $('.bootbox-close-button').addClass("btn-close");
         $('.bootbox-close-button').text("");
     });
-    //$("#editsubmitBtn").click(function (e) {
-    //    putOldFacility(e);
-    //});
-    //$("#editsubmitBtn2").click(function (e) {
-    //    putOldFacility(e);
-    //});
-    //},
-    //error: function () {
-    //    ivsAlert2('error', 'خطا', 'اشکال در برقراری ارتباط با سرور - بخش تسهیلات قدیمی');
-    //}
-    /* });*/
 });
 
 
